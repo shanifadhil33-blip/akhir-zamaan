@@ -1,0 +1,320 @@
+[
+  {
+    "id": "et_1",
+    "title": "The Dajjal Is Already Here — Just Not How You Were Taught",
+    "theme": "The Dajjal's fitna as ongoing, not a future arrival",
+    "modern_angle": "The algorithm, deepfakes, the device in every pocket showing everyone exactly what they want to see",
+    "quran_chapters": [18],
+    "specific_verses": [54, 55, 56, 57, 102, 103, 104],
+    "hadith_book": { "collection": "muslim", "book": 54, "limit": 8 },
+    "context": "Connect the Prophet's ﷺ warnings about the Dajjal's deception through the eyes to the smartphone, social media algorithms, AI-generated images, and the personalized reality each person now lives inside. Surah Al-Kahf was named as the protection against the Dajjal — link that directly to why the Prophet ﷺ said to memorize its first ten verses."
+  },
+  {
+    "id": "et_2",
+    "title": "Yajuj and Majuj — What The Prophet ﷺ Said Would Break Loose",
+    "theme": "Gog and Magog prophecy and the unraveling of global order",
+    "modern_angle": "Mass migration, civilizational collapse, the erosion of borders and meaning, social fragmentation in 2026",
+    "quran_chapters": [18, 21],
+    "specific_verses": [94, 95, 96, 97, 98],
+    "hadith_book": { "collection": "muslim", "book": 54, "limit": 5 },
+    "context": "Unpack Dhul-Qarnayn's wall and the prophesied release of Yajuj and Majuj through the lens of modern civilizational collapse — not literal barbarians, but the pattern of contained chaos finally breaking free. Tie to the Prophet's ﷺ hadith about a small opening in the wall 'like this' (he gestured with his fingers)."
+  },
+  {
+    "id": "et_3",
+    "title": "The Sun Will Rise From The West And Most Will Not Notice",
+    "theme": "The sign of the sun rising from the west and the closing of the door of repentance",
+    "modern_angle": "Moral inversion — what was once shame is now pride, what was once sin is now identity, and the shrinking window for repentance",
+    "quran_chapters": [6],
+    "specific_verses": [158],
+    "hadith_refs": [
+      { "collection": "bukhari", "book": 60, "number": 158 }
+    ],
+    "hadith_book": { "collection": "muslim", "book": 1, "limit": 4 },
+    "context": "Frame the sun rising from the west not just as a cosmic event but as the total inversion of moral order — which has already begun. The hadith says the door of repentance closes when this happens. Link to the 2020s-2026 inversion of what mankind once universally recognized as right and wrong."
+  },
+  {
+    "id": "et_4",
+    "title": "The Beast That Will Speak — And The Hadith Nobody Reads Anymore",
+    "theme": "The Beast (Dabbah) of the end times",
+    "modern_angle": "AI chatbots, language models, synthetic voices — machines that speak, classify humans, and claim judgment",
+    "quran_chapters": [27],
+    "specific_verses": [82],
+    "hadith_book": { "collection": "tirmidhi", "book": 33, "limit": 3 },
+    "context": "Explore the verse about the Beast that speaks to mankind in the end times. Without forcing a literal reading, examine how a machine that speaks, labels, and categorizes believer from disbeliever is no longer science fiction. Large language models are the beginning of something the Quran already named."
+  },
+  {
+    "id": "et_5",
+    "title": "The Smoke — A Sign The Prophet ﷺ Said You Would Choke On",
+    "theme": "The smoke (Dukhan) as a major sign of Qiyamah",
+    "modern_angle": "Wildfire smoke, industrial pollution, geoengineering, the sky turning strange colors across 2023-2026",
+    "quran_chapters": [44],
+    "specific_verses": [10, 11, 12, 13, 14, 15],
+    "hadith_refs": [
+      { "collection": "muslim", "book": 54, "number": 39 }
+    ],
+    "context": "Surah Ad-Dukhan literally names 'the smoke' as a sign. Connect to the unprecedented wildfire smoke events of 2023-2024, the orange skies over major cities, and the strange atmospheric phenomena people casually photograph and forget. The sign may not be singular — it may be cumulative."
+  },
+  {
+    "id": "et_6",
+    "title": "The Thirty Dajjals Before The Dajjal — And Why You Follow Them Already",
+    "theme": "The Prophet's ﷺ warning about 30 liars/false claimants before the great Dajjal",
+    "modern_angle": "Influencers, gurus, lifestyle coaches, self-help icons, cult-of-personality politicians, fake shaykhs",
+    "hadith_refs": [
+      { "collection": "bukhari", "book": 61, "number": 246 },
+      { "collection": "muslim", "book": 54, "number": 97 }
+    ],
+    "context": "The Prophet ﷺ said there would be ~30 Dajjals (liars claiming prophethood or special knowledge) before the great Dajjal. In an age where millions follow gurus, podcasters, and influencers with cult-like devotion, this prophecy is not abstract. It is the ecosystem."
+  },
+  {
+    "id": "et_7",
+    "title": "The Hour Comes — And You Are Still Scrolling",
+    "theme": "The suddenness of Qiyamah and human heedlessness",
+    "modern_angle": "The 2 AM scroll, dopamine loops, dying with the phone still in your hand",
+    "quran_chapters": [7, 79],
+    "specific_verses": [187],
+    "hadith_book": { "collection": "muslim", "book": 54, "limit": 4 },
+    "context": "The Prophet ﷺ said the Hour will come while two men are trading cloth between them. Frame it through the modern equivalent: it comes while you are mid-scroll, mid-watch, mid-click. The suddenness is not the fear. The fear is what you were doing when it came."
+  },
+  {
+    "id": "pr_1",
+    "title": "Adam Was Tested The Same Way You Are Tonight",
+    "theme": "Adam (AS) and the original test — forbidden desire versus divine command",
+    "modern_angle": "The forbidden tab, the saved post, the DM you know you should not send",
+    "quran_chapters": [2, 7, 20],
+    "specific_verses": [35, 36, 37],
+    "context": "Adam (AS) was not deceived by a snake. He was whispered to by Iblis, and the whisper sounded like his own thought. Every modern temptation follows the same pattern: the whisper that feels like you, the justification that feels reasonable, the forbidden tree that looks like freedom."
+  },
+  {
+    "id": "pr_2",
+    "title": "Nuh Preached For 950 Years And Nobody Listened — Now You See Why",
+    "theme": "Nuh (AS) and the patient preaching to a heedless society",
+    "modern_angle": "Speaking truth into an algorithmic feed that punishes truth, the futility of warning a society that has chosen the flood",
+    "quran_chapters": [71, 11],
+    "specific_verses": [25, 26, 27, 28],
+    "context": "Nuh (AS) preached for 950 years and the Quran says he warned them 'openly, then privately, then in their ears.' Every medium of communication available to him was used. His society rejected it all. Connect to the modern experience of trying to speak about Islam online, into a feed built to bury it."
+  },
+  {
+    "id": "pr_3",
+    "title": "Ibrahim Broke The Idols — Yours Are Still Standing",
+    "theme": "Ibrahim (AS) destroying the idols of his people",
+    "modern_angle": "The modern idols: money, status, image, the algorithm, the self",
+    "quran_chapters": [21, 6],
+    "specific_verses": [57, 58, 59, 60, 61, 62, 63],
+    "context": "Ibrahim (AS) did not just refuse to worship idols. He walked into the temple and broke them. Frame the modern idols — not stone figures, but status, money, image, the self — and the uncomfortable truth that your idols are still intact."
+  },
+  {
+    "id": "pr_4",
+    "title": "Yusuf Refused — And You Call It Outdated",
+    "theme": "Yusuf (AS) refusing the seduction of the wife of Al-Aziz",
+    "modern_angle": "The locked door, the private window, the 'no one will know,' the moment of the test",
+    "quran_chapters": [12],
+    "specific_verses": [23, 24, 25],
+    "context": "Yusuf (AS) was young, alone, in a locked room, with power beyond him — and he said no. Connect to every modern moment when the door is locked, the screen is private, and the voice in your head says 'no one will know.' The test has not changed. Only the backdrop."
+  },
+  {
+    "id": "pr_5",
+    "title": "Musa Spoke To The Tyrant — What Would You Say To Yours",
+    "theme": "Musa (AS) confronting Firaun",
+    "modern_angle": "The personal tyrant: an addiction, a boss, a fear, a system you have submitted to",
+    "quran_chapters": [20, 26, 28],
+    "specific_verses": [42, 43, 44, 45, 46, 47],
+    "context": "Musa (AS) spoke gentle truth to the greatest tyrant of his age. Examine the tyrant in your own life — the habit, the fear, the pressure that decides your choices — and what gentle truth you would have to speak to it, and to yourself, to be free."
+  },
+  {
+    "id": "pr_6",
+    "title": "Isa Will Return — And The Muslims Who Forgot Him Will Be Left Behind",
+    "theme": "The return of Isa (AS) at the end of times",
+    "modern_angle": "The Muslim who has forgotten the eschatology, who does not pray, who treats the end times as fairy tale",
+    "quran_chapters": [43, 4],
+    "specific_verses": [61],
+    "hadith_refs": [
+      { "collection": "bukhari", "book": 60, "number": 149 },
+      { "collection": "muslim", "book": 54, "number": 102 }
+    ],
+    "context": "Isa (AS) returns to kill the Dajjal and break the cross. Frame not just the event but the spiritual readiness required to recognize it. The Muslims alive at that time will be split: those whose hearts knew, and those who scrolled through the signs."
+  },
+  {
+    "id": "pr_7",
+    "title": "Muhammad ﷺ Wept For You — And You Have Not Wept For Yourself",
+    "theme": "The Prophet's ﷺ concern for his ummah at the end of time",
+    "modern_angle": "The Muslim who has stopped feeling — prays without presence, reads without understanding, lives without fear",
+    "hadith_refs": [
+      { "collection": "muslim", "book": 1, "number": 346 },
+      { "collection": "muslim", "book": 1, "number": 347 }
+    ],
+    "context": "The Prophet ﷺ wept for his ummah — for the people alive in these times specifically. Confront the listener with the reality that he wept for you, by name, by situation, and you have not wept for yourself once. What does that say about your heart?"
+  },
+  {
+    "id": "th_1",
+    "title": "Why You Cannot Stop Scrolling — And What The Quran Named It",
+    "theme": "Heedlessness (ghaflah) and the dopamine economy",
+    "modern_angle": "Phone addiction, infinite scroll, the death of silence, the inability to sit alone",
+    "quran_chapters": [102, 104],
+    "specific_verses": [1, 2],
+    "context": "Surah At-Takathur opens with 'Competition in [worldly] increase diverts you, until you visit the graves.' That is a description of 2026. The dopamine economy is not a new invention. It is an old disease running on new infrastructure. And the Quran named it fourteen centuries before the dopamine was measured."
+  },
+  {
+    "id": "th_2",
+    "title": "Riba Is In Your Phone — Not Just Your Bank",
+    "theme": "Riba (interest) as a spiritual poison, not just a financial one",
+    "modern_angle": "Credit cards, BNPL, subscription debt, the mortgage, the loan, and the modern impossibility of escaping riba",
+    "quran_chapters": [2, 30],
+    "specific_verses": [275, 276, 278, 279],
+    "context": "Allah declared war on those who deal in riba. This is not historical. Name the modern forms: credit cards, buy-now-pay-later, student loans, the mortgage everyone says you must take. Confront the Muslim who has accepted riba as the cost of living and show what he has traded."
+  },
+  {
+    "id": "th_3",
+    "title": "You Pray Five Times — But Have You Prayed Once",
+    "theme": "Khushu — presence in prayer versus the mechanical performance of it",
+    "modern_angle": "The prayer performed while the mind is in the inbox, the scroll, the weekend plans",
+    "quran_chapters": [23],
+    "specific_verses": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11],
+    "hadith_refs": [
+      { "collection": "bukhari", "book": 10, "number": 572 }
+    ],
+    "context": "Surah Al-Muminun opens: 'Successful are the believers who pray with khushu.' Khushu is not a style. It is the whole thing. Confront the listener who prays five times but has not truly prayed in years. And the quiet terror: what if none of those prayers counted?"
+  },
+  {
+    "id": "th_4",
+    "title": "The Sin You Cannot Stop — And Why Allah Keeps Letting You",
+    "theme": "Persistent sin and the concept of istidraj — being given rope",
+    "modern_angle": "The habit you cannot break, the feeling nothing is happening, the false security in unpunished sin",
+    "quran_chapters": [7, 68],
+    "specific_verses": [182, 183],
+    "hadith_refs": [
+      { "collection": "tirmidhi", "book": 36, "number": 2560 }
+    ],
+    "context": "Istidraj: Allah gives the sinner more, not as favor, but as a rope. The quiet horror of continuing the same sin and nothing visible happening. Strip away the false security and reveal what the silence actually means."
+  },
+  {
+    "id": "th_5",
+    "title": "The Jinn Are Real — And They Are In Your Feed",
+    "theme": "The jinn, shaytan, and the whisperings that shape modern life",
+    "modern_angle": "The whisper that sounds like your own thought, the urge that feels natural, the content that arrived exactly when you were weakest",
+    "quran_chapters": [114, 72],
+    "specific_verses": [1, 2, 3, 4, 5, 6],
+    "context": "Surah An-Nas ends the Quran with a protection against the whisperer who retreats. Confront the modern Muslim who has stopped believing the jinn are real because nobody sees them — while being influenced hourly by whisperings that feel like his own thoughts."
+  },
+  {
+    "id": "th_6",
+    "title": "Jannah Was Described In Detail — You Just Were Not Listening",
+    "theme": "The specific, sensory, unimaginable nature of paradise",
+    "modern_angle": "The modern Muslim's dream of retirement, the bigger house, the vacation — and the forgetfulness of the promise that dwarfs them all",
+    "quran_chapters": [55, 56, 76],
+    "specific_verses": [46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78],
+    "context": "Surah Ar-Rahman's rhythmic detailing of Jannah is not poetic flourish. It is precision. Confront the modern Muslim chasing retirement and renovations while the infinite reward was described to him in surgical detail and he never once memorized it."
+  },
+  {
+    "id": "th_7",
+    "title": "Jahannam Is Not A Metaphor — The Quran Was Specific",
+    "theme": "The reality and severity of hellfire",
+    "modern_angle": "The modern softening of Islamic eschatology, the attempt to treat Jahannam as metaphor, the polite faith that removes fear",
+    "quran_chapters": [56, 74, 101],
+    "specific_verses": [26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56],
+    "context": "The Quran describes Jahannam with specificity that the modern softened faith cannot tolerate. Present the descriptions exactly as Allah described them. Then confront the Muslim who has re-written his own version of Islam where fear of fire is 'outdated.'"
+  },
+  {
+    "id": "th_8",
+    "title": "Your Mother's Dua — And Why It Is The Only Thing Holding You Up",
+    "theme": "The station of the mother, the weight of her dua, the debt that cannot be repaid",
+    "modern_angle": "Distance from parents, neglected calls, the son who owes her everything and gives her almost nothing",
+    "quran_chapters": [17, 31],
+    "specific_verses": [23, 24],
+    "hadith_refs": [
+      { "collection": "bukhari", "book": 78, "number": 2 }
+    ],
+    "context": "The Quran pairs worship of Allah with kindness to parents in the same breath. The Prophet ﷺ said Jannah is at the feet of mothers. Confront the young man who has built a life across continents and calls his mother twice a month."
+  },
+  {
+    "id": "s_1",
+    "title": "Al-Fatiha — The Prayer You Have Said 17,000 Times Without Meaning It",
+    "theme": "Surah Al-Fatiha as the contract you renew in every prayer",
+    "modern_angle": "The performed prayer, the autopilot recitation, the forgotten covenant",
+    "quran_chapters": [1],
+    "specific_verses": [1, 2, 3, 4, 5, 6, 7],
+    "context": "Al-Fatiha is not a ritual opening. It is a contract you sign seventeen times a day minimum. 'Guide us to the straight path.' You said this today. Did you mean it? Did you then walk the straight path? Confront the gap between what the tongue says and what the life does."
+  },
+  {
+    "id": "s_18",
+    "title": "Al-Kahf — The Surah The Prophet ﷺ Said Would Save You From The Dajjal",
+    "theme": "Surah Al-Kahf and its four trials (faith, knowledge, wealth, power)",
+    "modern_angle": "Every modern trial you face fits one of the four stories of Al-Kahf",
+    "quran_chapters": [18],
+    "specific_verses": [9, 10, 13, 14, 60, 62, 65, 83, 84, 85],
+    "hadith_refs": [
+      { "collection": "muslim", "book": 6, "number": 257 }
+    ],
+    "context": "Al-Kahf contains four stories — People of the Cave (faith trial), Musa and Khidr (knowledge trial), the Two Gardens (wealth trial), Dhul-Qarnayn (power trial). Every modern trial you face is one of these four. The Prophet ﷺ commanded its weekly recitation as protection. Show why."
+  },
+  {
+    "id": "s_103",
+    "title": "Al-Asr — The Three Minutes That Contain Your Entire Life",
+    "theme": "Surah Al-Asr — Imam Shafi'i said if this were the only surah revealed, it would be enough",
+    "modern_angle": "The life spent on everything except the four things this surah names",
+    "quran_chapters": [103],
+    "specific_verses": [1, 2, 3],
+    "context": "Three short verses. A diagnosis of mankind's loss. A prescription of four things. Take each of the four — iman, righteous deeds, counseling truth, counseling patience — and measure the listener's week against them. Brutal clarity."
+  },
+  {
+    "id": "s_112",
+    "title": "Al-Ikhlas — The Four Verses Most Muslims Cannot Truly Mean",
+    "theme": "Surah Al-Ikhlas and true tawhid",
+    "modern_angle": "The subtle shirks of modern life: fame, image, fear of people, dependence on anyone but Allah",
+    "quran_chapters": [112],
+    "specific_verses": [1, 2, 3, 4],
+    "context": "The Prophet ﷺ said Al-Ikhlas equals one-third of the Quran. Four verses. Almost every Muslim has them memorized. But to MEAN them — to truly hold that nothing is relied on, feared, or loved like Allah — that is a lifetime's work. And most have not started."
+  },
+  {
+    "id": "th_9",
+    "title": "The Heart That Has Died — And You Did Not Notice",
+    "theme": "The spiritual death of the heart through continued sin",
+    "modern_angle": "The Muslim who prays but feels nothing, who reads but does not move, who cries at a song but not at Quran",
+    "quran_chapters": [2, 83],
+    "specific_verses": [14],
+    "hadith_refs": [
+      { "collection": "tirmidhi", "book": 47, "number": 3334 }
+    ],
+    "context": "The Prophet ﷺ said every sin is a black dot on the heart. Enough of them, and the heart is covered — what the Quran calls 'rayn.' The listener who feels nothing at Quran recitation but cries at music has been given a diagnosis. Deliver it."
+  },
+  {
+    "id": "th_10",
+    "title": "The Friends Who Will Betray You On Qiyamah — Are In Your Chat Right Now",
+    "theme": "The friends of dunya who become enemies on the Day of Judgment",
+    "modern_angle": "The group chats, the drinking buddies, the 'lifestyle' friends, the company you keep",
+    "quran_chapters": [43, 25],
+    "specific_verses": [67, 28, 29],
+    "context": "The Quran describes friends turning on each other on Qiyamah — 'Ah! Would that I had not taken such a one for a friend.' Look at your contacts. Your recent chats. The people whose influence has shaped your last year. What percentage will you regret?"
+  },
+  {
+    "id": "th_11",
+    "title": "The Fear Of Allah — That You Have Replaced With The Fear Of People",
+    "theme": "Taqwa versus social fear",
+    "modern_angle": "The decisions made not from iman but from 'what will people think,' the quiet slavery to opinion",
+    "quran_chapters": [9, 33],
+    "specific_verses": [13, 39],
+    "context": "Allah asks: Is it people you fear? Allah has more right to be feared. Confront the modern Muslim who trembles at a bad review, a misread tone in a message, a frown from a colleague — but sins before his Lord without flinching."
+  },
+  {
+    "id": "et_8",
+    "title": "The Signs Are Already Fulfilled — And You Walked Past Them",
+    "theme": "The minor signs of the Hour already fulfilled or unfolding",
+    "modern_angle": "Each sign visible in 2026 news headlines: buildings, bare-footed shepherds becoming rich, time shortening, knowledge disappearing",
+    "hadith_refs": [
+      { "collection": "bukhari", "book": 2, "number": 50 },
+      { "collection": "muslim", "book": 1, "number": 1 }
+    ],
+    "context": "The Prophet ﷺ described specific minor signs: people competing to build taller towers, bare-footed poor becoming wealthy rulers, time shrinking, knowledge lifting, trials spreading like pieces of dark night. Walk through them one by one against 2020-2026 reality."
+  },
+  {
+    "id": "th_12",
+    "title": "Your Dua Is Not Being Answered — And The Quran Told You Why",
+    "theme": "The conditions for dua acceptance",
+    "modern_angle": "The Muslim who asks for things but has never examined whether his food, income, and heart qualify him to ask",
+    "quran_chapters": [2],
+    "specific_verses": [186],
+    "hadith_refs": [
+      { "collection": "muslim", "book": 12, "number": 65 }
+    ],
+    "context": "The Prophet ﷺ described a man raising hands to the sky, 'Ya Rabb, ya Rabb,' while his food is haram, his drink is haram, his clothing is from haram. 'How then could he be answered?' Confront the dua life that has never asked the harder question: am I qualified to ask?"
+  }
+]

@@ -1,0 +1,24 @@
+{
+  "name": "akhir-zamaan",
+  "version": "1.0.0",
+  "description": "Fully autonomous Islamic end-times YouTube channel pipeline. $0/video, daily cron.",
+  "main": "pipeline.js",
+  "type": "commonjs",
+  "scripts": {
+    "start": "node pipeline.js",
+    "test-script": "node pipeline.js --dry-run",
+    "upload-only": "node modules/youtube.js",
+    "setup-youtube": "node setup-youtube.js",
+    "bootstrap-data": "node scripts/bootstrap-data.js"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "dependencies": {
+    "@google/generative-ai": "^0.21.0",
+    "axios": "^1.7.9",
+    "dotenv": "^16.4.5",
+    "googleapis": "^144.0.0",
+    "msedge-tts": "^1.3.4"
+  }
+}

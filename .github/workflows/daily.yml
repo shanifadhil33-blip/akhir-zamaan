@@ -1,0 +1,83 @@
+name: Daily Video Pipeline
+
+on:
+  schedule:
+    - cron: '0 6 * * *'   # 06:00 UTC = 10:00 AM Dubai / 9:00 AM Jakarta
+  workflow_dispatch:       # manual trigger
+
+permissions:
+  contents: write          # so we can commit published.json back
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+
+    env:
+      GOOGLE_AI_API_KEY: ${{ secrets.GOOGLE_AI_API_KEY }}
+      YOUTUBE_CLIENT_ID: ${{ secrets.YOUTUBE_CLIENT_ID }}
+      YOUTUBE_CLIENT_SECRET: ${{ secrets.YOUTUBE_CLIENT_SECRET }}
+      YOUTUBE_REFRESH_TOKEN: ${{ secrets.YOUTUBE_REFRESH_TOKEN }}
+      TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+      TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+      VOICE_NAME: ${{ vars.VOICE_NAME || 'en-GB-RyanNeural' }}
+      RECITER_ID: ${{ vars.RECITER_ID || 'Alafasy_128kbps' }}
+      VIDEO_DURATION_MIN: ${{ vars.VIDEO_DURATION_MIN || '15' }}
+      VIDEO_DURATION_MAX: ${{ vars.VIDEO_DURATION_MAX || '20' }}
+      SHORTS_ENABLED: ${{ vars.SHORTS_ENABLED || 'true' }}
+      AUTO_TOPIC_REFILL: ${{ vars.AUTO_TOPIC_REFILL || 'true' }}
+      TOPIC_REFILL_THRESHOLD: ${{ vars.TOPIC_REFILL_THRESHOLD || '20' }}
+      GEMINI_AUTO_DEGRADE: ${{ vars.GEMINI_AUTO_DEGRADE || 'true' }}
+      CHANNEL_NAME: Akhir Zamaan
+      CHANNEL_HANDLE: '@akhirzamaan'
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Setup Node 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install FFmpeg + fonts
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y ffmpeg fonts-liberation fonts-dejavu
+
+      - name: Install deps
+        run: npm install
+
+      - name: Bootstrap Quran + hadith data
+        run: npm run bootstrap-data
+
+      - name: Run pipeline
+        run: npm start
+
+      - name: Commit published.json + topics-queue.json
+        if: always()
+        run: |
+          git config user.name "akhir-zamaan-bot"
+          git config user.email "bot@akhirzamaan.local"
+          git add published.json topics-queue.json || true
+          if git diff --staged --quiet; then
+            echo "No changes to commit"
+          else
+            git commit -m "chore: daily pipeline state [skip ci]"
+            git push
+          fi
+
+      - name: Upload output artifacts (last run)
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: video-output-${{ github.run_id }}
+          path: |
+            output/**/script.json
+            output/**/visual-plan.json
+            output/**/metadata.json
+            output/**/upload.json
+            output/**/short-upload.json
+          retention-days: 14
+          if-no-files-found: ignore
