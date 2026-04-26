@@ -56,7 +56,7 @@ jobs:
           sudo apt-get install -y ffmpeg espeak-ng fonts-liberation fonts-dejavu
 
       - name: Install Python deps for Kokoro TTS
-        run: pip install --quiet kokoro-onnx soundfile numpy
+        run: pip install --quiet -r requirements.txt
 
       - name: Cache Kokoro model files (~340 MB)
         id: kokoro-cache
