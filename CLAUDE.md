@@ -1,25 +1,26 @@
-# CLAUDE.md — Akhir Zamaan: Autonomous Islamic YouTube Channel
+# CLAUDE.md — Akhir Zamaan: Autonomous Islamic Video Pipeline
 
 ## PROJECT OVERVIEW
 
-Fully autonomous, $0/video YouTube pipeline. Publishes one 10–13 minute Islamic end-times documentary daily. Reads Quran + hadith from local files (no APIs), generates scripts via Gemini, creates images via Pollinations, voiceover via Edge TTS, assembles via FFmpeg, uploads via YouTube Data API. GitHub Actions cron runs it daily.
+Autonomous, $0/video pipeline that generates one 15–20 minute Islamic end-times documentary daily. Reads Quran + hadith from local files (no APIs), generates scripts via Ollama (`gpt-oss:120b-cloud`), creates images via Pollinations, voiceover via local Kokoro TTS (with StreamElements + Edge TTS fallbacks), assembles via FFmpeg. GitHub Actions cron runs it daily, uploads the final `.mp4` to bashupload.com via curl, and Telegrams the operator a download link. The operator uploads to YouTube manually — no YouTube API, no OAuth.
 
 Channel: **Akhir Zamaan** (`@akhirzamaan`)
 
 ## TECH STACK
 
-- **Runtime**: Node.js (CommonJS, not ESM)
-- **Script generation**: Gemini 2.5 Pro (via `@google/generative-ai`)
-- **Visual storyboard + metadata**: Gemini 2.5 Flash
-- **Modern context**: Gemini Flash with Google Search grounding
-- **Voiceover**: Edge TTS (`msedge-tts` npm) — voice: `en-GB-RyanNeural`
-- **Image generation**: Pollinations.ai (free, no key, URL-based) — fallback: Gemini Flash Image
-- **Captions**: Built from Edge TTS word timings — burned via FFmpeg (.ass) + YouTube upload (.srt)
-- **Video assembly**: FFmpeg (Ken Burns zoom on stills + voiceover + ambient music + burned captions)
+- **Runtime**: Node.js 20 (CommonJS, not ESM)
+- **Script / visual plan / metadata / topic generation**: Ollama, default model `gpt-oss:120b-cloud` (override via `OLLAMA_MODEL`)
+- **Modern context**: same Ollama call, no external grounding
+- **Voiceover**: provider chain `kokoro → streamelements → edge` (override with `TTS_PROVIDER`). Default voice `bm_george` (Kokoro).
+  - Kokoro-82M ONNX runs locally via a Python worker (`modules/kokoro_worker.py`). Model + voices live in `assets/kokoro/`.
+  - Edge TTS uses a custom WebSocket client (`modules/edge-tts.js`, `ws` npm).
+- **Quran recitation**: EveryAyah CDN (no key)
+- **Image generation**: Pollinations.ai (free, no key, URL-based). Single retry with seed offset on failure.
+- **Captions**: built from estimated word timings → `.srt` (delivered alongside video) + `.ass` (burned into video by FFmpeg)
+- **Video assembly**: FFmpeg (Ken Burns zoom on stills + voiceover + ambient music ducked at -22dB + burned captions + recitation overlays on verse beats)
 - **Thumbnail**: Pollinations background + FFmpeg text overlay
-- **Upload**: YouTube Data API v3 (googleapis npm)
-- **Scheduling**: GitHub Actions cron (06:00 UTC daily)
-- **Notifications**: Telegram bot (optional, for review mode)
+- **Delivery**: GitHub Actions step → `curl -T final.mp4 https://bashupload.com/` → Telegram bot message with download link. Final `.mp4` is also retained as a workflow artifact for 14 days.
+- **Notifications**: Telegram bot (errors + delivery link)
 - **Religious sources**: LOCAL files only, no external APIs
   - Quran: `data/quran-en-sahih.txt` from tanzil.net (format: `chapter|verse|text`)
   - Hadith: `data/hadith/editions/eng-*/` from github.com/fawazahmed0/hadith-api
@@ -28,46 +29,56 @@ Channel: **Akhir Zamaan** (`@akhirzamaan`)
 
 ```
 akhir-zamaan/
-├── CLAUDE.md                  ← this file
+├── CLAUDE.md                       ← this file
+├── README.md
+├── SETUP.md
 ├── package.json
-├── .env                       ← secrets (gitignored)
+├── .env                            ← secrets (gitignored)
 ├── .env.example
 ├── .gitignore
-├── pipeline.js                ← main orchestrator (10 stages)
-├── setup-youtube.js           ← one-time OAuth helper
-├── topics-queue.json          ← 213 pre-loaded topics
-├── published.json             ← auto-managed dedup log (gitignored)
+├── pipeline.js                     ← main orchestrator (10 stages)
+├── topics-queue.json               ← seed topics (auto-refilled by Ollama)
+├── published.json                  ← auto-managed dedup log
 ├── prompts/
-│   ├── script-engine.md       ← 3-act dramatic documentary script generator
-│   ├── visual-architect.md    ← beat-by-beat storyboard + thumbnail planner
-│   └── metadata-engine.md     ← title + description + tags + chapters
+│   ├── script-engine.md            ← diagnostic-cinematic 5-act script generator
+│   ├── visual-architect.md         ← beat-by-beat storyboard + thumbnail
+│   ├── metadata-engine.md          ← title + description + tags + chapters
+│   └── topic-generator.md          ← auto-refill topic queue
 ├── modules/
-│   ├── source-retriever.js    ← reads local Quran txt + hadith JSON
-│   ├── modern-context.js      ← Gemini grounded search for 2023+ events
-│   ├── gemini.js              ← Gemini wrapper for script/visual/metadata
-│   ├── voiceover.js           ← Edge TTS + word timings
-│   ├── images.js              ← Pollinations + Gemini fallback
-│   ├── captions.js            ← SRT + ASS builders from word timings
-│   ├── assembler.js           ← FFmpeg video + thumbnail assembly
-│   ├── youtube.js             ← upload + thumbnail + captions + pinned comment
-│   ├── queue.js               ← topic picker + dedup via published.json
-│   └── notify.js              ← Telegram alerts for review mode
+│   ├── source-retriever.js         ← reads local Quran txt + hadith JSON
+│   ├── modern-context.js           ← Ollama call for 2023+ event grounding
+│   ├── llm.js                      ← Ollama wrapper (script/visual/metadata/topics)
+│   ├── ollama.js                   ← Ollama HTTP client + JSON-mode helper
+│   ├── voiceover.js                ← TTS provider chain orchestrator
+│   ├── kokoro-tts.js               ← Kokoro-82M (Python worker bridge)
+│   ├── kokoro_worker.py            ← long-lived Python TTS worker
+│   ├── edge-tts.js                 ← Microsoft Edge TTS (WebSocket)
+│   ├── streamelements-tts.js       ← StreamElements TTS fallback
+│   ├── google-translate-tts.js     ← unused in default chain (female voice only)
+│   ├── recitation.js               ← Arabic Quran audio from EveryAyah
+│   ├── images.js                   ← Pollinations image generation
+│   ├── captions.js                 ← SRT + ASS builders from word timings
+│   ├── assembler.js                ← FFmpeg video + thumbnail assembly
+│   ├── queue.js                    ← topic picker + dedup via published.json
+│   ├── topic-generator.js          ← auto-refill when queue is low
+│   └── notify.js                   ← Telegram error notifications
+├── scripts/
+│   ├── bootstrap-data.js           ← downloads Quran + hadith
+│   ├── resume-pipeline.js          ← re-assemble from existing artifacts
+│   ├── regen-images.js             ← re-render specific beat images
+│   ├── regen-voice.js              ← re-render the voiceover
+│   └── test-kokoro.js              ← Kokoro smoke test
 ├── assets/
-│   ├── music/                 ← 5–10 ambient .mp3 tracks (user adds manually)
-│   └── fonts/                 ← optional custom fonts
-├── data/                      ← gitignored, downloaded once
-│   ├── README.md              ← download instructions
-│   ├── quran-en-sahih.txt     ← from tanzil.net
-│   └── hadith/editions/       ← from fawazahmed0/hadith-api
-│       ├── eng-bukhari/
-│       ├── eng-muslim/
-│       ├── eng-tirmidhi/
-│       ├── eng-abudawud/
-│       ├── eng-nasai/
-│       └── eng-ibnmajah/
-├── output/                    ← generated videos (gitignored)
+│   ├── kokoro/                     ← kokoro-v1.0.onnx + voices-v1.0.bin
+│   ├── music/                      ← halal ambient .mp3 tracks (operator adds)
+│   └── fonts/                      ← optional custom fonts
+├── data/                           ← gitignored, downloaded once
+│   ├── README.md                   ← download instructions
+│   ├── quran-en-sahih.txt
+│   └── hadith/editions/eng-*/      ← bukhari, muslim, tirmidhi, abudawud, nasai, ibnmajah, ahmad
+├── output/                         ← generated videos (gitignored)
 └── .github/workflows/
-    └── daily.yml              ← cron at 06:00 UTC
+    └── daily.yml                   ← cron at 06:00 UTC + bashupload + Telegram delivery
 ```
 
 ## DEPENDENCIES (package.json)
@@ -76,37 +87,48 @@ akhir-zamaan/
 {
   "name": "akhir-zamaan",
   "version": "1.0.0",
-  "description": "Fully autonomous Islamic end-times YouTube channel pipeline",
   "main": "pipeline.js",
   "type": "commonjs",
   "scripts": {
     "start": "node pipeline.js",
     "test-script": "node pipeline.js --dry-run",
-    "upload-only": "node modules/youtube.js"
+    "bootstrap-data": "node scripts/bootstrap-data.js"
   },
   "dependencies": {
-    "@google/generative-ai": "^0.21.0",
     "axios": "^1.7.9",
     "dotenv": "^16.4.5",
-    "googleapis": "^144.0.0",
-    "msedge-tts": "^1.3.4"
+    "ws": "^8.20.0"
   }
 }
 ```
 
+External binaries: `ffmpeg`, `ffprobe`, `python3` (for Kokoro worker, plus `kokoro-onnx` package).
+
 ## ENV VARS (.env.example)
 
 ```
-GOOGLE_AI_API_KEY=your_gemini_key_here
-YOUTUBE_CLIENT_ID=
-YOUTUBE_CLIENT_SECRET=
-YOUTUBE_REFRESH_TOKEN=
+# Ollama (script/visual/metadata/topic generation)
+OLLAMA_HOST=https://your-tunnel.example.com
+OLLAMA_MODEL=gpt-oss:120b-cloud
+
+# Telegram (errors + daily delivery link from GitHub Actions)
 TELEGRAM_BOT_TOKEN=
 TELEGRAM_CHAT_ID=
+
+# Channel
 CHANNEL_NAME=Akhir Zamaan
 CHANNEL_HANDLE=@akhirzamaan
-REVIEW_THRESHOLD=10
+
+# Pipeline behavior
+VOICE_NAME=en-GB-RyanNeural
+RECITER_ID=Alafasy_128kbps
+VIDEO_DURATION_MIN=15
+VIDEO_DURATION_MAX=20
+AUTO_TOPIC_REFILL=true
+TOPIC_REFILL_THRESHOLD=20
 ```
+
+Optional overrides used inside the code: `KOKORO_VOICE`, `KOKORO_SPEED`, `KOKORO_LANG`, `KOKORO_PYTHON`, `EDGE_VOICE`, `SE_VOICE`, `TTS_PROVIDER`, `FONT_PATH`, `OLLAMA_MODEL_FALLBACK`.
 
 ## .gitignore
 
@@ -115,7 +137,6 @@ node_modules/
 .env
 output/
 published.json
-token.json
 *.log
 .DS_Store
 data/*
@@ -128,24 +149,27 @@ data/*
 
 The main orchestrator runs 10 stages sequentially:
 
-1. **Topic Picker** — reads `topics-queue.json`, skips anything in `published.json`, picks next. Also grabs the FOLLOWING topic for cliffhanger tease.
-2. **Source Retriever** — reads local Quran + hadith files for the topic's referenced chapters/books.
-3. **Modern Context Injector** — Gemini Flash with Google Search grounding finds 4–6 real events from 2023–2026 that mirror the topic theme.
-4. **Script Engine** — Gemini 2.5 Pro generates a 1,800-word 3-act script (Hook → Revelation → Mirror). Returns JSON with title_options, mood, hook, body, cliffhanger, pinned_comment_question.
-5. **Visual Architect** — Gemini Flash splits the script into 40–60 visual beats + picks mood aesthetic + generates thumbnail spec. Returns JSON.
-6. **Parallel generation** — Voice (Edge TTS), images (Pollinations), thumbnail run in parallel via Promise.all.
-7. **Captions** — Word timings from Edge TTS → .srt (YouTube upload) + .ass (burned into video).
-8. **FFmpeg Assembly** — Ken Burns zoom on images + voiceover + ambient music at -22dB + burned captions → final.mp4.
-9. **Decision gate** — Videos 1–10 go to /review folder + Telegram notify. Videos 11+ auto-upload.
-10. **Upload + publish** — YouTube Data API uploads video + thumbnail + .srt captions + posts pinned comment. Marks topic in published.json.
+1. **Topic Picker** — `topic-generator.refillIfLow()` tops up the queue if remaining < `TOPIC_REFILL_THRESHOLD`. `queue.getNextTopic()` reads `topics-queue.json`, skips anything in `published.json`, picks next, and also returns the next-next topic for cliffhanger tease.
+2. **Source Retriever** — reads local Quran + hadith for the topic's referenced chapters/books.
+3. **Modern Context Injector** — Ollama call returns 4–6 specific real-world events (2023–2026) tied to the theme.
+4. **Script Engine** — Ollama generates a long-form 5-section script (`cold_open`, `naming`, `excavation`, `mirror`, `haunting`).
+5. **Visual Architect** — Ollama splits the script into ~60 visual beats + picks mood aesthetic + thumbnail spec.
+6. **Parallel generation** — `Promise.all([voiceover, beat images, recitations])`.
+6b. **Thumbnail bg** — runs after beats so it can fall back to a beat image if Pollinations fails.
+7. **Captions** — estimated word timings → `.srt` + `.ass`.
+8. **FFmpeg Assembly** — Ken Burns zoom on images + voiceover + ambient music at -22dB + burned captions + recitation overlays → `final.mp4`.
+9. **Thumbnail** — burn title text over background → `thumbnail.jpg`.
+10. **Metadata + mark generated** — Ollama generates title/description/tags/chapters → `metadata.json`. `queue.markPublished(topic, null, relPath)` so the queue advances. Writes `delivery.json` with paths + duration + title.
+
+**Delivery is OUT OF BAND.** It happens in the GitHub Actions workflow (`bashupload.com` upload + Telegram message), not in `pipeline.js`. Local runs just leave the video in `output/<timestamp>_<slug>/final.mp4` for the operator to grab.
 
 ### Key pipeline.js logic:
 
 - `slugify(title)` creates folder-safe names
 - `--dry-run` flag stops after script generation (no images/voice/video)
 - Creates output dir per video: `output/<timestamp>_<slug>/`
-- Saves all intermediate artifacts (sources.json, script.json, visual-plan.json, metadata.json) for debugging
-- Failed runs do NOT mark topic as published — next run retries same topic automatically
+- Saves all intermediate artifacts (`topic.json`, `sources.json`, `modern-context.json`, `script.json`, `visual-plan.json`, `recitations.json`, `voice-metadata.json`, `metadata.json`, `delivery.json`)
+- Failed runs do NOT mark topic as published — next run retries the same topic automatically. Topic IS marked once the `final.mp4` is on disk; manual YouTube upload can fail without resetting the queue.
 
 ---
 
@@ -153,262 +177,138 @@ The main orchestrator runs 10 stages sequentially:
 
 ### prompts/script-engine.md
 
-Role: Head writer of "Akhir Zamaan" — faceless YouTube documentary channel.
+Diagnostic-cinematic voice. 5 sections returned as JSON:
 
-Audience: English-speaking Muslims aged 18–45, mobile viewers, watching at night.
-
-ABSOLUTE RULES:
-1. NEVER invent a verse, hadith, or scholarly quote. Only use provided `<sources>`.
-2. NEVER name a specific scholar unless in source material.
-3. NEVER make sectarian claims (Sunni vs Shia, madhab disputes).
-4. NEVER depict physical appearance of prophets.
-5. ALWAYS write ﷺ after Prophet/Muhammad, (AS) after other prophets.
-6. NEVER predict WHEN the Hour comes. Frame as "signs" not "timing."
-7. Use plain English. No Arabic without immediate English translation.
-
-STRUCTURE — 3 acts:
-
-**ACT 1 — THE HOOK (0–60s, ~150 words):** Open with a MODERN observation. Build curiosity gap. Don't name the source yet. End with tension hook.
-
-**ACT 2 — THE REVELATION (60s – 60%, ~900 words):** Reveal the verse/hadith (quoted exactly from sources). Historical context. Classical understanding. Cinematic narration. Pattern interrupts every 45 seconds (rhetorical question, statistic, scene shift).
-
-**ACT 3 — THE MIRROR (60% – 95%, ~600 words):** Pivot to 2026. Specific modern parallels (real events, real tech, real geopolitics from last 5 years). 2–3 ACTIONABLE shifts the viewer can make THIS WEEK (concrete, not vague). Personal challenge.
-
-**CLIFFHANGER (final 5%, ~80 words):** Haunting reflection question. Tease next video by name. Subscribe CTA woven naturally.
-
-TONE: British documentary narrator. Slow, deliberate, weighty. Short sentences for impact. `[PAUSE]` markers for breathing.
-
-OUTPUT FORMAT — strict JSON:
 ```json
 {
-  "title_options": ["5 titles, <60 chars, curiosity-gap"],
+  "title_options": ["..."],
   "mood": "cinematic_realism | painterly_islamic | dark_cinematic",
-  "mood_reason": "one sentence why",
-  "hook": "Act 1 text, ~150 words",
-  "body": "Act 2 + Act 3 combined, ~1500 words, with [PAUSE] markers",
-  "cliffhanger": "final ~80 words",
-  "next_video_tease": "topic name from queue",
-  "pinned_comment_question": "provocative question for comments",
-  "modern_parallels_used": ["list of events referenced"]
+  "mood_reason": "...",
+  "cold_open": "...",
+  "naming": "...",
+  "excavation": "...",
+  "mirror": "...",
+  "haunting": "...",
+  "next_video_tease": "...",
+  "pinned_comment_question": "...",
+  "modern_parallels_used": ["..."],
+  "verses_for_recitation": [{ "chapter": 18, "verse": 95, "where": "after the line ..." }]
 }
 ```
 
-INPUT at runtime: `<topic>`, `<sources>`, `<modern_context>`, `<next_topic>`.
+Absolute rules: never invent verses/hadith, never name scholars not in source, no sectarianism, no depiction of prophets, ﷺ after Prophet Muhammad, (AS) after other prophets, no predictions of WHEN the Hour comes.
 
 ### prompts/visual-architect.md
 
-Takes finalized script → splits into 40–60 visual beats (one image per 8–15 seconds).
+Splits script into ~60 beats (one image every 8–15s).
 
-ABSOLUTE RULES:
-1. NEVER depict Prophet Muhammad ﷺ, any prophet, or sahaba.
-2. NEVER depict Allah, angels with faces.
-3. Faces are rare — use silhouettes, hands, eyes only, back-of-head.
-
-MOOD → AESTHETIC:
-- **cinematic_realism** → photorealistic, IMAX landscapes, golden/blue hour
-- **painterly_islamic** → geometric patterns, calligraphy, jewel tones, stained glass
-- **dark_cinematic** → high contrast, eclipses, ruins, smoke, blood-moon palette
-
-Beat timing: ~150 words/min → each beat ≈ 25–35 words of script.
-
-OUTPUT — strict JSON:
 ```json
 {
-  "aesthetic_style_string": "5–10 word suffix for all prompts",
+  "aesthetic_style_string": "...",
   "beats": [
-    {
-      "beat_number": 1,
-      "script_segment": "exact words covered",
-      "duration_estimate_seconds": 12,
-      "image_prompt": "15–35 words, Pollinations-friendly",
-      "caption_emphasis": "1–4 words to emphasize"
-    }
+    { "beat_number": 1, "script_segment": "...", "duration_estimate_seconds": 12, "image_prompt": "...", "caption_emphasis": "..." }
   ],
-  "thumbnail": {
-    "background_prompt": "dramatic image prompt",
-    "title_overlay": "3–6 words, ALL CAPS, most clickable phrase",
-    "accent_color": "#hex"
-  }
+  "thumbnail": { "background_prompt": "...", "title_overlay": "ALL CAPS", "accent_color": "#hex" }
 }
 ```
 
 ### prompts/metadata-engine.md
 
-Takes script + visual plan + sources → generates YouTube metadata.
-
-OUTPUT — strict JSON:
 ```json
 {
-  "title": "final title, <70 chars, curiosity gap",
-  "description": "full description with hook, sources, chapters, hashtags, disclaimer",
-  "tags": ["25 tags max, 500 chars total"],
+  "title": "<70 chars curiosity gap",
+  "description": "hook + sources + chapters + hashtags + disclaimer",
+  "tags": ["~25 tags, 500 chars total"],
   "chapters": [{ "time": "0:00", "label": "..." }]
 }
 ```
 
-Description template includes:
-- 2-line hook
-- "🕌 SOURCES REFERENCED:" with verse/hadith refs
-- "⏱ CHAPTERS:" auto-filled
-- Share CTA + subscribe CTA + 15 hashtags
-- DISCLAIMER: "This channel presents authenticated verses and hadith from primary sources. All interpretations are general reflections, not formal fatwa."
+### prompts/topic-generator.md
 
-Tag mix: topic-specific (5–8) + niche (8–10: islam, end times, qiyamah, etc.) + broad (5–7).
+Run by `modules/topic-generator.js` when the unpublished queue drops below `TOPIC_REFILL_THRESHOLD`. Generates 30 new topic objects matching the existing schema, avoiding recent topic IDs/titles.
 
 ---
 
 ## MODULE SPECS
 
 ### modules/source-retriever.js
-
-Reads local files. No network. No API keys.
-
-**Quran loader:**
-- Reads `data/quran-en-sahih.txt` (format: `chapter|verse|text` per line)
-- Optionally reads `data/quran-uthmani.txt` for Arabic
-- Caches in memory after first load
-- `getVersesByChapter(chapterNumber, verseNumbers?)` → array of `{ reference, arabic, translation }`
-- `getChapterInfo(chapterNumber)` → `{ num, name, english, verses, place }`
-- Full SURAH_INFO array with all 114 surahs baked in (name, english name, verse count, Meccan/Medinan)
-
-**Hadith loader:**
-- Reads from `data/hadith/editions/eng-{collection}/` (fawazahmed0/hadith-api format)
-- Collection map: bukhari, muslim, tirmidhi, abudawud, nasai, ibnmajah, ahmad
-- Tries multiple file paths (sections/{book}.json, {collection}.json, index.json)
-- Caches full collection in memory after first load
-- `getHadith(collection, bookNumber, hadithNumber)` → single hadith
-- `getHadithBook(collection, bookNumber, limit)` → array of hadith
-- `normalizeHadith()` strips HTML tags, extracts reference string
-
-**Topic dispatcher:**
-- `retrieveForTopic(topic)` → `{ verses: [], hadith: [], context: '' }`
-- If topic has `quran_chapters` → loads those chapters (specific_verses if provided, else first 15)
-- If topic has `hadith_refs` → loads individual hadith
-- If topic has `hadith_book` → loads a book section with limit
-- Graceful error handling — warns on missing hadith but continues
+Reads local files. No network. No keys.
+- Quran loader: caches `data/quran-en-sahih.txt`. `getVersesByChapter(n, [verseNums?])`. Full SURAH_INFO baked in.
+- Hadith loader: reads `data/hadith/editions/eng-{collection}/`. Tries multiple layouts. `getHadith(coll, book, num)`, `getHadithBook(coll, book, limit)`.
+- `retrieveForTopic(topic)` → `{ verses, hadith, context }`.
 
 ### modules/modern-context.js
+Single Ollama call asking for 4–6 verifiable 2023–2026 events tied to the topic theme. Returns `{ events: [], patterns: [] }`. Falls back to empty arrays on failure.
 
-Uses Gemini 2.5 Flash with `google_search` tool for grounded results.
-
-Prompt: "Find 4-6 specific, verifiable real-world events from 2023-2026 that connect to: [topic theme]"
-
-Returns array of `{ year, event, thematic_link }`.
-
-Falls back gracefully (returns empty array if fails).
-
-### modules/gemini.js
-
-Thin wrapper. Three functions:
-
-- `generateScript({ topic, sources, modernContext, nextTopic })` — uses Gemini 2.5 Pro, temp 0.85
-- `generateVisualPlan({ script })` — uses Gemini 2.5 Flash, temp 0.7
-- `generateMetadata({ script, visualPlan, sources, topic })` — uses Gemini 2.5 Flash, temp 0.7
-
-All use `responseMimeType: 'application/json'`. All load prompts from `prompts/*.md` via `loadPrompt()`.
-
-`extractJSON()` helper strips markdown fences, finds first `{` to last `}`, parses.
+### modules/llm.js + modules/ollama.js
+Thin wrappers over the Ollama HTTP API.
+- `llm.generateScript({ topic, sources, modernContext, nextTopic })`
+- `llm.generateVisualPlan({ script })`
+- `llm.generateMetadata({ script, visualPlan, sources, topic })`
+- `llm.generateTopics({ ... })` (used by topic-generator)
+- `ollama.js` exports a JSON-mode helper plus model fallback (`OLLAMA_MODEL_FALLBACK`).
 
 ### modules/voiceover.js
+- Provider chain: `kokoro → streamelements → edge`. Override the whole chain with `TTS_PROVIDER`.
+- Pre-processing: expands Islamic honorifics (ﷺ → "sallallahu alayhi wa sallam", `(AS)` → "alayhis salaam", etc.) and strips smart quotes / non-ASCII so the phonemizer doesn't crash.
+- Estimates word timings from the rendered audio's ffprobe duration (msedge-tts hard-disables word boundaries; Kokoro doesn't expose them either). Times are distributed by character length.
+- Outputs `voiceover.mp3` + `voice-metadata.json`.
 
-Uses `msedge-tts` npm package. Voice: `en-GB-RyanNeural`.
+### modules/kokoro-tts.js (+ kokoro_worker.py)
+Spawns a long-lived Python worker that loads the Kokoro-82M ONNX model once and accepts repeated synthesize requests over stdin. Default voice `bm_george`, speed 0.95, lang `en-gb`. Model files live in `assets/kokoro/`. `KOKORO_PYTHON` env var pins the Python interpreter.
 
-`generateVoiceover(script, outputDir)`:
-- Combines hook + body + cliffhanger
-- Replaces `[PAUSE]` with `<break time="700ms"/>`
-- Outputs `voiceover.mp3` + `voice-metadata.json` (word timings)
-- Word timings: `{ text, offset_ms, duration_ms }` per word
+### modules/edge-tts.js
+Custom WebSocket client to Microsoft Edge TTS (no API key required). Direct `ws` usage because `msedge-tts` npm leaks file handles and forbids word boundaries.
+
+### modules/streamelements-tts.js
+HTTP GET to StreamElements TTS endpoint. Voice `Brian` by default.
+
+### modules/recitation.js
+Downloads Mishary Al-Afasy verse audio from EveryAyah CDN for any `verses_for_recitation` the script asked for. Returns `[{ chapter, verse, where, audioPath }]`.
 
 ### modules/images.js
-
-**Pollinations primary:**
+Pollinations URL builder:
 ```
-https://image.pollinations.ai/prompt/{encoded_prompt}?width=1920&height=1080&model=flux&nologo=true&seed={seed}&enhance=true
+https://image.pollinations.ai/prompt/{encoded}?width=1920&height=1080&model=flux&nologo=true&seed={seed}&enhance=true
 ```
-60s timeout, arraybuffer response.
-
-**Gemini Flash Image fallback** if Pollinations fails.
-
-**Third fallback**: retry Pollinations with seed+1000.
-
-`generateAllBeats(visualPlan, outputDir)`:
-- Creates `images/` subfolder
-- Loops all beats, appends `aesthetic_style_string` to each prompt
-- Saves as `beat_001.jpg`, `beat_002.jpg`, etc.
-- If a beat fails, copies previous successful image (video never breaks)
-
-`generateThumbnail(visualPlan, outputDir)`:
-- Generates one dramatic background image
-- Returns `{ bgPath, overlayText, accentColor }`
+60s timeout. On failure, retries once with `seed + 1000`. If still failing, copies the previous successful beat's image so the video never breaks. `generateAllBeats()` writes `images/beat_NNN.jpg`. `generateThumbnail()` writes `thumbnail_bg.jpg`.
 
 ### modules/captions.js
-
-Builds from Edge TTS word timings (no Whisper needed).
-
-`chunkWords(wordTimings, wordsPerChunk)` — groups into 3-4 word chunks for mobile-friendly captions.
-
-`buildSRT(wordTimings)` — 6 words per chunk, standard SRT format for YouTube upload.
-
-`buildASS(wordTimings)` — 4 words per chunk, upper-cased, bottom-third placement, Arial Black 68pt, white with black outline, for FFmpeg burn-in.
-
-`writeCaptions(wordTimings, outputDir)` → `{ srtPath, assPath }`.
+Built from estimated word timings.
+- `buildSRT(wordTimings)` — 6 words per chunk, standard SRT for delivery alongside the video.
+- `buildASS(wordTimings)` — 4 words per chunk, upper-cased, bottom-third placement, Arial Black 68pt, white with black outline, for FFmpeg burn-in.
+- `writeCaptions(wordTimings, outputDir)` → `{ srtPath, assPath }`.
 
 ### modules/assembler.js
-
-Pure FFmpeg. Two functions:
-
-`assembleVideo({ beats, audioPath, captionsAss, outputDir })`:
-1. Gets audio duration via ffprobe
-2. Calculates per-beat duration (total / beat count)
-3. Writes FFmpeg concat list
-4. Pass 1: images → base video with Ken Burns zoom (`zoompan=z='min(zoom+0.0008,1.15)'`)
-5. Pass 2: mix voiceover + random ambient track from `assets/music/` (music at volume 0.12 = ~-22dB)
-6. Pass 3: combine base video + mixed audio + burn .ass captions → `final.mp4`
-7. Settings: libx264, CRF 22, AAC 192k, 1920x1080, 30fps
-
-`assembleThumbnail(thumbnailData, outputDir)`:
-- Takes Pollinations background
-- Burns dark overlay (black@0.45) for legibility
-- Burns bold white text (110pt, with accent-colored border)
-- Outputs `thumbnail.jpg` at 1280x720
-
-`pickRandomMusic()` — picks random .mp3 from `assets/music/`.
-
-### modules/youtube.js
-
-`uploadVideo({ videoPath, thumbnailPath, srtPath, metadata })`:
-1. OAuth2 with refresh token
-2. Insert video (category 27 = Education, public, not made for kids)
-3. Set custom thumbnail
-4. Upload .srt as English caption track
-
-`postPinnedComment(videoId, commentText)` — posts the script's `pinned_comment_question` as a top-level comment.
-
-`getAuthClient()` — creates OAuth2 client from env vars.
+Pure FFmpeg.
+- `assembleVideo({ beats, audioPath, captionsAss, recitations, outputDir })`
+  1. ffprobe audio duration
+  2. Per-beat duration = total / beat count
+  3. Pass 1: images → base video with Ken Burns (`zoompan=z='min(zoom+0.0008,1.15)'`)
+  4. Pass 2: mix voiceover + ducked ambient music (volume 0.12 ≈ -22dB) + recitation overlays at the timestamps the script flagged
+  5. Pass 3: combine + burn `.ass` captions → `final.mp4`
+  6. Settings: libx264, CRF 22, AAC 192k, 1920x1080, 30fps
+- `assembleThumbnail(thumbnailData, outputDir)` → 1280x720 `thumbnail.jpg` with bold white text + accent border on a darkened Pollinations background.
+- `pickRandomMusic()` — random `.mp3` from `assets/music/`.
+- `ffprobeDuration(path)` — exported for other modules.
 
 ### modules/queue.js
+- `getNextTopic()` → `{ topic, next, remaining }`
+- `markPublished(topic, videoIdOrNull, urlOrPath)` — appends to `published.json`. Topic is marked once the `.mp4` is generated; the YouTube upload happens manually afterwards and isn't tracked here.
+- `getRemainingCount()`, `getHighestIds()`, `appendTopics()` etc. for the topic generator.
 
-`getNextTopic()` — loads `topics-queue.json`, loads `published.json`, finds first topic whose `id` is NOT in published. Also returns the next-next topic for cliffhanger.
-
-`markPublished(topic, videoId, url)` — appends to `published.json` with timestamp.
-
-`getPublishedCount()` — returns length of published log.
-
-Topic only marked published AFTER successful YouTube upload. Failed runs auto-retry same topic next day.
+### modules/topic-generator.js
+- `refillIfLow()` — if remaining unpublished topics < `TOPIC_REFILL_THRESHOLD` AND `AUTO_TOPIC_REFILL=true`, calls `llm.generateTopics()` and appends new topics via `queue.appendTopics()`.
 
 ### modules/notify.js
-
-Telegram notifications. Silently no-ops if env vars missing.
-
-`notifyReview({ topic, videoPath, metadata })` — sends message when review-mode video is ready.
-`notifyPublished({ topic, url })` — sends message when auto-uploaded.
+- `notifyError({ stage, error, topic })` — sent on any pipeline failure.
+- `notifyPublished()` / `notifyReview()` — currently no-ops (errors-only mode). Daily delivery message comes from the GitHub Actions workflow itself, not from this module.
 
 ---
 
 ## TOPICS QUEUE FORMAT (topics-queue.json)
 
-213 topics pre-loaded. Each topic:
-
+Each topic:
 ```json
 {
   "id": "et_1",
@@ -425,83 +325,69 @@ Telegram notifications. Silently no-ops if env vars missing.
 All fields except `id` and `title` are optional. Use any combination.
 
 Topic categories:
-- `et_*` — End-times deep dives (25 topics): Dajjal, Mahdi, Yajuj/Majuj, signs of the Hour
-- `pr_*` — Prophet stories (27 topics): Adam through Muhammad ﷺ, multi-part where rich
-- `s_*` — Surah deep dives (114 topics): one per surah
-- `th_*` — Thematic (47 topics): Jannah, Jahannam, Riba, Jinn, Sahaba, 99 Names, practical Islam
+- `et_*` — End-times deep dives
+- `pr_*` — Prophet stories
+- `s_*` — Surah deep dives
+- `th_*` — Thematic (Jannah, Jahannam, Riba, Jinn, Sahaba, 99 Names, practical Islam)
 
-Valid hadith collections: bukhari, muslim, tirmidhi, abudawud, nasai, ibnmajah, ahmad.
+Valid hadith collections: `bukhari`, `muslim`, `tirmidhi`, `abudawud`, `nasai`, `ibnmajah`, `ahmad`.
 
 ---
 
 ## GITHUB ACTIONS WORKFLOW (.github/workflows/daily.yml)
 
-Cron: `0 6 * * *` (06:00 UTC = 10:00 AM Dubai)
-Also: manual trigger via workflow_dispatch.
+Cron: `0 6 * * *` (06:00 UTC = 10:00 AM Dubai). Manual trigger via `workflow_dispatch`.
 
 Steps:
 1. Checkout
 2. Setup Node 20
-3. Install FFmpeg + fonts-liberation
-4. npm install
-5. Bootstrap Quran + hadith data (auto-downloads if missing)
-6. Restore published.json from artifact
-7. Run pipeline with all secrets from GitHub Secrets
-8. Upload published.json as artifact
-9. Commit published.json back to repo
+3. Install FFmpeg + fonts-liberation + fonts-dejavu
+4. `npm install`
+5. `npm run bootstrap-data` (auto-downloads Quran + hadith if missing)
+6. `npm start` (runs the pipeline)
+7. **Locate generated video** — finds newest `output/*/final.mp4` and reads its title from `metadata.json`. Sets step outputs.
+8. **Upload final video to bashupload.com** — `curl -T <path> https://bashupload.com/`, parses the returned URL.
+9. **Notify Telegram with download link** — `curl POST` to the Bot API. Message: `🎬 Akhir Zamaan Video Ready. Download here: <URL>` plus title + size on follow-up lines. No-op (with a workflow warning) if `TELEGRAM_BOT_TOKEN` / `TELEGRAM_CHAT_ID` are unset.
+10. Commit `published.json` + `topics-queue.json` back to the repo.
+11. Upload `final.mp4` + `thumbnail.jpg` + `captions.srt` + json artifacts (14-day retention) as a fallback.
 
 Timeout: 90 minutes.
 
 Secrets needed:
-- GOOGLE_AI_API_KEY
-- YOUTUBE_CLIENT_ID
-- YOUTUBE_CLIENT_SECRET
-- YOUTUBE_REFRESH_TOKEN
-- TELEGRAM_BOT_TOKEN (optional)
-- TELEGRAM_CHAT_ID (optional)
+- `OLLAMA_HOST`
+- `TELEGRAM_BOT_TOKEN`
+- `TELEGRAM_CHAT_ID`
 
----
-
-## SETUP-YOUTUBE.JS
-
-One-time OAuth helper. Run locally:
-1. Creates OAuth2 client from env vars
-2. Opens browser to Google auth page (scopes: youtube.upload, youtube.force-ssl)
-3. Listens on localhost:8765 for callback
-4. Exchanges code for tokens
-5. Prints YOUTUBE_REFRESH_TOKEN to paste into .env + GitHub Secrets
+That's it. There are NO Google Cloud / YouTube / Gemini secrets — the pipeline doesn't touch any Google API.
 
 ---
 
 ## CONTENT PHILOSOPHY
 
-Every video = 3-act structure built for addiction:
+5-section diagnostic-cinematic structure:
 
-**ACT 1 — THE HOOK:** Cold open with modern parallel BEFORE naming the source. Curiosity gap.
+- **COLD OPEN:** Modern observation that names a behavior the viewer is doing right now. No source named yet.
+- **NAMING:** Reveal the verse / hadith (quoted exactly from `<sources>`).
+- **EXCAVATION:** Historical context, classical understanding, cinematic narration. Pattern interrupts every 45 seconds.
+- **MIRROR:** Pivot to 2026. Specific real events. 2–3 actionable shifts the viewer can make THIS WEEK (concrete, not vague).
+- **HAUNTING:** Final reflection question + cliffhanger tease for next video + subscribe CTA.
 
-**ACT 2 — THE REVELATION:** Verified verse/hadith, historical context, cinematic narration.
-
-**ACT 3 — THE MIRROR (this is the differentiator):** Pivot to 2026. Specific modern parallels. 2–3 actionable shifts the viewer can make THIS WEEK. Not vague ("be a better Muslim") — concrete ("delete one app that steals 2 hours of your day").
-
-**CLIFFHANGER:** Tease next video by name. Subscribe CTA woven naturally.
-
-Pattern interrupts every 45 seconds. Hook must reference something from last 5 years. Modern parallels must cite specific events/years. Action items doable in <7 days by a working person with a phone.
+Hook must reference something from the last 5 years. Modern parallels must cite specific events/years. Action items doable in <7 days by a working person with a phone.
 
 ---
 
 ## ETHICAL GUARDRAILS
 
 - Verses + hadith from verified local files, never AI-generated
-- Disclaimer in every description (not fatwa)
-- No depiction of prophets/sahaba in images
+- Disclaimer in every description (general reflection, not fatwa)
+- No depiction of prophets / sahaba in images
 - No sectarian framing
 - No predictions of WHEN the Hour comes — only signs
-- 10-video manual review before autonomous upload
-- Visual Architect enforces: no faces of religious figures, use symbols/environments/light/architecture/calligraphy instead
+- Visual Architect enforces: no faces of religious figures; use symbols / environments / light / architecture / calligraphy instead
 
 ---
 
-## DATA BOOTSTRAP (for local dev)
+## DATA BOOTSTRAP
 
 ```bash
 mkdir -p data
@@ -513,12 +399,17 @@ find hadith/editions -mindepth 1 -maxdepth 1 -type d ! -name 'eng-*' -exec rm -r
 cd ..
 ```
 
+`npm run bootstrap-data` automates this (used by the GitHub Actions workflow).
+
 ---
 
 ## COMMANDS
 
 - `npm install` — install deps
-- `npm start` — run full pipeline (one video)
+- `npm run bootstrap-data` — one-time, downloads Quran + hadith
 - `npm run test-script` — dry run (script only, no images/voice/video)
-- `node setup-youtube.js` — one-time YouTube OAuth
-- `PUBLISH_DIR="output/<folder>" npm run upload-only` — manually upload a review-mode video
+- `npm start` — run full pipeline (one video, written to `output/<timestamp>_<slug>/final.mp4`)
+- `node scripts/resume-pipeline.js output/<folder>` — re-assemble from existing artifacts after an ffmpeg failure
+- `node scripts/regen-images.js output/<folder> [beatNum...]` — re-render specific beat images
+- `node scripts/regen-voice.js output/<folder>` — re-render the voiceover
+- `node scripts/test-kokoro.js` — Kokoro smoke test

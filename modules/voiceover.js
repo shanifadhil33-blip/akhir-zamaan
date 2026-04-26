@@ -1,12 +1,79 @@
 // modules/voiceover.js
-// Edge TTS voiceover with word-level timings for caption sync.
+// Edge TTS voiceover. msedge-tts hard-disables word boundaries, so we estimate
+// per-word timings from the rendered audio duration via ffprobe, distributing
+// time by character length (longer words take longer to say).
 
 const fs = require('fs');
 const path = require('path');
-const { MsEdgeTTS, OUTPUT_FORMAT } = require('msedge-tts');
+const edgeTts = require('./edge-tts');
+const seTts = require('./streamelements-tts');
+const gtTts = require('./google-translate-tts');
+const kokoro = require('./kokoro-tts');
+const { ffprobeDuration } = require('./assembler');
+
+// Voice mapping per provider. Kokoro-82M (local, unlimited, no API) is the
+// primary — deep British male documentary voice. Every fallback MUST be male
+// (channel identity depends on it). google_translate is NOT in the chain
+// because it only exposes a female default-en voice.
+const VOICE_BY_PROVIDER = {
+  kokoro: process.env.KOKORO_VOICE || 'bm_george',
+  streamelements: process.env.SE_VOICE || 'Brian',                  // male
+  edge: process.env.EDGE_VOICE || 'en-GB-RyanNeural',               // male
+};
+
+const BREAK_MS = 700;
+const BREAK_TAG_RE = /<break\s+time="?\d+ms"?\s*\/>/gi;
+
+// Islamic honorifics: most TTS engines either skip these glyphs or mispronounce
+// the parenthetical short forms. Expand to romanized speech BEFORE TTS so the
+// reverence is actually heard in the audio. Order matters: longer matches first.
+const HONORIFIC_REPLACEMENTS = [
+  // Arabic-script honorific glyphs
+  [/\u0635\u0644\u0649\s?\u0627\u0644\u0644\u0647\s?\u0639\u0644\u064A\u0647\s?\u0648\u0633\u0644\u0645/g, ' sallallahu alayhi wa sallam '], // ﷺ literal expansion if pasted as text
+  [/\uFDFA/g, ' sallallahu alayhi wa sallam '], // ﷺ
+  [/\uFDFB/g, ' jalla jalaaluhu '],             // ﷻ
+  [/\uFDFD/g, ' bismillahir rahmanir raheem '], // ﷽
+  // English parenthetical short forms (all case-insensitive, with optional dots)
+  [/\(\s*(?:s\.?a\.?w\.?|saw|pbuh|p\.b\.u\.h\.?)\s*\)/gi, ' sallallahu alayhi wa sallam '],
+  [/\(\s*(?:a\.?s\.?|as)\s*\)/gi, ' alayhis salaam '],
+  [/\(\s*(?:r\.?a\.?|ra)\s*\)/gi, ' radiallahu anhu '],
+  [/\(\s*(?:swt|s\.w\.t\.?)\s*\)/gi, ' subhanahu wa ta\'ala '],
+];
+
+function expandHonorifics(text) {
+  let out = text;
+  for (const [re, replacement] of HONORIFIC_REPLACEMENTS) {
+    out = out.replace(re, replacement);
+  }
+  return out;
+}
+
+// Normalises characters that crash espeak-ng (Kokoro's phonemizer) or that
+// TTS engines read aloud as "unicode-hex" noise. Must run AFTER honorific
+// expansion but BEFORE the text is sent to TTS.
+function sanitizeForTTS(text) {
+  return text
+    // Smart quotes → plain ASCII
+    .replace(/[\u2018\u2019\u201A\u201B]/g, "'")
+    .replace(/[\u201C\u201D\u201E\u201F]/g, '"')
+    // Em/en dashes, hyphen variants, minus sign → plain hyphen
+    .replace(/[\u2010\u2011\u2012\u2013\u2014\u2015\u2212]/g, '-')
+    // Ellipsis → three dots
+    .replace(/\u2026/g, '...')
+    // Non-breaking spaces, narrow NBSP → plain space
+    .replace(/[\u00A0\u202F\u2009]/g, ' ')
+    // Zero-width joiners, non-joiners, BOM, directional marks
+    .replace(/[\u200B-\u200F\u202A-\u202E\u2060\uFEFF]/g, '')
+    // Soft hyphen
+    .replace(/\u00AD/g, '')
+    // Any remaining non-ASCII letter the LLM snuck in (Arabic, CJK, emoji)
+    // — strip so espeak never chokes. Kept digits and common punctuation.
+    .replace(/[^\x00-\x7F]/g, '')
+    .replace(/\s+/g, ' ')
+    .trim();
+}
 
 function combineScript(script) {
-  // Combine all five movements in order. Strip excessive whitespace, normalize line breaks.
   const parts = [
     script.cold_open,
     script.naming,
@@ -15,63 +82,128 @@ function combineScript(script) {
     script.haunting,
   ].filter(Boolean);
   let combined = parts.join('\n\n');
-  // Replace [PAUSE] markers with SSML breaks
+  combined = expandHonorifics(combined);
   combined = combined.replace(/\[PAUSE\]/gi, '<break time="700ms"/>');
-  // Light prosody only: no pitch/rate manipulation, just preserved pauses.
-  combined = combined.replace(/\s+/g, ' ').trim();
+  combined = sanitizeForTTS(combined);
   return combined;
 }
 
-function buildSSML({ voice, text }) {
-  const safe = text.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
-    // restore the break tags we just escaped
-    .replace(/&lt;break time=&quot;700ms&quot;\/&gt;/g, '<break time="700ms"/>')
-    .replace(/&lt;break time="700ms"\/&gt;/g, '<break time="700ms"/>');
-  return `<speak version="1.0" xml:lang="en-US"><voice name="${voice}">${safe}</voice></speak>`;
+function estimateWordTimings(text, audioDurationSec) {
+  // Split text into tokens: words AND <break/> placeholders, preserving order.
+  const tokens = [];
+  let i = 0;
+  const s = text;
+  const breakRe = /<break\s+time="?\d+ms"?\s*\/>/i;
+  while (i < s.length) {
+    const rest = s.slice(i);
+    const bm = rest.match(breakRe);
+    if (bm && bm.index !== undefined) {
+      // Add word tokens before the break
+      const before = rest.slice(0, bm.index);
+      for (const w of before.split(/\s+/).filter(Boolean)) tokens.push({ kind: 'word', text: w });
+      tokens.push({ kind: 'break' });
+      i += bm.index + bm[0].length;
+    } else {
+      for (const w of rest.split(/\s+/).filter(Boolean)) tokens.push({ kind: 'word', text: w });
+      break;
+    }
+  }
+
+  const breakCount = tokens.filter((t) => t.kind === 'break').length;
+  const words = tokens.filter((t) => t.kind === 'word');
+  if (!words.length) return [];
+
+  const breakTimeSec = breakCount * (BREAK_MS / 1000);
+  const speakingSec = Math.max(0.001, audioDurationSec - breakTimeSec);
+  const totalChars = words.reduce((sum, w) => sum + Math.max(1, w.text.length), 0);
+  const msPerChar = (speakingSec * 1000) / totalChars;
+
+  const timings = [];
+  let cursorMs = 0;
+  for (const tok of tokens) {
+    if (tok.kind === 'break') {
+      cursorMs += BREAK_MS;
+      continue;
+    }
+    const chars = Math.max(1, tok.text.length);
+    const durMs = Math.max(60, Math.round(chars * msPerChar));
+    timings.push({ text: tok.text, offset_ms: cursorMs, duration_ms: durMs });
+    cursorMs += durMs;
+  }
+  return timings;
+}
+
+async function tryProvider(provider, text, outFile) {
+  const voice = VOICE_BY_PROVIDER[provider];
+  if (provider === 'kokoro') {
+    await kokoro.synthesize({ voice, text, outputFile: outFile });
+  } else if (provider === 'streamelements') {
+    await seTts.synthesize({ voice, text, outputFile: outFile });
+  } else if (provider === 'edge') {
+    await edgeTts.synthesize({ voice, text, outputFile: outFile });
+  } else {
+    throw new Error(`Unknown TTS provider: ${provider}`);
+  }
+  if (!fs.existsSync(outFile) || fs.statSync(outFile).size < 1000) {
+    throw new Error(`TTS produced empty/tiny file (${fs.existsSync(outFile) ? fs.statSync(outFile).size : 0} bytes)`);
+  }
+  return voice;
 }
 
 async function generateVoiceover(script, outputDir) {
-  const voice = process.env.VOICE_NAME || 'en-GB-RyanNeural';
   const outFile = path.join(outputDir, 'voiceover.mp3');
   const metaFile = path.join(outputDir, 'voice-metadata.json');
 
   const text = combineScript(script);
 
-  const tts = new MsEdgeTTS();
-  await tts.setMetadata(voice, OUTPUT_FORMAT.AUDIO_24KHZ_96KBITRATE_MONO_MP3);
+  // Provider order: TTS_PROVIDER env wins, otherwise kokoro -> streamelements -> edge.
+  // Every provider in this chain MUST produce a male British/American documentary
+  // voice. google_translate was removed because its only voice is female default-en.
+  // google_cloud was removed when the project dropped all Google Cloud dependencies.
+  const requested = (process.env.TTS_PROVIDER || '').toLowerCase().trim();
+  const order = requested
+    ? [requested]
+    : ['kokoro', 'streamelements', 'edge'];
 
-  // Reset existing files
-  if (fs.existsSync(outFile)) fs.unlinkSync(outFile);
-
-  // toFile returns a promise that resolves with metadata including word boundaries
-  const result = await tts.toFile(outFile, text);
-
-  // Word boundaries: result.metadata is an array of WordBoundary events
-  // Each: { Type: 'WordBoundary', Data: { Offset, Duration, text: { Text, Length, BoundaryType } } }
-  const words = [];
-  if (Array.isArray(result.metadata)) {
-    for (const ev of result.metadata) {
-      if (!ev || !ev.Data) continue;
-      const offset = ev.Data.Offset; // in 100-nanosecond units (HNS)
-      const duration = ev.Data.Duration; // HNS
-      const wordText = ev.Data.text && ev.Data.text.Text;
-      if (typeof offset !== 'number' || typeof duration !== 'number' || !wordText) continue;
-      words.push({
-        text: wordText,
-        offset_ms: Math.round(offset / 10000),
-        duration_ms: Math.round(duration / 10000),
-      });
+  let usedProvider, usedVoice;
+  let lastErr;
+  for (const provider of order) {
+    try {
+      if (fs.existsSync(outFile)) fs.unlinkSync(outFile);
+      console.log(`[voiceover] trying provider: ${provider}`);
+      usedVoice = await tryProvider(provider, text, outFile);
+      usedProvider = provider;
+      break;
+    } catch (err) {
+      lastErr = err;
+      console.warn(`[voiceover] provider ${provider} failed: ${err.message}`);
     }
   }
+  if (!usedProvider) {
+    throw new Error(`All TTS providers failed. Last error: ${lastErr && lastErr.message}`);
+  }
+  console.log(`[voiceover] used ${usedProvider} (${usedVoice})`);
 
-  fs.writeFileSync(metaFile, JSON.stringify({ voice, word_count: words.length, words }, null, 2));
+  const durationSec = ffprobeDuration(outFile);
+  const wordTimings = estimateWordTimings(text, durationSec);
+
+  fs.writeFileSync(metaFile, JSON.stringify({
+    provider: usedProvider,
+    voice: usedVoice,
+    duration_sec: durationSec,
+    word_count: wordTimings.length,
+    estimated: true,
+    words: wordTimings,
+  }, null, 2));
 
   return {
     audioPath: outFile,
     metadataPath: metaFile,
-    wordTimings: words,
-    voice,
+    wordTimings,
+    voice: usedVoice,
+    provider: usedProvider,
+    durationSec,
   };
 }
 
-module.exports = { generateVoiceover, combineScript };
+module.exports = { generateVoiceover, combineScript, estimateWordTimings };

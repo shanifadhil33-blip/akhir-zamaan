@@ -7,3 +7,10 @@ token.json
 .DS_Store
 data/*
 !data/README.md
+
+# Claude Code local state (session files, settings, etc.)
+.claude/
+
+# Kokoro-82M ONNX model binaries (~338 MB) — too large for git.
+# Local runs use them; GitHub Actions falls back to streamelements → edge TTS.
+assets/kokoro/

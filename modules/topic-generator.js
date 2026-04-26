@@ -1,7 +1,7 @@
 // modules/topic-generator.js
 // Auto-refills topics-queue.json when remaining < threshold.
 
-const { generateNewTopics } = require('./gemini');
+const { generateNewTopics } = require('./llm');
 const queue = require('./queue');
 
 async function refillIfLow() {
@@ -20,7 +20,7 @@ async function refillIfLow() {
 
   const result = await generateNewTopics({ existingCount, recentTopicsSample, highestIds });
   const newTopics = (result && Array.isArray(result.topics)) ? result.topics : [];
-  if (!newTopics.length) return { refilled: false, reason: 'Gemini returned no topics' };
+  if (!newTopics.length) return { refilled: false, reason: 'LLM returned no topics' };
 
   const added = queue.appendTopics(newTopics);
   console.log(`[topic-gen] added ${added} new topics (skipped ${newTopics.length - added} as duplicates)`);

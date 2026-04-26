@@ -1,8 +1,12 @@
-name: Daily Video Pipeline
+name: Akhir Zamaan Video Pipeline
 
 on:
   schedule:
-    - cron: '0 6 * * *'   # 06:00 UTC = 10:00 AM Dubai / 9:00 AM Jakarta
+    # Tuesday + Friday at 04:00 UTC = 8:00 AM Dubai
+    # Friday for Jumu'ah engagement; Tuesday for even mid-week spacing.
+    # The ~25-30 min run finishes by ~8:30 AM Dubai, leaving the morning to
+    # download the bashupload link and upload to YouTube manually.
+    - cron: '0 4 * * 2,5'
   workflow_dispatch:       # manual trigger
 
 permissions:
@@ -14,20 +18,16 @@ jobs:
     timeout-minutes: 90
 
     env:
-      GOOGLE_AI_API_KEY: ${{ secrets.GOOGLE_AI_API_KEY }}
-      YOUTUBE_CLIENT_ID: ${{ secrets.YOUTUBE_CLIENT_ID }}
-      YOUTUBE_CLIENT_SECRET: ${{ secrets.YOUTUBE_CLIENT_SECRET }}
-      YOUTUBE_REFRESH_TOKEN: ${{ secrets.YOUTUBE_REFRESH_TOKEN }}
+      OLLAMA_HOST: ${{ secrets.OLLAMA_HOST }}
+      OLLAMA_MODEL: ${{ vars.OLLAMA_MODEL || 'gpt-oss:120b-cloud' }}
       TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
       TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
       VOICE_NAME: ${{ vars.VOICE_NAME || 'en-GB-RyanNeural' }}
       RECITER_ID: ${{ vars.RECITER_ID || 'Alafasy_128kbps' }}
       VIDEO_DURATION_MIN: ${{ vars.VIDEO_DURATION_MIN || '15' }}
       VIDEO_DURATION_MAX: ${{ vars.VIDEO_DURATION_MAX || '20' }}
-      SHORTS_ENABLED: ${{ vars.SHORTS_ENABLED || 'true' }}
       AUTO_TOPIC_REFILL: ${{ vars.AUTO_TOPIC_REFILL || 'true' }}
       TOPIC_REFILL_THRESHOLD: ${{ vars.TOPIC_REFILL_THRESHOLD || '20' }}
-      GEMINI_AUTO_DEGRADE: ${{ vars.GEMINI_AUTO_DEGRADE || 'true' }}
       CHANNEL_NAME: Akhir Zamaan
       CHANNEL_HANDLE: '@akhirzamaan'
 
@@ -55,6 +55,72 @@ jobs:
       - name: Run pipeline
         run: npm start
 
+      - name: Locate generated video
+        id: locate
+        run: |
+          set -euo pipefail
+          LATEST_DIR=$(ls -dt output/*/ 2>/dev/null | head -1 || true)
+          if [ -z "${LATEST_DIR}" ]; then
+            echo "::error::No output directory found under output/"
+            exit 1
+          fi
+          VIDEO_PATH="${LATEST_DIR}final.mp4"
+          if [ ! -f "${VIDEO_PATH}" ]; then
+            echo "::error::final.mp4 not found at ${VIDEO_PATH}"
+            exit 1
+          fi
+          TITLE=""
+          if [ -f "${LATEST_DIR}metadata.json" ]; then
+            TITLE=$(node -e "try{const m=require('./${LATEST_DIR}metadata.json');process.stdout.write(m.title||'')}catch(e){}")
+          fi
+          SIZE_MB=$(du -m "${VIDEO_PATH}" | cut -f1)
+          echo "video_path=${VIDEO_PATH}" >> "$GITHUB_OUTPUT"
+          echo "output_dir=${LATEST_DIR}" >> "$GITHUB_OUTPUT"
+          echo "title=${TITLE}" >> "$GITHUB_OUTPUT"
+          echo "size_mb=${SIZE_MB}" >> "$GITHUB_OUTPUT"
+          echo "Located: ${VIDEO_PATH} (${SIZE_MB} MB) — ${TITLE}"
+
+      - name: Upload final video to bashupload.com
+        id: bashupload
+        run: |
+          set -euo pipefail
+          VIDEO_PATH="${{ steps.locate.outputs.video_path }}"
+          echo "Uploading ${VIDEO_PATH} to bashupload.com..."
+          # bashupload returns plain text including a 'wget https://bashupload.com/...' line
+          RESPONSE=$(curl -sS --max-time 1800 -T "${VIDEO_PATH}" https://bashupload.com/)
+          echo "--- bashupload response ---"
+          echo "${RESPONSE}"
+          echo "--- end response ---"
+          DOWNLOAD_URL=$(echo "${RESPONSE}" | grep -oE 'https://bashupload\.com/[^[:space:]]+' | head -1 || true)
+          if [ -z "${DOWNLOAD_URL}" ]; then
+            echo "::error::Failed to extract download URL from bashupload response"
+            exit 1
+          fi
+          echo "download_url=${DOWNLOAD_URL}" >> "$GITHUB_OUTPUT"
+          echo "Download URL: ${DOWNLOAD_URL}"
+
+      - name: Notify Telegram with download link
+        if: steps.bashupload.outputs.download_url != ''
+        env:
+          DOWNLOAD_URL: ${{ steps.bashupload.outputs.download_url }}
+          TITLE: ${{ steps.locate.outputs.title }}
+          SIZE_MB: ${{ steps.locate.outputs.size_mb }}
+        run: |
+          set -euo pipefail
+          if [ -z "${TELEGRAM_BOT_TOKEN:-}" ] || [ -z "${TELEGRAM_CHAT_ID:-}" ]; then
+            echo "::warning::TELEGRAM_BOT_TOKEN or TELEGRAM_CHAT_ID not set — skipping notification"
+            exit 0
+          fi
+          MSG="🎬 Akhir Zamaan Video Ready. Download here: ${DOWNLOAD_URL}"
+          if [ -n "${TITLE}" ]; then
+            MSG="${MSG}"$'\n\nTitle: '"${TITLE}"$'\nSize: '"${SIZE_MB}"' MB'
+          fi
+          curl -sS -X POST "https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage" \
+            --data-urlencode "chat_id=${TELEGRAM_CHAT_ID}" \
+            --data-urlencode "text=${MSG}" \
+            --data-urlencode "disable_web_page_preview=false" \
+            -o /dev/null -w "Telegram HTTP %{http_code}\n"
+
       - name: Commit published.json + topics-queue.json
         if: always()
         run: |
@@ -74,10 +140,12 @@ jobs:
         with:
           name: video-output-${{ github.run_id }}
           path: |
+            output/**/final.mp4
+            output/**/thumbnail.jpg
+            output/**/captions.srt
             output/**/script.json
             output/**/visual-plan.json
             output/**/metadata.json
-            output/**/upload.json
-            output/**/short-upload.json
+            output/**/delivery.json
           retention-days: 14
           if-no-files-found: ignore

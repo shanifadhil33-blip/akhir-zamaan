@@ -55,17 +55,28 @@ async function assembleVideo({ beats, audioPath, captionsAss, recitations = [], 
   if (!fs.existsSync(audioPath)) throw new Error(`Voice audio missing: ${audioPath}`);
 
   const totalAudioSec = ffprobeDuration(audioPath);
-  const perBeatSec = totalAudioSec / beats.length;
+  // Normalize each beat's duration so images exactly cover the audio length.
+  // If visual plan provides durations, scale them; otherwise equal split.
+  const rawDurations = beats.map((b) => {
+    const d = parseFloat(b.duration_estimate_seconds);
+    return Number.isFinite(d) && d > 0 ? d : 0;
+  });
+  const rawTotal = rawDurations.reduce((a, b) => a + b, 0);
+  const perBeatDurations = rawTotal > 0
+    ? rawDurations.map((d) => (d / rawTotal) * totalAudioSec)
+    : beats.map(() => totalAudioSec / beats.length);
+
+  // Compute start timestamp for each beat (for recitation overlay timing)
+  const beatStarts = [];
+  let acc = 0;
+  for (const d of perBeatDurations) { beatStarts.push(acc); acc += d; }
 
   // 1. Build concat list with each beat's image and computed duration
   const concatListPath = path.join(outputDir, 'concat.txt');
   const lines = [];
-  for (const beat of beats) {
-    const dur = beat.duration_estimate_seconds && beat.duration_estimate_seconds > 0
-      ? beat.duration_estimate_seconds
-      : perBeatSec;
-    lines.push(`file '${escapeFFConcatPath(beat.imagePath)}'`);
-    lines.push(`duration ${dur.toFixed(3)}`);
+  for (let i = 0; i < beats.length; i++) {
+    lines.push(`file '${escapeFFConcatPath(beats[i].imagePath)}'`);
+    lines.push(`duration ${perBeatDurations[i].toFixed(3)}`);
   }
   // FFmpeg concat needs the last file repeated without duration
   lines.push(`file '${escapeFFConcatPath(beats[beats.length - 1].imagePath)}'`);
@@ -90,26 +101,99 @@ async function assembleVideo({ beats, audioPath, captionsAss, recitations = [], 
     baseVideoPath,
   ]);
 
-  // Pass 2: build the full audio track = voiceover + ambient music ducked
+  // Pass 2: build the full audio track = voiceover + ambient music + recitation overlays
   const mixedAudioPath = path.join(outputDir, 'mixed_audio.mp3');
   const musicTrack = pickRandomMusic();
 
+  // Match recitations to verse_overlay beats (in order). Each recitation plays
+  // at its matched beat's start time, with the voice ducked during that window.
+  const overlayBeats = beats
+    .map((b, idx) => ({ b, idx }))
+    .filter(({ b }) => b.verse_overlay === true);
+  const recitationOverlays = [];
+  for (let i = 0; i < Math.min(overlayBeats.length, recitations.length); i++) {
+    const rec = recitations[i];
+    const { idx } = overlayBeats[i];
+    if (!rec || !rec.audioPath || !fs.existsSync(rec.audioPath)) continue;
+    const recDur = (() => { try { return ffprobeDuration(rec.audioPath); } catch (_) { return 0; } })();
+    if (recDur <= 0) continue;
+    recitationOverlays.push({
+      audioPath: rec.audioPath,
+      startSec: beatStarts[idx],
+      durationSec: recDur,
+    });
+  }
+
+  const inputs = ['-i', audioPath];
+  if (musicTrack) inputs.push('-stream_loop', '-1', '-i', musicTrack);
+  const musicInputIdx = musicTrack ? 1 : -1;
+  const recInputStart = musicTrack ? 2 : 1;
+  for (const ro of recitationOverlays) inputs.push('-i', ro.audioPath);
+
+  // Build filter chain.
+  // Audio strategy:
+  //   1. Voice (0:a): ducked at recitation windows so Arabic plays clearly.
+  //   2. Music: sidechain-compressed against the raw voice — auto-ducks when
+  //      voice is speaking, comes back up during pauses. Sits at ~-14dB base
+  //      and drops to ~-30dB under speech. Never competes with narration.
+  //   3. Recitations: delayed to land at their beat, mixed at near-full volume.
+  const filters = [];
+
   if (musicTrack) {
-    // Mix voice (full volume) + music (volume 0.12 ~ -22dB), looped to length
-    run('ffmpeg', [
-      '-y',
-      '-i', audioPath,
-      '-stream_loop', '-1', '-i', musicTrack,
-      '-filter_complex',
-      `[1:a]volume=0.12,aloop=loop=-1:size=2e9[bg];[0:a][bg]amix=inputs=2:duration=first:dropout_transition=0[aout]`,
-      '-map', '[aout]',
-      '-c:a', 'libmp3lame',
-      '-b:a', '192k',
-      mixedAudioPath,
-    ]);
+    // Split the voice input: one copy gets the rec-window envelope, one is the sidechain trigger.
+    filters.push(`[0:a]asplit=2[voice_a][voice_b]`);
+    if (recitationOverlays.length > 0) {
+      const enableExpr = recitationOverlays
+        .map((ro) => `between(t,${ro.startSec.toFixed(3)},${(ro.startSec + ro.durationSec).toFixed(3)})`)
+        .join('+');
+      filters.push(`[voice_a]volume=enable='${enableExpr}':volume=0.25[voice]`);
+    } else {
+      filters.push(`[voice_a]anull[voice]`);
+    }
+    // Music base at ~-14dB, looped forever
+    filters.push(`[${musicInputIdx}:a]volume=0.20,aloop=loop=-1:size=2e9[music_raw]`);
+    // Sidechain compress: trigger=voice_b, target=music. When voice is loud, music ducks hard.
+    filters.push(`[music_raw][voice_b]sidechaincompress=threshold=0.03:ratio=8:attack=15:release=800:makeup=1[music]`);
   } else {
-    console.warn('[assembler] no music track in assets/music/ — voiceover only');
-    fs.copyFileSync(audioPath, mixedAudioPath);
+    if (recitationOverlays.length > 0) {
+      const enableExpr = recitationOverlays
+        .map((ro) => `between(t,${ro.startSec.toFixed(3)},${(ro.startSec + ro.durationSec).toFixed(3)})`)
+        .join('+');
+      filters.push(`[0:a]volume=enable='${enableExpr}':volume=0.25[voice]`);
+    } else {
+      filters.push(`[0:a]anull[voice]`);
+    }
+  }
+
+  // Delayed recitations
+  const recLabels = [];
+  for (let i = 0; i < recitationOverlays.length; i++) {
+    const ro = recitationOverlays[i];
+    const inputIdx = recInputStart + i;
+    const delayMs = Math.round(ro.startSec * 1000);
+    filters.push(`[${inputIdx}:a]adelay=${delayMs}|${delayMs},volume=0.9[rec${i}]`);
+    recLabels.push(`[rec${i}]`);
+  }
+
+  // Final mix
+  const mixInputs = ['[voice]'];
+  if (musicTrack) mixInputs.push('[music]');
+  mixInputs.push(...recLabels);
+  filters.push(`${mixInputs.join('')}amix=inputs=${mixInputs.length}:duration=first:dropout_transition=0:normalize=0[aout]`);
+
+  run('ffmpeg', [
+    '-y',
+    ...inputs,
+    '-filter_complex', filters.join(';'),
+    '-map', '[aout]',
+    '-c:a', 'libmp3lame',
+    '-b:a', '192k',
+    mixedAudioPath,
+  ]);
+
+  if (!musicTrack) console.warn('[assembler] no music track in assets/music/ — voiceover only');
+  if (recitationOverlays.length > 0) {
+    console.log(`[assembler] mixed ${recitationOverlays.length} recitation overlay(s)`);
   }
 
   // Pass 3: combine base video + mixed audio + burned captions

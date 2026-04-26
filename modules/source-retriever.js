@@ -211,17 +211,25 @@ const _hadithCache = {};
 
 function loadHadithCollection(collection) {
   if (_hadithCache[collection]) return _hadithCache[collection];
-  // Try the consolidated index first
-  const idxPath = path.join(HADITH_DIR, `eng-${collection}`, `${collection}.json`);
-  if (fs.existsSync(idxPath)) {
+  // fawazahmed0 layout: editions/eng-{collection}.json (consolidated, sibling to per-hadith dir)
+  // and editions/eng-{collection}.min.json (minified). Try both.
+  const candidates = [
+    path.join(HADITH_DIR, `eng-${collection}.json`),
+    path.join(HADITH_DIR, `eng-${collection}.min.json`),
+    path.join(HADITH_DIR, `eng-${collection}`, `${collection}.json`),
+    path.join(HADITH_DIR, `eng-${collection}`, 'index.json'),
+  ];
+  for (const p of candidates) {
+    if (!fs.existsSync(p)) continue;
     try {
-      const data = JSON.parse(fs.readFileSync(idxPath, 'utf8'));
+      const data = JSON.parse(fs.readFileSync(p, 'utf8'));
       _hadithCache[collection] = data;
       return data;
     } catch (e) {
-      // fall through
+      console.warn(`[source] failed to parse ${p}: ${e.message}`);
     }
   }
+  console.warn(`[source] no consolidated hadith file found for ${collection} (looked in ${candidates.join(', ')})`);
   return null;
 }
 
@@ -243,14 +251,24 @@ function normalizeHadith(raw, collection, bookNumber, hadithNumber) {
   };
 }
 
+function hadithBookNum(h) {
+  // fawazahmed0 schema puts book number under h.reference.book.
+  // Older shapes use flat fields. Try in order.
+  if (h && h.reference && h.reference.book !== undefined) return parseInt(h.reference.book, 10);
+  return parseInt(h.bookNumber || h.book || h.book_number, 10);
+}
+
+function hadithNum(h) {
+  return parseInt(h.hadithnumber || h.number || h.hadithNumber || (h.reference && h.reference.hadith), 10);
+}
+
 function getHadith(collection, bookNumber, hadithNumber) {
   const data = loadHadithCollection(collection);
   if (!data) return null;
-  // The fawazahmed0 schema typically has data.hadiths array each with bookNumber + hadithnumber
   const list = data.hadiths || data.hadith || [];
   for (const h of list) {
-    const b = parseInt(h.bookNumber || h.book || h.book_number, 10);
-    const n = parseInt(h.hadithnumber || h.number || h.hadithNumber, 10);
+    const b = hadithBookNum(h);
+    const n = hadithNum(h);
     if (b === bookNumber && n === hadithNumber) {
       return normalizeHadith(h, collection, bookNumber, hadithNumber);
     }
@@ -264,9 +282,9 @@ function getHadithBook(collection, bookNumber, limit = 10) {
   const list = data.hadiths || data.hadith || [];
   const matched = [];
   for (const h of list) {
-    const b = parseInt(h.bookNumber || h.book || h.book_number, 10);
+    const b = hadithBookNum(h);
     if (b !== bookNumber) continue;
-    const n = parseInt(h.hadithnumber || h.number || h.hadithNumber, 10);
+    const n = hadithNum(h);
     const norm = normalizeHadith(h, collection, bookNumber, n);
     if (norm) matched.push(norm);
     if (matched.length >= limit) break;

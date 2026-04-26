@@ -1,17 +1,18 @@
 // pipeline.js
-// Main orchestrator — runs one full video generation + upload per invocation.
+// Main orchestrator — runs one full video generation per invocation.
 // Stages:
 //   1. Topic picker + auto-refill check
 //   2. Source retrieval (Quran + hadith from local files)
-//   3. Modern context (Gemini grounded search)
-//   4. Script generation (Gemini 2.5 Pro)
-//   5. Visual plan (Gemini 2.5 Flash)
+//   3. Modern context (Ollama gpt-oss:120b-cloud)
+//   4. Script generation (Ollama gpt-oss:120b-cloud)
+//   5. Visual plan (Ollama gpt-oss:120b-cloud)
 //   6. Parallel: voiceover + images + recitations + thumbnail
 //   7. Captions (SRT + ASS from TTS word timings)
 //   8. FFmpeg video assembly
 //   9. Thumbnail assembly
-//  10. Metadata + YouTube upload + Short + pinned comment
-// Marks topic as published only after successful upload.
+//  10. Metadata write + mark topic as generated
+// Final .mp4 is delivered to the operator via the GitHub Actions workflow
+// (curl upload to bashupload.com + Telegram link). Manual upload to YouTube.
 
 require('dotenv').config();
 const fs = require('fs');
@@ -21,14 +22,12 @@ const queue = require('./modules/queue');
 const topicGen = require('./modules/topic-generator');
 const sources = require('./modules/source-retriever');
 const modernCtx = require('./modules/modern-context');
-const gemini = require('./modules/gemini');
+const llm = require('./modules/llm');
 const voiceover = require('./modules/voiceover');
 const recitation = require('./modules/recitation');
 const images = require('./modules/images');
 const captions = require('./modules/captions');
 const assembler = require('./modules/assembler');
-const shorts = require('./modules/shorts');
-const youtube = require('./modules/youtube');
 const notify = require('./modules/notify');
 
 const OUTPUT_ROOT = path.join(__dirname, 'output');
@@ -94,11 +93,11 @@ async function main() {
     stage = '3_modern_context';
     const modern = await modernCtx.getModernContext(topic);
     writeArtifact(outputDir, 'modern-context.json', modern);
-    console.log(`[pipeline] modern context: ${modern.length} events`);
+    console.log(`[pipeline] modern context: ${(modern.events || []).length} events, ${(modern.patterns || []).length} patterns`);
 
     // STAGE 4: Script generation
     stage = '4_script';
-    const script = await gemini.generateScript({
+    const script = await llm.generateScript({
       topic,
       sources: srcData,
       modernContext: modern,
@@ -115,21 +114,36 @@ async function main() {
 
     // STAGE 5: Visual plan
     stage = '5_visual_plan';
-    const visualPlan = await gemini.generateVisualPlan({ script });
+    const visualPlan = await llm.generateVisualPlan({ script });
     writeArtifact(outputDir, 'visual-plan.json', visualPlan);
     console.log(`[pipeline] visual plan: ${visualPlan.beats.length} beats`);
 
-    // STAGE 6: Parallel generation — voiceover, images, recitations, thumbnail bg
+    // STAGE 6: Parallel generation — voiceover, images, recitations
+    // Thumbnail bg runs separately AFTER beats so it doesn't compete with beat
+    // generation for the same Pollinations rate limit, and so a thumbnail
+    // failure cannot kill the long-running beats/voice/recitations.
     stage = '6_parallel_gen';
     console.log('[pipeline] starting parallel generation...');
-    const [voiceRes, beatsRes, recitationRes, thumbRes] = await Promise.all([
+    const [voiceRes, beatsRes, recitationRes] = await Promise.all([
       voiceover.generateVoiceover(script, outputDir),
       images.generateAllBeats(visualPlan, outputDir),
       recitation.downloadAllRecitations(script.verses_for_recitation || [], outputDir),
-      images.generateThumbnail(visualPlan, outputDir),
     ]);
     writeArtifact(outputDir, 'recitations.json', recitationRes);
     console.log(`[pipeline] voice: ${voiceRes.wordTimings.length} words, beats: ${beatsRes.length}, recitations: ${recitationRes.length}`);
+
+    // STAGE 6b: Thumbnail background (after beats — uses first beat as fallback)
+    stage = '6b_thumbnail_bg';
+    const thumbRes = await images.generateThumbnail(visualPlan, outputDir);
+    if (!thumbRes.bgPath) {
+      const fallbackBeat = beatsRes.find((b) => b && b.imagePath && fs.existsSync(b.imagePath));
+      if (fallbackBeat) {
+        thumbRes.bgPath = fallbackBeat.imagePath;
+        console.log(`[pipeline] thumbnail bg unavailable; reusing ${path.basename(fallbackBeat.imagePath)}`);
+      } else {
+        throw new Error('thumbnail bg failed and no beat image is available as fallback');
+      }
+    }
 
     // STAGE 7: Captions
     stage = '7_captions';
@@ -152,66 +166,27 @@ async function main() {
     const thumbPath = assembler.assembleThumbnail(thumbRes, outputDir);
     console.log(`[pipeline] thumbnail: ${thumbPath}`);
 
-    // STAGE 10: Metadata + upload + short + pinned comment
-    stage = '10_metadata_upload';
-    const metadata = await gemini.generateMetadata({ script, visualPlan, sources: srcData, topic });
+    // STAGE 10: Metadata + mark topic as generated
+    // YouTube upload removed — final .mp4 is delivered out-of-band by the
+    // GitHub Actions workflow (bashupload + Telegram). Mark the topic as
+    // published once the video file is on disk so we don't re-generate it
+    // on the next run; manual YouTube upload happens after delivery.
+    stage = '10_metadata';
+    const metadata = await llm.generateMetadata({ script, visualPlan, sources: srcData, topic });
     writeArtifact(outputDir, 'metadata.json', metadata);
 
-    const uploadRes = await youtube.uploadVideo({
-      videoPath: asmRes.videoPath,
-      thumbnailPath: thumbPath,
-      srtPath: capPaths.srtPath,
-      metadata,
+    const relVideoPath = path.relative(__dirname, asmRes.videoPath).replace(/\\/g, '/');
+    queue.markPublished(topic, null, relVideoPath);
+    writeArtifact(outputDir, 'delivery.json', {
+      videoPath: relVideoPath,
+      thumbnailPath: path.relative(__dirname, thumbPath).replace(/\\/g, '/'),
+      srtPath: path.relative(__dirname, capPaths.srtPath).replace(/\\/g, '/'),
+      durationSec: asmRes.durationSec,
+      title: metadata.title,
+      generatedAt: new Date().toISOString(),
     });
-    console.log(`[pipeline] uploaded: ${uploadRes.url}`);
 
-    // Pinned comment
-    if (script.pinned_comment_question) {
-      await youtube.postPinnedComment(uploadRes.videoId, script.pinned_comment_question);
-    }
-
-    // Short
-    const shortsEnabled = String(process.env.SHORTS_ENABLED || 'true') === 'true';
-    if (shortsEnabled) {
-      try {
-        stage = '10b_short';
-        const shortRes = await shorts.generateShort({
-          videoPath: asmRes.videoPath,
-          visualPlan,
-          beats: beatsRes,
-          outputDir,
-        });
-        const shortMeta = shorts.buildShortMetadata({
-          mainTitle: metadata.title,
-          mainDescription: metadata.description,
-          shortsSegmentReason: visualPlan.shorts_segment && visualPlan.shorts_segment.reason,
-        });
-        const shortUpload = await youtube.uploadVideo({
-          videoPath: shortRes.shortPath,
-          thumbnailPath: null,
-          srtPath: null,
-          metadata: {
-            title: shortMeta.title,
-            description: shortMeta.description,
-            tags: shortMeta.tags,
-            category_id: 27,
-            default_language: 'en',
-            default_audio_language: 'en',
-          },
-          isShort: true,
-        });
-        console.log(`[pipeline] short uploaded: ${shortUpload.url}`);
-        writeArtifact(outputDir, 'short-upload.json', shortUpload);
-      } catch (shortErr) {
-        console.warn('[pipeline] short generation/upload failed (non-fatal):', shortErr.message);
-      }
-    }
-
-    // Mark published ONLY after successful main upload
-    queue.markPublished(topic, uploadRes.videoId, uploadRes.url);
-    writeArtifact(outputDir, 'upload.json', uploadRes);
-
-    console.log('[pipeline] DONE');
+    console.log(`[pipeline] DONE — video ready: ${asmRes.videoPath}`);
   } catch (err) {
     console.error(`[pipeline] FAILED at stage ${stage}:`, err);
     try {

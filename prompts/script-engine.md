@@ -144,7 +144,10 @@ You will receive:
 </sources>
 
 <modern_context>
-[ { year, event, thematic_link }, ... ]
+{
+  "events": [ { year, event, thematic_link }, ... 8-10 items ],
+  "patterns": [ { pattern, manifestation, why_it_matters }, ... 5-7 items ]
+}
 </modern_context>
 
 <next_topic>
@@ -152,7 +155,13 @@ You will receive:
 </next_topic>
 ```
 
-Use only what is in `<sources>`. Use everything in `<modern_context>` that fits. Reference `<next_topic>` by name in the haunting.
+Use only what is in `<sources>`.
+
+How to use `<modern_context>`:
+- **`events`** — concrete, dated, journalist-verifiable. Weave 2–4 into the Excavation and Mirror movements as moments of recognition, never as a list. Each event must feel inevitable, not stapled on. Cite at least one by year.
+- **`patterns`** — psychological and behavioral diagnoses of 2026 life. Use these to sharpen the Cold Open and the Excavation — they name the disease the listener is living inside. Pick the 2–3 patterns that cut closest to the topic, and build your diagnostic language around their `manifestation` and `why_it_matters`.
+
+Reference `<next_topic>` by name in the haunting.
 
 ---
 

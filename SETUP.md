@@ -1,6 +1,8 @@
 # SETUP — Akhir Zamaan
 
-Follow these steps **in order**. Each section has checkboxes — tick them as you go. The whole thing takes ~45 minutes.
+Follow these steps **in order**. Each section has checkboxes — tick them as you go. The whole thing takes ~20 minutes (no Google Cloud / OAuth dance anymore).
+
+The pipeline generates the video for you, uploads it to a temporary file host, and Telegrams you the download link. You then upload to YouTube manually.
 
 ---
 
@@ -30,75 +32,40 @@ git push -u origin main
 
 If asked for a password, GitHub will want a **personal access token**, not your password:
 1. github.com → top-right avatar → Settings → Developer settings → Personal access tokens → Tokens (classic) → Generate new token (classic)
-2. Give it `repo` scope + expiration of 1 year
+2. Give it `repo` + `workflow` scope + expiration of 1 year
 3. Copy it, paste it as the "password" when prompted
 
 - [ ] Repo pushed successfully
 
 ---
 
-## Part 2 — Google Cloud project + YouTube Data API (15 min)
+## Part 2 — Telegram bot (5 min, REQUIRED for delivery)
 
-Why: We need OAuth credentials so the pipeline can upload videos to your channel.
+Why: This is how you receive the daily video download link. Without it, the workflow still runs and produces a `.mp4`, but you'll have to grab it from the workflow's artifacts each day.
 
-### 2A. Create Google Cloud project
-- [ ] Go to https://console.cloud.google.com (sign in with the same Google account that owns your YouTube channel)
-- [ ] Accept terms if prompted
-- [ ] Top bar → click the project dropdown → **New Project**
-- [ ] Name: `akhir-zamaan`
-- [ ] Click **Create**, wait ~30s, make sure it's selected in the dropdown
-
-### 2B. Enable YouTube Data API v3
-- [ ] In the left sidebar: **APIs & Services** → **Library**
-- [ ] Search "YouTube Data API v3"
-- [ ] Click it → click **Enable**
-
-### 2C. Configure OAuth consent screen
-- [ ] Left sidebar: **APIs & Services** → **OAuth consent screen**
-- [ ] User type: **External** → Create
-- [ ] App name: `Akhir Zamaan`
-- [ ] User support email: your Gmail
-- [ ] Developer contact email: your Gmail
-- [ ] Save and continue (leave scopes empty for now)
-- [ ] Test users: add your own Gmail (`shanifadhil33@gmail.com`) so YOU can authorize in test mode
-- [ ] Save and continue → Back to Dashboard
-
-Your app will stay in "Testing" mode — that's fine. Refresh tokens from test-mode apps expire after 7 days for Google apps, but for YouTube Data API they generally persist. If a token ever stops working, rerun `node setup-youtube.js` to get a new one.
-
-### 2D. Create OAuth client credentials
-- [ ] Left sidebar: **APIs & Services** → **Credentials**
-- [ ] **+ Create Credentials** → **OAuth client ID**
-- [ ] Application type: **Web application**
-- [ ] Name: `akhir-zamaan-pipeline`
-- [ ] Authorized redirect URIs → **+ Add URI**: `http://localhost:8765/oauth2callback`
-- [ ] Click **Create**
-- [ ] A modal pops up with **Client ID** and **Client Secret** — copy both
-
-### 2E. Paste into .env
-Open `.env` in this folder and fill:
-```
-YOUTUBE_CLIENT_ID=<paste the client ID>
-YOUTUBE_CLIENT_SECRET=<paste the client secret>
-```
-
-Save. Do NOT commit `.env` — it is already gitignored.
-
-### 2F. Get the refresh token (one-time)
-```bash
-npm install
-node setup-youtube.js
-```
-
-- [ ] Browser opens a Google consent screen
-- [ ] Choose your Akhir Zamaan Google account
-- [ ] You may see "This app isn't verified" — click **Advanced** → **Go to Akhir Zamaan (unsafe)**. This is your own app, it's fine.
-- [ ] Approve the youtube.upload and youtube.force-ssl permissions
-- [ ] The terminal prints `YOUTUBE_REFRESH_TOKEN=1//...`
-- [ ] Copy it, paste into `.env` on the `YOUTUBE_REFRESH_TOKEN=` line
+- [ ] Open Telegram, search `@BotFather`, start chat, type `/newbot`
+- [ ] Pick a name like `Akhir Zamaan Delivery Bot`
+- [ ] Pick a username ending in `bot`, e.g. `akhir_zamaan_delivery_bot`
+- [ ] BotFather gives you a token like `123456:ABC-xyz...` — this is `TELEGRAM_BOT_TOKEN`
+- [ ] Open a chat with your new bot and send any message (required to "activate")
+- [ ] In a browser open: `https://api.telegram.org/bot<YOUR_TOKEN>/getUpdates` — find `"chat":{"id":...}` — that's `TELEGRAM_CHAT_ID`
 
 ---
 
-## Part 3 — Add music tracks (5 min)
+## Part 3 — Ollama endpoint (5 min)
+
+The pipeline uses Ollama (`gpt-oss:120b-cloud` by default) for script, visual plan, metadata, and topic-queue generation. You need an Ollama server reachable from GitHub Actions (i.e. publicly addressable, or behind a tunnel like Tailscale Funnel / Cloudflare Tunnel).
+
+- [ ] Install Ollama: https://ollama.com/download
+- [ ] Pull the model: `ollama pull gpt-oss:120b-cloud`
+- [ ] Make the Ollama HTTP endpoint reachable from the public internet, OR use an Ollama-compatible cloud provider
+- [ ] Note the URL — that becomes `OLLAMA_HOST` (e.g. `https://your-tunnel.example.com`)
+
+If you're running locally and skipping autonomous cron, just leave `OLLAMA_HOST=http://localhost:11434`.
+
+---
+
+## Part 4 — Music tracks (5 min, optional)
 
 See [assets/music/README.md](assets/music/README.md). Drop 5–10 halal ambient `.mp3` files into `assets/music/`.
 
@@ -108,45 +75,43 @@ If you skip this, videos still publish — just with voice only, no ambient musi
 
 ---
 
-## Part 4 — GitHub Secrets (10 min)
+## Part 5 — GitHub Secrets (5 min)
 
-Why: The GitHub Actions cron needs your API keys too. It cannot read your local `.env`.
+Why: The GitHub Actions cron needs your tokens. It cannot read your local `.env`.
 
 - [ ] On github.com, open your repo → **Settings** → **Secrets and variables** → **Actions**
-- [ ] Click **New repository secret** and add each of these (one at a time):
+- [ ] Click **New repository secret** and add each of these:
 
-| Secret name | Value |
-|---|---|
-| `GOOGLE_AI_API_KEY` | Your Gemini key |
-| `YOUTUBE_CLIENT_ID` | From step 2D |
-| `YOUTUBE_CLIENT_SECRET` | From step 2D |
-| `YOUTUBE_REFRESH_TOKEN` | From step 2F |
-| `TELEGRAM_BOT_TOKEN` | (optional — see Part 5) |
-| `TELEGRAM_CHAT_ID` | (optional — see Part 5) |
+| Secret name | Value | Required? |
+|---|---|---|
+| `OLLAMA_HOST` | Your Ollama endpoint URL from Part 3 | ✅ |
+| `TELEGRAM_BOT_TOKEN` | From Part 2 | ✅ for delivery link |
+| `TELEGRAM_CHAT_ID` | From Part 2 | ✅ for delivery link |
 
 - [ ] All secrets added
 
 ---
 
-## Part 5 — Telegram error alerts (optional, 5 min)
+## Part 6 — Local `.env` (2 min)
 
-Skip this if you don't want error pings.
+Copy `.env.example` to `.env` and fill in the same values you just put in GitHub Secrets. Used only for local runs.
 
-- [ ] Open Telegram, search `@BotFather`, start chat, type `/newbot`
-- [ ] Pick a name like `Akhir Zamaan Alerts Bot`
-- [ ] Pick a username ending in `bot`, e.g. `akhir_zamaan_alerts_bot`
-- [ ] BotFather gives you a token like `123456:ABC-xyz...` — this is `TELEGRAM_BOT_TOKEN`
-- [ ] Open a chat with your new bot and send any message (required to "activate")
-- [ ] In a browser: `https://api.telegram.org/bot<YOUR_TOKEN>/getUpdates` — find `"chat":{"id":...}` — that's `TELEGRAM_CHAT_ID`
-- [ ] Add both to `.env` and to GitHub Secrets
+```
+OLLAMA_HOST=https://your-tunnel.example.com
+TELEGRAM_BOT_TOKEN=123456:ABC-...
+TELEGRAM_CHAT_ID=123456789
+```
+
+`.env` is gitignored.
 
 ---
 
-## Part 6 — Test run (5 min)
+## Part 7 — Test run (5 min)
 
 Before unleashing the daily cron, do one dry run:
 
 ```bash
+npm install
 npm run bootstrap-data   # downloads Quran + hadith (one-time, ~50MB)
 npm run test-script      # runs pipeline in dry-run mode — stops after script generation
 ```
@@ -154,34 +119,30 @@ npm run test-script      # runs pipeline in dry-run mode — stops after script 
 This will:
 1. Pick the first topic from `topics-queue.json`
 2. Load Quran/hadith sources
-3. Call Gemini for modern context
-4. Call Gemini 2.5 Pro to generate the script
+3. Pull modern context
+4. Generate the script
 5. Save everything to `output/<timestamp>_<slug>/` and stop there
 
 - [ ] `output/` folder now has a subfolder with `topic.json`, `sources.json`, `modern-context.json`, `script.json`
-- [ ] Open `script.json` — read the `cold_open` field. Does it sound like the diagnostic-cinematic voice? Does it feel like Allah speaking directly to the viewer?
-
-If the voice is off, paste the script back to Claude and we tune `prompts/script-engine.md`.
+- [ ] Open `script.json` — read the `cold_open` field. Does it sound like the diagnostic-cinematic voice?
 
 ---
 
-## Part 7 — Full end-to-end test (one real video, ~15 min)
-
-Only after the dry run reads well:
+## Part 8 — Full end-to-end test (one real video, ~15 min)
 
 ```bash
 npm start
 ```
 
-This will run all 10 stages and upload a real video + Short to your YouTube channel. Watch the terminal for progress. If any stage fails, you'll see a Telegram alert (if configured) and the stage name in the error.
+This runs all 10 stages and produces `output/<timestamp>_<slug>/final.mp4`. No upload happens locally — that step is GitHub-Actions-only. Open the folder and play `final.mp4` to confirm it renders correctly.
 
-- [ ] Video published to @akhirzamaan
-- [ ] Short published as well
-- [ ] Thumbnail looks clickable
+- [ ] `final.mp4` plays
+- [ ] `thumbnail.jpg` looks clickable
+- [ ] `metadata.json` title/description/tags look good
 
 ---
 
-## Part 8 — Enable the daily cron
+## Part 9 — Enable the daily cron
 
 The `.github/workflows/daily.yml` file is already configured to run at **06:00 UTC daily**. Once your code is pushed to GitHub with all secrets in place, it will run automatically every day.
 
@@ -189,9 +150,12 @@ The `.github/workflows/daily.yml` file is already configured to run at **06:00 U
 - [ ] You should see "Daily Video Pipeline" listed
 - [ ] Click it → **Run workflow** button (top right) → Run workflow to trigger a manual test
 - [ ] Watch the logs. Full run should take ~20-30 min.
-- [ ] If it succeeds, you're fully autonomous.
+- [ ] When it finishes, you'll get a Telegram message: `🎬 Akhir Zamaan Video Ready. Download here: https://bashupload.com/...`
+- [ ] Click the link, download the `.mp4`, upload to YouTube manually
 
-Tomorrow at 06:00 UTC and every day after, a new video will publish without you touching anything.
+Tomorrow at 06:00 UTC and every day after, you'll get a new download link automatically.
+
+> bashupload.com retains files for ~3 days. If you miss a day's link, the same `final.mp4` is also stored as a workflow artifact under the run on the **Actions** tab for 14 days.
 
 ---
 
@@ -199,26 +163,27 @@ Tomorrow at 06:00 UTC and every day after, a new video will publish without you 
 
 | Service | What it does | Cost |
 |---|---|---|
-| Google AI Studio (Gemini) | script, visual, metadata, topic generation | $0 (free tier, Pro ~50 req/day) |
-| Pollinations.ai | all 60+ images + thumbnail background | $0 (no key) |
-| Edge TTS | British narrator voiceover | $0 (no key) |
+| Ollama (`gpt-oss:120b-cloud`) | script, visual, metadata, topic generation | depends on your endpoint |
+| Pollinations.ai | all images + thumbnail background | $0 (no key) |
+| Kokoro / Edge TTS | British narrator voiceover | $0 (no key) |
 | EveryAyah | Mishary Arabic Quran recitation | $0 (no key) |
 | FFmpeg | video assembly, Ken Burns, captions burn-in | $0 (free software) |
-| YouTube Data API | upload video + thumbnail + captions | $0 (10k units/day, we use ~1600) |
-| GitHub Actions | daily cron runner | $0 (2000 free min/month, we use ~30/day) |
+| bashupload.com | temporary file host for the daily mp4 | $0 (no key, ~3-day retention) |
+| Telegram Bot API | delivery link + error alerts | $0 |
+| GitHub Actions | daily cron runner + artifact storage | $0 (2000 free min/month) |
 
-Total monthly cost: **$0.00**
+Total monthly cost: **$0.00** (Ollama endpoint cost depends on what you self-host vs. use a provider for).
 
 ---
 
 ## If something breaks
 
 1. Check the Actions tab on GitHub → latest run → expand the failed step
-2. If stage `4_script` fails with a 429: Gemini rate-limited. `GEMINI_AUTO_DEGRADE=true` should handle this, but if Flash is also capped, the run retries tomorrow with the same topic.
-3. If stage `8_assemble_video` fails: usually a beat image is corrupted. Re-running will regenerate.
-4. If upload fails with 401: refresh token expired. Rerun `node setup-youtube.js` locally, update `YOUTUBE_REFRESH_TOKEN` in `.env` AND GitHub Secrets.
+2. If the **Run pipeline** step fails: read the stage name in the error. Telegram will also ping you.
+3. If the **Upload final video to bashupload.com** step fails: bashupload may be down. The `.mp4` is still in the workflow artifacts — download it from there.
+4. If the **Notify Telegram** step shows `Telegram HTTP 401/404`: re-check `TELEGRAM_BOT_TOKEN` / `TELEGRAM_CHAT_ID`.
 5. Otherwise: paste the error + stage into Claude and we'll fix.
 
 ---
 
-You're done. The channel runs itself.
+You're done. The channel runs itself — you just download and upload.

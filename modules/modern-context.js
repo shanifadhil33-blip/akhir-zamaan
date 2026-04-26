@@ -1,18 +1,21 @@
 // modules/modern-context.js
-// Wraps Gemini grounded search to find 4–6 real 2023–2026 events that mirror the topic theme.
+// Asks the LLM for 4–6 real 2023–2026 events + behavioral patterns that mirror the topic theme.
 
-const { findModernContext } = require('./gemini');
+const { findModernContext } = require('./llm');
 
 async function getModernContext(topic) {
   const theme = topic.theme || topic.title || '';
   const angle = topic.modern_angle || topic.context || '';
-  if (!theme) return [];
+  if (!theme) return { events: [], patterns: [] };
   try {
-    const events = await findModernContext({ topicTheme: theme, modernAngle: angle });
-    return Array.isArray(events) ? events.slice(0, 6) : [];
+    const result = await findModernContext({ topicTheme: theme, modernAngle: angle });
+    return {
+      events: (result.events || []).slice(0, 10),
+      patterns: (result.patterns || []).slice(0, 7),
+    };
   } catch (err) {
     console.warn('[modern-context] failed:', err.message);
-    return [];
+    return { events: [], patterns: [] };
   }
 }
 
