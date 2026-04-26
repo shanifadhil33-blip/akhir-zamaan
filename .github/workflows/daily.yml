@@ -18,7 +18,10 @@ jobs:
     timeout-minutes: 90
 
     env:
-      OLLAMA_HOST: ${{ secrets.OLLAMA_HOST }}
+      # Ollama runs ON the runner (installed below) and proxies cloud-routed
+      # models to ollama.com using the auth keys restored from secrets.
+      # Hardcoded to localhost so a stale OLLAMA_HOST secret can't break it.
+      OLLAMA_HOST: http://localhost:11434
       OLLAMA_MODEL: ${{ vars.OLLAMA_MODEL || 'gpt-oss:120b-cloud' }}
       TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
       TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
@@ -43,6 +46,55 @@ jobs:
         with:
           node-version: '20'
           cache: 'npm'
+
+      - name: Install Ollama
+        run: |
+          set -euo pipefail
+          curl -fsSL https://ollama.com/install.sh | sh
+          # The install script may auto-start a systemd service; stop it so
+          # we can run ollama serve as our user with our own auth keys.
+          sudo systemctl stop ollama 2>/dev/null || true
+          sudo systemctl disable ollama 2>/dev/null || true
+          ollama --version
+
+      - name: Restore Ollama Cloud auth keys from secrets
+        env:
+          OLLAMA_KEY_PRIVATE: ${{ secrets.OLLAMA_KEY_PRIVATE }}
+          OLLAMA_KEY_PUBLIC: ${{ secrets.OLLAMA_KEY_PUBLIC }}
+        run: |
+          set -euo pipefail
+          if [ -z "${OLLAMA_KEY_PRIVATE:-}" ] || [ -z "${OLLAMA_KEY_PUBLIC:-}" ]; then
+            echo "::error::OLLAMA_KEY_PRIVATE / OLLAMA_KEY_PUBLIC secrets not set."
+            echo "Copy ~/.ollama/id_ed25519 (and .pub) from your laptop into repo Secrets."
+            exit 1
+          fi
+          mkdir -p "$HOME/.ollama"
+          printf '%s' "$OLLAMA_KEY_PRIVATE" > "$HOME/.ollama/id_ed25519"
+          printf '%s' "$OLLAMA_KEY_PUBLIC" > "$HOME/.ollama/id_ed25519.pub"
+          chmod 600 "$HOME/.ollama/id_ed25519"
+          chmod 644 "$HOME/.ollama/id_ed25519.pub"
+          echo "Auth keys installed at $HOME/.ollama/"
+
+      - name: Start Ollama daemon and register cloud model
+        run: |
+          set -euo pipefail
+          nohup ollama serve > ollama.log 2>&1 &
+          echo "Waiting for Ollama to become reachable on localhost:11434..."
+          for i in $(seq 1 30); do
+            if curl -sf http://localhost:11434/api/tags > /dev/null 2>&1; then
+              echo "Ollama is ready (took ${i}s)"
+              break
+            fi
+            sleep 1
+          done
+          if ! curl -sf http://localhost:11434/api/tags > /dev/null; then
+            echo "::error::Ollama did not start within 30s"
+            cat ollama.log
+            exit 1
+          fi
+          echo "Registering ${OLLAMA_MODEL} (cloud-routed — metadata only, no large download)..."
+          ollama pull "${OLLAMA_MODEL}"
+          ollama list
 
       - name: Setup Python 3.11 (for Kokoro TTS)
         uses: actions/setup-python@v5
