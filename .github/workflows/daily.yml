@@ -188,27 +188,102 @@ jobs:
           echo "download_url=${DOWNLOAD_URL}" >> "$GITHUB_OUTPUT"
           echo "Download URL: ${DOWNLOAD_URL}"
 
-      - name: Notify Telegram with download link
+      - name: Deliver everything to Telegram (video link + thumbnail + captions + metadata)
         if: steps.bashupload.outputs.download_url != ''
         env:
           DOWNLOAD_URL: ${{ steps.bashupload.outputs.download_url }}
           TITLE: ${{ steps.locate.outputs.title }}
           SIZE_MB: ${{ steps.locate.outputs.size_mb }}
+          OUTPUT_DIR: ${{ steps.locate.outputs.output_dir }}
         run: |
           set -euo pipefail
           if [ -z "${TELEGRAM_BOT_TOKEN:-}" ] || [ -z "${TELEGRAM_CHAT_ID:-}" ]; then
-            echo "::warning::TELEGRAM_BOT_TOKEN or TELEGRAM_CHAT_ID not set — skipping notification"
+            echo "::warning::TELEGRAM_BOT_TOKEN or TELEGRAM_CHAT_ID not set — skipping all Telegram delivery"
             exit 0
           fi
-          MSG="🎬 Akhir Zamaan Video Ready. Download here: ${DOWNLOAD_URL}"
+
+          TG="https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}"
+          THUMB_PATH="${OUTPUT_DIR}thumbnail.jpg"
+          SRT_PATH="${OUTPUT_DIR}captions.srt"
+          META_PATH="${OUTPUT_DIR}metadata.json"
+
+          # 1) Headline message: video download link
+          echo "→ Telegram: sending video link..."
+          MSG="🎬 Akhir Zamaan Video Ready"$'\n\n'"📥 Download: ${DOWNLOAD_URL}"
           if [ -n "${TITLE}" ]; then
-            MSG="${MSG}"$'\n\nTitle: '"${TITLE}"$'\nSize: '"${SIZE_MB}"' MB'
+            MSG="${MSG}"$'\n\n'"📝 Title: ${TITLE}"$'\n'"💾 Size: ${SIZE_MB} MB"
           fi
-          curl -sS -X POST "https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage" \
+          curl -sS -X POST "${TG}/sendMessage" \
             --data-urlencode "chat_id=${TELEGRAM_CHAT_ID}" \
             --data-urlencode "text=${MSG}" \
             --data-urlencode "disable_web_page_preview=false" \
-            -o /dev/null -w "Telegram HTTP %{http_code}\n"
+            -o /dev/null -w "  sendMessage HTTP %{http_code}\n"
+
+          # 2) Thumbnail (sent as a photo so it previews in the chat)
+          if [ -f "${THUMB_PATH}" ]; then
+            echo "→ Telegram: sending thumbnail..."
+            curl -sS -X POST "${TG}/sendPhoto" \
+              -F "chat_id=${TELEGRAM_CHAT_ID}" \
+              -F "photo=@${THUMB_PATH}" \
+              -F "caption=🖼 Thumbnail (1280×720) — save and use as YouTube custom thumbnail" \
+              -o /dev/null -w "  sendPhoto HTTP %{http_code}\n"
+          else
+            echo "::warning::thumbnail.jpg not found at ${THUMB_PATH} — skipping"
+          fi
+
+          # 3) Captions file (.srt) — sent as document so it's downloadable
+          if [ -f "${SRT_PATH}" ]; then
+            echo "→ Telegram: sending captions.srt..."
+            curl -sS -X POST "${TG}/sendDocument" \
+              -F "chat_id=${TELEGRAM_CHAT_ID}" \
+              -F "document=@${SRT_PATH}" \
+              -F "caption=📑 Captions (.srt) — upload under YouTube → Subtitles → Add language → English" \
+              -o /dev/null -w "  sendDocument HTTP %{http_code}\n"
+          else
+            echo "::warning::captions.srt not found at ${SRT_PATH} — skipping"
+          fi
+
+          # 4) YouTube metadata text — title, description, tags, chapters — copy/paste ready
+          if [ -f "${META_PATH}" ]; then
+            echo "→ Telegram: sending YouTube about-section..."
+            META_TITLE=$(jq -r '.title // ""' "${META_PATH}")
+            META_DESC=$(jq -r '.description // ""' "${META_PATH}")
+            META_TAGS=$(jq -r '(.tags // []) | join(", ")' "${META_PATH}")
+            META_CHAPTERS=$(jq -r '(.chapters // []) | map("\(.time) — \(.label)") | join("\n")' "${META_PATH}")
+
+            META_MSG="📋 YouTube Upload Form (copy/paste each section)"$'\n\n'
+            META_MSG="${META_MSG}━━━ TITLE ━━━"$'\n'"${META_TITLE}"$'\n\n'
+            META_MSG="${META_MSG}━━━ DESCRIPTION ━━━"$'\n'"${META_DESC}"$'\n\n'
+            if [ -n "${META_CHAPTERS}" ]; then
+              META_MSG="${META_MSG}━━━ CHAPTERS (already in description, here for reference) ━━━"$'\n'"${META_CHAPTERS}"$'\n\n'
+            fi
+            META_MSG="${META_MSG}━━━ TAGS ━━━"$'\n'"${META_TAGS}"
+
+            # Telegram's hard limit on sendMessage text is 4096 chars. If our
+            # full metadata exceeds that, send the description as a .txt file
+            # instead so nothing is silently truncated.
+            MSG_BYTES=$(printf '%s' "${META_MSG}" | wc -c)
+            if [ "${MSG_BYTES}" -le 4000 ]; then
+              curl -sS -X POST "${TG}/sendMessage" \
+                --data-urlencode "chat_id=${TELEGRAM_CHAT_ID}" \
+                --data-urlencode "text=${META_MSG}" \
+                --data-urlencode "disable_web_page_preview=true" \
+                -o /dev/null -w "  metadata sendMessage HTTP %{http_code}\n"
+            else
+              echo "  metadata is ${MSG_BYTES} bytes (>4000) — sending as .txt document instead"
+              META_TXT="${OUTPUT_DIR}youtube-upload-form.txt"
+              printf '%s' "${META_MSG}" > "${META_TXT}"
+              curl -sS -X POST "${TG}/sendDocument" \
+                -F "chat_id=${TELEGRAM_CHAT_ID}" \
+                -F "document=@${META_TXT}" \
+                -F "caption=📋 YouTube upload form (title + description + tags + chapters)" \
+                -o /dev/null -w "  metadata sendDocument HTTP %{http_code}\n"
+            fi
+          else
+            echo "::warning::metadata.json not found at ${META_PATH} — skipping about-section"
+          fi
+
+          echo "✓ Telegram delivery complete"
 
       - name: Commit published.json + topics-queue.json
         if: always()
