@@ -50,17 +50,17 @@ jobs:
           node-version: '20'
           cache: 'npm'
 
-      - name: Install Ollama
+      - name: Install Ollama (managed by systemd)
         run: |
           set -euo pipefail
           curl -fsSL https://ollama.com/install.sh | sh
-          # The install script may auto-start a systemd service; stop it so
-          # we can run ollama serve as our user with our own auth keys.
-          sudo systemctl stop ollama 2>/dev/null || true
-          sudo systemctl disable ollama 2>/dev/null || true
           ollama --version
+          # The install script enables + starts a systemd service that runs
+          # as the `ollama` system user. We let systemd manage it across the
+          # whole job — it auto-restarts on crash and survives the long
+          # Python/Kokoro/npm steps that come later.
 
-      - name: Restore Ollama Cloud auth keys from secrets
+      - name: Install Ollama Cloud auth keys into systemd service config
         env:
           OLLAMA_KEY_PRIVATE: ${{ secrets.OLLAMA_KEY_PRIVATE }}
           OLLAMA_KEY_PUBLIC: ${{ secrets.OLLAMA_KEY_PUBLIC }}
@@ -71,17 +71,24 @@ jobs:
             echo "Copy ~/.ollama/id_ed25519 (and .pub) from your laptop into repo Secrets."
             exit 1
           fi
-          mkdir -p "$HOME/.ollama"
-          printf '%s' "$OLLAMA_KEY_PRIVATE" > "$HOME/.ollama/id_ed25519"
-          printf '%s' "$OLLAMA_KEY_PUBLIC" > "$HOME/.ollama/id_ed25519.pub"
-          chmod 600 "$HOME/.ollama/id_ed25519"
-          chmod 644 "$HOME/.ollama/id_ed25519.pub"
-          echo "Auth keys installed at $HOME/.ollama/"
-
-      - name: Start Ollama daemon and register cloud model
-        run: |
-          set -euo pipefail
-          nohup ollama serve > ollama.log 2>&1 &
+          # systemd ollama runs as the `ollama` system user. Its home (and
+          # therefore where it looks for cloud auth keys) is /usr/share/ollama.
+          # Putting keys at $HOME/.ollama/ would never be seen by the daemon.
+          OLLAMA_HOME="/usr/share/ollama/.ollama"
+          sudo mkdir -p "$OLLAMA_HOME"
+          # Use a temp file to avoid sudo-eval shenanigans with the secret value
+          umask 077
+          printf '%s' "$OLLAMA_KEY_PRIVATE" > /tmp/ollama_key_private
+          printf '%s' "$OLLAMA_KEY_PUBLIC" > /tmp/ollama_key_public
+          sudo mv /tmp/ollama_key_private "$OLLAMA_HOME/id_ed25519"
+          sudo mv /tmp/ollama_key_public "$OLLAMA_HOME/id_ed25519.pub"
+          sudo chown -R ollama:ollama "$OLLAMA_HOME"
+          sudo chmod 600 "$OLLAMA_HOME/id_ed25519"
+          sudo chmod 644 "$OLLAMA_HOME/id_ed25519.pub"
+          echo "Keys installed:"
+          sudo ls -la "$OLLAMA_HOME/"
+          echo "Restarting systemd ollama service to load new keys..."
+          sudo systemctl restart ollama
           echo "Waiting for Ollama to become reachable on localhost:11434..."
           for i in $(seq 1 30); do
             if curl -sf http://localhost:11434/api/tags > /dev/null 2>&1; then
@@ -91,10 +98,15 @@ jobs:
             sleep 1
           done
           if ! curl -sf http://localhost:11434/api/tags > /dev/null; then
-            echo "::error::Ollama did not start within 30s"
-            cat ollama.log
+            echo "::error::Ollama did not respond within 30s after key install"
+            sudo systemctl status ollama --no-pager || true
+            sudo journalctl -u ollama --no-pager -n 80 || true
             exit 1
           fi
+
+      - name: Register cloud model
+        run: |
+          set -euo pipefail
           echo "Registering ${OLLAMA_MODEL} (cloud-routed — metadata only, no large download)..."
           ollama pull "${OLLAMA_MODEL}"
           ollama list
@@ -140,6 +152,21 @@ jobs:
 
       - name: Bootstrap Quran + hadith data
         run: npm run bootstrap-data
+
+      - name: Verify Ollama is still healthy before pipeline
+        run: |
+          set -euo pipefail
+          if ! curl -sf http://localhost:11434/api/tags > /dev/null; then
+            echo "::error::Ollama died between setup and pipeline run"
+            sudo systemctl status ollama --no-pager || true
+            sudo journalctl -u ollama --no-pager -n 100 || true
+            echo "Attempting to restart ollama..."
+            sudo systemctl restart ollama || true
+            sleep 5
+            curl -sf http://localhost:11434/api/tags > /dev/null && echo "Recovered after restart" || (echo "::error::Could not recover" && exit 1)
+          fi
+          echo "Ollama healthy. Registered models:"
+          ollama list
 
       - name: Run pipeline
         run: npm start
