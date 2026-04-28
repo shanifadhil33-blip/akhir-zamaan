@@ -99,6 +99,14 @@ async function generateAndParseJSON(args) {
   }
 }
 
+// Hard floor: 15-minute videos require ≥ 2,250 words at the
+// 150-wpm narration rate (×0.95 Kokoro speed buys a small margin too).
+// If 3 attempts can't hit this, fail loudly so the topic stays in the
+// queue and retries cleanly on the next scheduled run instead of
+// shipping a 2-minute "video".
+const MIN_SCRIPT_WORDS = 2250;
+const MAX_SCRIPT_ATTEMPTS = 3;
+
 async function generateScript({ topic, sources, modernContext, nextTopic }) {
   const systemInstruction = loadPrompt('script-engine');
   const baseUserPrompt = [
@@ -108,20 +116,28 @@ async function generateScript({ topic, sources, modernContext, nextTopic }) {
     `<next_topic>\n${JSON.stringify({ title: nextTopic && nextTopic.title }, null, 2)}\n</next_topic>`,
     '',
     'Generate the full script JSON exactly per the schema in your instructions.',
-    'CRITICAL: each movement MUST hit its target word count. cold_open ≥ 200 words, naming ≥ 400 words, excavation ≥ 750 words, mirror ≥ 600 words, haunting ≥ 550 words. Total ≥ 2,500 words. Insert [PAUSE] every 2-4 sentences in dramatic moments. No markdown wrapping. Pure JSON.',
+    `CRITICAL: total script MUST be ≥ ${MIN_SCRIPT_WORDS} words (15-minute video minimum). Each movement MUST hit its minimum: cold_open ≥ 200, naming ≥ 400, excavation ≥ 750, mirror ≥ 600, haunting ≥ 550. Insert [PAUSE] every 2-4 sentences in dramatic moments (target 40-60 [PAUSE] markers). No markdown wrapping. Pure JSON.`,
   ].join('\n\n');
 
-  // Generate, then validate length. If short, retry once with stronger length push.
-  for (let attempt = 1; attempt <= 2; attempt++) {
-    const userPrompt = attempt === 1
-      ? baseUserPrompt
-      : `${baseUserPrompt}\n\nYOUR PREVIOUS RESPONSE WAS TOO SHORT. Each of the five movements must be the full target length. Do not summarize. Do not skim. Write out every paragraph in full diagnostic-cinematic prose. The total script MUST be 2,500-3,000 words.`;
+  let bestScript = null;
+  let bestWords = 0;
+  for (let attempt = 1; attempt <= MAX_SCRIPT_ATTEMPTS; attempt++) {
+    let userPrompt = baseUserPrompt;
+    if (attempt === 2) {
+      userPrompt = `${baseUserPrompt}\n\nYOUR PREVIOUS RESPONSE WAS TOO SHORT. Do not summarize. Write every paragraph in full diagnostic-cinematic prose. Total MUST be 2,500-3,000 words. Count as you write.`;
+    } else if (attempt === 3) {
+      userPrompt = `${baseUserPrompt}\n\nFINAL ATTEMPT. Previous responses were both too short. Produce the longest, most cinematically detailed version possible. Each movement MUST exceed its minimum. The script MUST be at least ${MIN_SCRIPT_WORDS} words. If a single movement feels complete at 400 words but the minimum is 600, add another paradox pair, another modern parallel, another rhetorical question — slow down. Do not stop until you have written EVERY required word.`;
+    }
     const script = await generateAndParseJSON({ model: MODEL_PRIMARY, systemInstruction, userPrompt, temperature: 0.85 });
     const totalWords = countScriptWords(script);
-    console.log(`[ollama] script attempt ${attempt}: ${totalWords} words`);
-    if (totalWords >= 1800 || attempt === 2) return script;
-    console.warn(`[ollama] script too short (${totalWords} words, need ≥1800), retrying with explicit length reminder`);
+    console.log(`[ollama] script attempt ${attempt}/${MAX_SCRIPT_ATTEMPTS}: ${totalWords} words (need ≥ ${MIN_SCRIPT_WORDS})`);
+    if (totalWords > bestWords) { bestScript = script; bestWords = totalWords; }
+    if (totalWords >= MIN_SCRIPT_WORDS) return script;
+    console.warn(`[ollama] script too short (${totalWords}/${MIN_SCRIPT_WORDS}) — retrying with stronger length pressure`);
   }
+  // Hard floor failure. Better to abort than ship a 2-minute "video".
+  // The topic stays unpublished and will retry on the next scheduled run.
+  throw new Error(`Script generation failed to hit minimum word count after ${MAX_SCRIPT_ATTEMPTS} attempts. Best result: ${bestWords} words (need ≥ ${MIN_SCRIPT_WORDS}). Topic "${topic.title}" left in queue for next run.`);
 }
 
 function countScriptWords(script) {
