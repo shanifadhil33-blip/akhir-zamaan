@@ -6,6 +6,7 @@
 const fs = require('fs');
 const path = require('path');
 const axios = require('axios');
+const deepseek = require('./deepseek');
 
 const OLLAMA_HOST = process.env.OLLAMA_HOST || 'http://localhost:11434';
 const MODEL_PRIMARY = process.env.OLLAMA_MODEL || 'gpt-oss:120b-cloud';
@@ -99,6 +100,35 @@ async function generateAndParseJSON(args) {
   }
 }
 
+// Script-tier router. When DEEPSEEK_API_KEY is set, all script-generation
+// calls (skeleton, the 5 movements, metadata extract) go to DeepSeek V3 —
+// it produces dramatically better narrative prose than gpt-oss:120b-cloud.
+// When DeepSeek is not configured, falls back to Ollama with the same shape
+// so the rest of the pipeline doesn't care which provider answered.
+async function generateAndParseJSONForScript(args) {
+  const useDeepSeek = deepseek.configured();
+  for (let attempt = 1; attempt <= 2; attempt++) {
+    const promptForAttempt = attempt === 1
+      ? args.userPrompt
+      : `${args.userPrompt}\n\nIMPORTANT: Your previous response failed JSON parsing. Return STRICT, COMPLETE JSON. No trailing commas. No markdown fences. Every opening bracket/brace matched. Just JSON.`;
+    try {
+      const text = useDeepSeek
+        ? await deepseek.call({
+            systemInstruction: args.systemInstruction,
+            userPrompt: promptForAttempt,
+            temperature: args.temperature,
+            jsonMode: true,
+          })
+        : await callOllama({ ...args, userPrompt: promptForAttempt });
+      return extractJSON(text);
+    } catch (err) {
+      if (attempt === 2 || !/JSON|parse|Unexpected/i.test(err.message || '')) throw err;
+      const provider = useDeepSeek ? 'deepseek' : 'ollama';
+      console.warn(`[${provider}] JSON parse failed (${err.message.slice(0, 120)}) — retrying once with strict reminder`);
+    }
+  }
+}
+
 // Hard floor: 15-minute videos require ≥ 2,250 words at the
 // 150-wpm narration rate (×0.95 Kokoro speed buys a small margin too).
 const MIN_SCRIPT_WORDS = 2250;
@@ -140,7 +170,7 @@ async function generateMovement({ spec, skeleton, previousMovements, topic, sour
     const userPrompt = attempt === 1
       ? baseUserPrompt
       : `${baseUserPrompt}\n\nPREVIOUS ATTEMPT WAS TOO SHORT. Do not summarize. Slow down. Add another paradox pair, another rhetorical question, another concrete modern detail. The movement MUST be at least ${spec.minWords} words.`;
-    const result = await generateAndParseJSON({ model: MODEL_PRIMARY, systemInstruction, userPrompt, temperature: 0.85 });
+    const result = await generateAndParseJSONForScript({ model: MODEL_PRIMARY, systemInstruction, userPrompt, temperature: 0.85 });
     const text = result[spec.key];
     if (!text || typeof text !== 'string') {
       console.warn(`[ollama] ${spec.key} attempt ${attempt}: response missing the "${spec.key}" key`);
@@ -176,7 +206,7 @@ async function generateScriptSkeleton({ topic, sources, modernContext, nextTopic
     '',
     'No markdown wrapping. Pure JSON.',
   ].join('\n\n');
-  return generateAndParseJSON({ model: MODEL_PRIMARY, systemInstruction, userPrompt, temperature: 0.7 });
+  return generateAndParseJSONForScript({ model: MODEL_PRIMARY, systemInstruction, userPrompt, temperature: 0.7 });
 }
 
 async function extractScriptMetadata({ topic, skeleton, movements, sources, nextTopic }) {
@@ -206,11 +236,12 @@ async function extractScriptMetadata({ topic, skeleton, movements, sources, next
     '',
     'Maximum 3 entries in verses_for_recitation. Only include verses actually quoted in the movements. No markdown. Pure JSON.',
   ].join('\n\n');
-  return generateAndParseJSON({ model: MODEL_PRIMARY, systemInstruction, userPrompt, temperature: 0.4 });
+  return generateAndParseJSONForScript({ model: MODEL_PRIMARY, systemInstruction, userPrompt, temperature: 0.4 });
 }
 
 async function generateScript({ topic, sources, modernContext, nextTopic }) {
-  console.log('[ollama] script generation: chunked mode (1 LLM call per movement for guaranteed length)');
+  const provider = deepseek.configured() ? `deepseek (${deepseek.MODEL_DEFAULT})` : `ollama (${MODEL_PRIMARY})`;
+  console.log(`[script-gen] chunked mode, provider: ${provider}`);
 
   // Step 1 — skeleton (titles, mood, planned arc)
   const skeleton = await generateScriptSkeleton({ topic, sources, modernContext, nextTopic });

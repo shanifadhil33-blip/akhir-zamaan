@@ -23,6 +23,8 @@ jobs:
       # Hardcoded to localhost so a stale OLLAMA_HOST secret can't break it.
       OLLAMA_HOST: http://localhost:11434
       OLLAMA_MODEL: ${{ vars.OLLAMA_MODEL || 'gpt-oss:120b-cloud' }}
+      DEEPSEEK_API_KEY: ${{ secrets.DEEPSEEK_API_KEY }}
+      DEEPSEEK_MODEL: ${{ vars.DEEPSEEK_MODEL || 'deepseek-chat' }}
       CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
       CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
       IMAGE_CONCURRENCY: ${{ vars.IMAGE_CONCURRENCY || '6' }}
