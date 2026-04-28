@@ -22,6 +22,7 @@ const queue = require('./modules/queue');
 const topicGen = require('./modules/topic-generator');
 const sources = require('./modules/source-retriever');
 const modernCtx = require('./modules/modern-context');
+const research = require('./modules/research');
 const llm = require('./modules/llm');
 const voiceover = require('./modules/voiceover');
 const recitation = require('./modules/recitation');
@@ -89,11 +90,23 @@ async function main() {
     writeArtifact(outputDir, 'sources.json', srcData);
     console.log(`[pipeline] sources: ${srcData.verses.length} verses, ${srcData.hadith.length} hadith`);
 
-    // STAGE 3: Modern context
+    // STAGE 3: Modern context — real web research via Tavily, fall back
+    // to LLM-only training-knowledge if Tavily isn't configured / failed.
     stage = '3_modern_context';
-    const modern = await modernCtx.getModernContext(topic);
+    let modern = null;
+    if (research.tavilyConfigured()) {
+      try {
+        modern = await research.researchTopic(topic);
+      } catch (e) {
+        console.warn(`[pipeline] research failed: ${e.message} — falling back to LLM-only modern context`);
+      }
+    }
+    if (!modern) {
+      modern = await modernCtx.getModernContext(topic);
+      modern._source = modern._source || 'ollama-training';
+    }
     writeArtifact(outputDir, 'modern-context.json', modern);
-    console.log(`[pipeline] modern context: ${(modern.events || []).length} events, ${(modern.patterns || []).length} patterns`);
+    console.log(`[pipeline] modern context (${modern._source || 'unknown'}): ${(modern.events || []).length} events, ${(modern.patterns || []).length} patterns`);
 
     // STAGE 4: Script generation
     stage = '4_script';

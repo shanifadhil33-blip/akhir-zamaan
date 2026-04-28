@@ -269,9 +269,10 @@ function countScriptWords(script) {
 async function generateVisualPlan({ script }) {
   const systemInstruction = loadPrompt('visual-architect');
   const words = countScriptWords(script);
-  // Aim for one beat per ~14 words ≈ 5-6 seconds per image. Min 60, max 250
-  // so an 18-min script gets ~190 beats and a 15-min script gets ~160.
-  const targetBeats = Math.max(60, Math.min(250, Math.round(words / 14)));
+  // Aim for one beat per ~9 words ≈ 3.5 seconds per image. Min 100, max 400
+  // so an 18-min script gets ~310 beats and a 15-min script gets ~250.
+  // Operator spec: image changes every 3-4 seconds aligned to sentence meaning.
+  const targetBeats = Math.max(100, Math.min(400, Math.round(words / 9)));
   const approxMinutes = (words / 150).toFixed(1);
   const baseUserPrompt = [
     `<script>\n${JSON.stringify(script, null, 2)}\n</script>`,
@@ -279,10 +280,10 @@ async function generateVisualPlan({ script }) {
     `  word_count: ${words}`,
     `  approx_minutes: ${approxMinutes}`,
     `  target_beat_count: ${targetBeats}`,
-    `  seconds_per_beat: 5-6`,
+    `  seconds_per_beat: 3-4`,
     `</target>`,
     '',
-    `Produce EXACTLY ${targetBeats} beats (±5 is acceptable, no fewer). Each beat covers ~12-15 words ≈ 5-6 seconds — short enough that the image changes feel alive, not static. Beats MUST align with sentence/clause boundaries. Do not compress multiple ideas into one long beat.`,
+    `Produce EXACTLY ${targetBeats} beats (±10 is acceptable, no fewer). Each beat covers ~8-10 words ≈ 3-4 seconds — every sentence or short clause gets its own image. The image changes constantly, in sync with the meaning of each phrase. Beats MUST align with sentence/clause boundaries. NEVER compress multiple ideas into one long static beat.`,
     '',
     'Generate the storyboard JSON exactly per the schema in your instructions. No markdown wrapping. Pure JSON.',
   ].join('\n');

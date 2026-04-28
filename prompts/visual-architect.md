@@ -33,11 +33,11 @@ Append the `aesthetic_style_string` to EVERY beat's image prompt. This keeps vis
 
 ## BEAT TIMING
 
-The narrator reads at ~150 words/minute. Each beat covers **12–15 words of script ≈ 5–6 seconds of video**. This is intentionally dense — static images held for 10+ seconds make the video feel like a slideshow. Frequent image changes feel cinematic and hold attention.
+The narrator reads at ~150 words/minute. Each beat covers **8–10 words of script ≈ 3–4 seconds of video**. The image must change in lockstep with the meaning of each sentence — every sentence (and many shorter clauses) gets its own image. Static frames held for more than 5 seconds break the trance.
 
-You will receive a `<target>` block at runtime with `word_count`, `approx_minutes`, and `target_beat_count`. **Produce at least that many beats (±5 acceptable, never fewer).** The target is computed from the actual script length, so an 18-minute script gets ~190 beats and a 15-minute script gets ~160. Never invent filler beats to pad the count; never compress multiple ideas into one long static beat. If the script has 2,800 words, you should produce 180–210 beats — that is the correct order of magnitude.
+You will receive a `<target>` block at runtime with `word_count`, `approx_minutes`, and `target_beat_count`. **Produce at least that many beats (±10 acceptable, never fewer).** The target is computed from the actual script length, so an 18-minute script gets ~310 beats and a 15-minute script gets ~250. Never invent filler beats to pad the count; never compress multiple ideas into one long static beat. If the script has 2,800 words, you should produce 290–320 beats — that is the correct order of magnitude.
 
-**Critical:** Beats must align with sentence/clause boundaries, not mid-sentence. Read the script and group words by natural breath/meaning units. A new beat at every: full stop, question mark, em-dash break, `[PAUSE]` marker, paragraph break, paradox pivot, or revelation moment.
+**Critical:** Beats must align with sentence/clause boundaries, not mid-sentence. Read the script and group words by natural breath/meaning units. A new beat at every: full stop, question mark, comma between independent clauses, em-dash break, `[PAUSE]` marker, paragraph break, paradox pivot, or revelation moment. When the narrator says "Not pleasure. Numbness." — that's two beats, not one.
 
 ---
 
