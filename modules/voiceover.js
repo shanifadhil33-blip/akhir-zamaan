@@ -21,7 +21,11 @@ const VOICE_BY_PROVIDER = {
   edge: process.env.EDGE_VOICE || 'en-GB-RyanNeural',               // male
 };
 
-const BREAK_MS = 700;
+// 1500ms = a ~1.5-second beat of silence. Long enough to feel cinematic
+// after a punch line; short enough that a script with many [PAUSE] markers
+// doesn't drag. Combined with the script-engine prompt asking for [PAUSE]
+// every 2-4 sentences in dramatic moments, the voiceover gets real pacing.
+const BREAK_MS = 1500;
 const BREAK_TAG_RE = /<break\s+time="?\d+ms"?\s*\/>/gi;
 
 // Islamic honorifics: most TTS engines either skip these glyphs or mispronounce

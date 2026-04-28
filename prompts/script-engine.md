@@ -42,7 +42,7 @@ Notice what this does:
 - Use **paradox pairs**: "It was never X. It was always Y." "Not pleasure. Numbness. There is a difference."
 - Use **repetition for weight**: "He saw it. He named it. He warned of it."
 - Use **rhetorical questions** that the listener cannot dodge.
-- Insert `[PAUSE]` markers every 30–60 seconds for breathing and dramatic weight.
+- Insert `[PAUSE]` markers GENEROUSLY: every 2-4 sentences in dramatic moments, after every paradox pair, after every revelation. Each `[PAUSE]` becomes 1.5 seconds of silence in the final audio — that's the breathing room that turns narration into cinema. A script of 2,800 words should have 40-60 `[PAUSE]` markers.
 
 **Tone:** Intimate. Weighty. Surgical. Transformative. Never preachy. Never "as Muslims we should." Always "you, right now."
 
@@ -50,21 +50,23 @@ Notice what this does:
 
 ## STRUCTURE — THE FIVE MOVEMENTS
 
-A 15–20 minute video = ~2,800 words. Use this five-movement structure (NOT the old 3-act):
+A 15–20 minute video = **2,800 words MINIMUM** (range 2,500–3,200). Use this five-movement structure (NOT the old 3-act):
 
-### MOVEMENT 1 — THE COLD OPEN (0:00–1:30, ~225 words)
+**LENGTH IS NON-NEGOTIABLE.** Each movement has a minimum word count below. A movement under its minimum is a failed script. Do not summarize. Do not skip the buildup. Do not collapse a 600-word section into 300 words because you "made the point already." The pacing IS the point. If a movement feels like it's wrapping up too early, slow down — add another paradox pair, another rhetorical question, another modern parallel, another `[PAUSE]`. The listener watching at 2 AM is in trance — yank him out by being too brief and you lose him forever.
+
+### MOVEMENT 1 — THE COLD OPEN (0:00–1:30, ~225 words, MIN 200)
 Open inside the listener's life. A specific modern moment: scrolling, a feeling at 3 AM, a thing he did this week and lied to himself about. No mention of Islam yet. No verse yet. Just diagnosis. End with a single line that hints the Quran/Prophet ﷺ already named what he is feeling — but do not name it yet.
 
-### MOVEMENT 2 — THE NAMING (1:30–4:30, ~450 words)
+### MOVEMENT 2 — THE NAMING (1:30–4:30, ~450 words, MIN 400)
 Name the disease. Reveal the verse or hadith from `<sources>` *cinematically* — as the moment of recognition the listener has been waiting for without knowing it. Quote the verse/hadith exactly as provided. Then strip away the comfortable interpretation. Make him understand it has always been about him, not historical figures. End with a tension hook: "But this is not the warning. The warning is what comes next."
 
-### MOVEMENT 3 — THE EXCAVATION (4:30–10:00, ~825 words)
+### MOVEMENT 3 — THE EXCAVATION (4:30–10:00, ~825 words, MIN 750)
 Go deeper into the source. Reveal a second verse/hadith from `<sources>` if available. Show how the Prophets faced the same trial in their own lives — but in a way that mirrors the listener's exact situation. Use 2–3 modern parallels woven in seamlessly (from `<modern_context>`). Each parallel must feel inevitable, not stapled on. Pattern interrupt every 60 seconds: rhetorical question, contradiction of the listener's assumption, sudden pivot.
 
-### MOVEMENT 4 — THE MIRROR (10:00–14:30, ~675 words)
+### MOVEMENT 4 — THE MIRROR (10:00–14:30, ~675 words, MIN 600)
 Pivot to the listener's life *right now*, in the year 2026. Make him face what he has been avoiding. Use the modern parallels from `<modern_context>` to show that the Prophetic warning is not abstract — it is happening to him this week, this month, this year. Build to ONE existential decision he must make. NOT a 5-step checklist. NOT three actionable habits. ONE choice. Frame it as the choice between two versions of the man he could become.
 
-### MOVEMENT 5 — THE HAUNTING (14:30–17:00 + cliffhanger, ~625 words)
+### MOVEMENT 5 — THE HAUNTING (14:30–17:00 + cliffhanger, ~625 words, MIN 550)
 Close with the haunting. A reflection that does not resolve. A question he will carry with him for 24 hours. A specific image of the man he becomes if he chooses correctly — and the man he becomes if he doesn't. Then, in the final 60 seconds, a quiet tease for the next video by name. Subscribe CTA woven in as if it is part of the haunting itself, never as marketing language.
 
 ---

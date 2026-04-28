@@ -43,7 +43,10 @@ function isTransientError(err) {
 }
 
 // Calls Ollama /api/chat with one message. Retries transient network errors.
-async function callOllamaOnce({ model, systemInstruction, userPrompt, temperature = 0.85, jsonMode = true, timeoutMs = 240000 }) {
+// num_predict: 8192 prevents premature truncation. The default of -1 should
+// be unlimited but the gpt-oss:120b-cloud route appears to cap responses
+// closer to ~2K tokens, which truncates long scripts.
+async function callOllamaOnce({ model, systemInstruction, userPrompt, temperature = 0.85, jsonMode = true, timeoutMs = 240000, numPredict = 8192 }) {
   const body = {
     model,
     messages: [
@@ -51,7 +54,7 @@ async function callOllamaOnce({ model, systemInstruction, userPrompt, temperatur
       { role: 'user', content: userPrompt },
     ],
     stream: false,
-    options: { temperature },
+    options: { temperature, num_predict: numPredict },
   };
   if (jsonMode) body.format = 'json';
 
@@ -98,15 +101,27 @@ async function generateAndParseJSON(args) {
 
 async function generateScript({ topic, sources, modernContext, nextTopic }) {
   const systemInstruction = loadPrompt('script-engine');
-  const userPrompt = [
+  const baseUserPrompt = [
     `<topic>\n${JSON.stringify(topic, null, 2)}\n</topic>`,
     `<sources>\n${JSON.stringify(sources, null, 2)}\n</sources>`,
     `<modern_context>\n${JSON.stringify(modernContext, null, 2)}\n</modern_context>`,
     `<next_topic>\n${JSON.stringify({ title: nextTopic && nextTopic.title }, null, 2)}\n</next_topic>`,
     '',
-    'Generate the full script JSON exactly per the schema in your instructions. No markdown wrapping. Pure JSON.',
+    'Generate the full script JSON exactly per the schema in your instructions.',
+    'CRITICAL: each movement MUST hit its target word count. cold_open ≥ 200 words, naming ≥ 400 words, excavation ≥ 750 words, mirror ≥ 600 words, haunting ≥ 550 words. Total ≥ 2,500 words. Insert [PAUSE] every 2-4 sentences in dramatic moments. No markdown wrapping. Pure JSON.',
   ].join('\n\n');
-  return await generateAndParseJSON({ model: MODEL_PRIMARY, systemInstruction, userPrompt, temperature: 0.85 });
+
+  // Generate, then validate length. If short, retry once with stronger length push.
+  for (let attempt = 1; attempt <= 2; attempt++) {
+    const userPrompt = attempt === 1
+      ? baseUserPrompt
+      : `${baseUserPrompt}\n\nYOUR PREVIOUS RESPONSE WAS TOO SHORT. Each of the five movements must be the full target length. Do not summarize. Do not skim. Write out every paragraph in full diagnostic-cinematic prose. The total script MUST be 2,500-3,000 words.`;
+    const script = await generateAndParseJSON({ model: MODEL_PRIMARY, systemInstruction, userPrompt, temperature: 0.85 });
+    const totalWords = countScriptWords(script);
+    console.log(`[ollama] script attempt ${attempt}: ${totalWords} words`);
+    if (totalWords >= 1800 || attempt === 2) return script;
+    console.warn(`[ollama] script too short (${totalWords} words, need ≥1800), retrying with explicit length reminder`);
+  }
 }
 
 function countScriptWords(script) {
@@ -120,21 +135,35 @@ function countScriptWords(script) {
 async function generateVisualPlan({ script }) {
   const systemInstruction = loadPrompt('visual-architect');
   const words = countScriptWords(script);
-  const targetBeats = Math.max(40, Math.min(90, Math.round(words / 27)));
+  // Aim for one beat per ~14 words ≈ 5-6 seconds per image. Min 60, max 250
+  // so an 18-min script gets ~190 beats and a 15-min script gets ~160.
+  const targetBeats = Math.max(60, Math.min(250, Math.round(words / 14)));
   const approxMinutes = (words / 150).toFixed(1);
-  const userPrompt = [
+  const baseUserPrompt = [
     `<script>\n${JSON.stringify(script, null, 2)}\n</script>`,
     `<target>`,
     `  word_count: ${words}`,
     `  approx_minutes: ${approxMinutes}`,
     `  target_beat_count: ${targetBeats}`,
+    `  seconds_per_beat: 5-6`,
     `</target>`,
     '',
-    `Produce EXACTLY ${targetBeats} beats (±3 is acceptable). Every beat covers 25-30 words of script so the total matches the narration length. Do not invent filler beats; do not over-compress either.`,
+    `Produce EXACTLY ${targetBeats} beats (±5 is acceptable, no fewer). Each beat covers ~12-15 words ≈ 5-6 seconds — short enough that the image changes feel alive, not static. Beats MUST align with sentence/clause boundaries. Do not compress multiple ideas into one long beat.`,
     '',
     'Generate the storyboard JSON exactly per the schema in your instructions. No markdown wrapping. Pure JSON.',
   ].join('\n');
-  return await generateAndParseJSON({ model: MODEL_PRIMARY, systemInstruction, userPrompt, temperature: 0.7 });
+
+  // Validate count and retry once if the model under-delivered.
+  for (let attempt = 1; attempt <= 2; attempt++) {
+    const userPrompt = attempt === 1
+      ? baseUserPrompt
+      : `${baseUserPrompt}\n\nYOUR PREVIOUS RESPONSE HAD TOO FEW BEATS. The image will sit on screen for too long and feel static. Generate AT LEAST ${Math.round(targetBeats * 0.85)} beats. Break the script into smaller chunks of 12-15 words each.`;
+    const plan = await generateAndParseJSON({ model: MODEL_PRIMARY, systemInstruction, userPrompt, temperature: 0.7 });
+    const got = (plan.beats || []).length;
+    console.log(`[ollama] visual plan attempt ${attempt}: ${got} beats (target ${targetBeats})`);
+    if (got >= targetBeats * 0.7 || attempt === 2) return plan;
+    console.warn(`[ollama] visual plan too few beats (${got}/${targetBeats}), retrying`);
+  }
 }
 
 async function generateMetadata({ script, visualPlan, sources, topic }) {

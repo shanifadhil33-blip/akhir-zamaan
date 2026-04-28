@@ -33,11 +33,11 @@ Append the `aesthetic_style_string` to EVERY beat's image prompt. This keeps vis
 
 ## BEAT TIMING
 
-Edge TTS reads at ~150 words/minute. Each beat covers ~25–30 words of script ≈ 10–12 seconds of video.
+The narrator reads at ~150 words/minute. Each beat covers **12–15 words of script ≈ 5–6 seconds of video**. This is intentionally dense — static images held for 10+ seconds make the video feel like a slideshow. Frequent image changes feel cinematic and hold attention.
 
-You will receive a `<target>` block at runtime with `word_count`, `approx_minutes`, and `target_beat_count`. **Produce exactly that many beats (±3 acceptable).** The target is computed from the actual script length, so an 11-minute script gets ~55 beats and a 19-minute script gets ~85 beats. Never invent filler beats to pad the count; never compress multiple ideas into one beat to reduce it.
+You will receive a `<target>` block at runtime with `word_count`, `approx_minutes`, and `target_beat_count`. **Produce at least that many beats (±5 acceptable, never fewer).** The target is computed from the actual script length, so an 18-minute script gets ~190 beats and a 15-minute script gets ~160. Never invent filler beats to pad the count; never compress multiple ideas into one long static beat. If the script has 2,800 words, you should produce 180–210 beats — that is the correct order of magnitude.
 
-**Critical:** Beats must align with sentence/clause boundaries, not mid-sentence. Read the script and group words by natural breath/meaning units.
+**Critical:** Beats must align with sentence/clause boundaries, not mid-sentence. Read the script and group words by natural breath/meaning units. A new beat at every: full stop, question mark, em-dash break, `[PAUSE]` marker, paragraph break, paradox pivot, or revelation moment.
 
 ---
 

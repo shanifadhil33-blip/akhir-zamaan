@@ -84,8 +84,10 @@ async function assembleVideo({ beats, audioPath, captionsAss, recitations = [], 
 
   const baseVideoPath = path.join(outputDir, 'base_video.mp4');
   // Pass 1: images -> base video with Ken Burns zoom
-  // zoompan filter: slow zoom from 1.0 -> 1.15 over each beat
-  const zoomFilter = `scale=3840:2160,zoompan=z='min(zoom+0.0008,1.15)':d=125:s=1920x1080:fps=30,format=yuv420p`;
+  // Gentle, drawn-out zoom: ~1.0 -> 1.10 over ~10 seconds at 30fps. The
+  // smaller increment + smaller cap reads as cinematic drift, not the snappy
+  // zoom we had before that hit max in 6 seconds and then sat still.
+  const zoomFilter = `scale=3840:2160,zoompan=z='min(zoom+0.00033,1.10)':d=300:s=1920x1080:fps=30,format=yuv420p`;
 
   run('ffmpeg', [
     '-y',
