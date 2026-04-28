@@ -34,13 +34,16 @@ function buildPollinationsUrl(prompt, { width = 1920, height = 1080, seed = 42, 
 
 function sleep(ms) { return new Promise((r) => setTimeout(r, ms)); }
 
+function cfAccountId() { return (process.env.CLOUDFLARE_ACCOUNT_ID || '').trim(); }
+function cfApiToken() { return (process.env.CLOUDFLARE_API_TOKEN || '').trim(); }
+
 function cloudflareConfigured() {
-  return !!(process.env.CLOUDFLARE_ACCOUNT_ID && process.env.CLOUDFLARE_API_TOKEN);
+  return !!(cfAccountId() && cfApiToken());
 }
 
 async function generateBeatImageCloudflare({ prompt, outPath, width = 1024, height = 576 }) {
-  const accountId = process.env.CLOUDFLARE_ACCOUNT_ID;
-  const apiToken = process.env.CLOUDFLARE_API_TOKEN;
+  const accountId = cfAccountId();
+  const apiToken = cfApiToken();
   const url = `${CF_API_BASE}/${accountId}/ai/run/${CF_MODEL}`;
   const resp = await axios.post(url, {
     prompt: `${prompt}. Negative: ${NEGATIVE_PROMPT}`,
