@@ -111,6 +111,43 @@ jobs:
           ollama pull "${OLLAMA_MODEL}"
           ollama list
 
+      - name: Verify Cloudflare API token (no secrets printed)
+        run: |
+          set -euo pipefail
+          if [ -z "${CLOUDFLARE_API_TOKEN:-}" ]; then
+            echo "::warning::CLOUDFLARE_API_TOKEN not set — image generation will fall back to Pollinations only"
+            exit 0
+          fi
+          # Cloudflare's official endpoint for testing tokens. Returns
+          # the token's status, scopes, and expiry. Never echoes the
+          # token itself — only the response body.
+          echo "→ Calling Cloudflare /user/tokens/verify ..."
+          RESP=$(curl -sS -w '\n__HTTP_CODE__:%{http_code}' \
+            -H "Authorization: Bearer ${CLOUDFLARE_API_TOKEN}" \
+            -H "Content-Type: application/json" \
+            https://api.cloudflare.com/client/v4/user/tokens/verify)
+          HTTP_CODE=$(echo "$RESP" | grep '__HTTP_CODE__:' | cut -d: -f2)
+          BODY=$(echo "$RESP" | grep -v '__HTTP_CODE__:')
+          echo "  HTTP ${HTTP_CODE}"
+          echo "  Response: ${BODY}"
+          # Diagnostic info about token format (no token chars revealed)
+          TOK_LEN=$(printf %s "${CLOUDFLARE_API_TOKEN}" | wc -c)
+          TOK_TRIMMED_LEN=$(printf %s "${CLOUDFLARE_API_TOKEN}" | tr -d '[:space:]' | wc -c)
+          echo "  Token length: ${TOK_LEN} chars (after stripping all whitespace: ${TOK_TRIMMED_LEN})"
+          if [ "${TOK_LEN}" != "${TOK_TRIMMED_LEN}" ]; then
+            echo "  ⚠ Token contains whitespace — code .trim()s it but cleaner to fix in Secrets"
+          fi
+          if [ "${HTTP_CODE}" != "200" ]; then
+            echo "::error::Cloudflare rejected the token (HTTP ${HTTP_CODE}). Re-create the token in Cloudflare → My Profile → API Tokens, then update the GitHub Secret."
+            exit 1
+          fi
+          STATUS=$(echo "${BODY}" | grep -oE '"status"[[:space:]]*:[[:space:]]*"[^"]*"' | head -1 | sed 's/.*"\([^"]*\)"$/\1/')
+          if [ "${STATUS}" != "active" ]; then
+            echo "::error::Token responded but status is '${STATUS}' (expected 'active'). Check expiry or revocation."
+            exit 1
+          fi
+          echo "  ✓ Token is active and valid for Cloudflare API."
+
       - name: Setup Python 3.11 (for Kokoro TTS)
         uses: actions/setup-python@v5
         with:
