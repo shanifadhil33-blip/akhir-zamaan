@@ -1,10 +1,21 @@
-# CLAUDE.md — Akhir Zamaan: Autonomous Islamic Video Pipeline
+# CLAUDE.md — Akhir Zamaan: Autonomous Quran-Only Video Pipeline
 
 ## PROJECT OVERVIEW
 
-Autonomous, $0/video pipeline that generates one 15–20 minute Islamic end-times documentary daily. Reads Quran + hadith from local files (no APIs), generates scripts via Ollama (`gpt-oss:120b-cloud`), creates images via Pollinations, voiceover via local Kokoro TTS (with StreamElements + Edge TTS fallbacks), assembles via FFmpeg. GitHub Actions cron runs it daily, uploads the final `.mp4` to bashupload.com via curl, and Telegrams the operator a download link. The operator uploads to YouTube manually — no YouTube API, no OAuth.
+Autonomous, near-$0/video pipeline that generates one 15–20 minute documentary twice a week (Tue + Fri). The channel is **Quran-only** — it explains the direct words of Allah, NOT hadith, NOT scholarly opinions. Source retrieval reads Quranic verses from a local file (tanzil.net Sahih International). Web research via Tavily grounds the modern_context. Script generation via DeepSeek V3 (chunked: skeleton + 5 movements + metadata). Image generation via Cloudflare Workers AI (Flux Schnell, Pollinations fallback). Voiceover via local Kokoro-82M TTS on the runner. FFmpeg assembly. GitHub Actions runs it on cron, uploads the final `.mp4` to 0x0.st via curl, and delivers the link + thumbnail + captions + metadata to the operator's Telegram. The operator uploads to YouTube manually — no YouTube API, no OAuth.
 
 Channel: **Akhir Zamaan** (`@akhirzamaan`)
+
+## CONTENT PHILOSOPHY — QURAN ONLY
+
+This is the most important rule of the channel. **The voice is the Quran, unfiltered**. The pipeline:
+- Quotes ONLY the direct words of Allah from the Quran
+- NEVER quotes hadith, even from training knowledge
+- NEVER cites scholars (Ibn Kathir, Ghazali, Sufyan, contemporaries — none)
+- References prophets named in the Quran (Yusuf, Musa, Maryam, etc.) as Quranic figures
+- Surfaces the listener's modern condition, then names it through a verse
+
+The script-engine prompt enforces this with explicit forbidden patterns. The topic-generator schema does not allow hadith fields. The source-retriever still has hadith functions in code (legacy) but topics never specify hadith refs, so hadith data is never loaded.
 
 ## TECH STACK
 
