@@ -189,11 +189,11 @@ async function generateMovement({ spec, skeleton, previousMovements, topic, sour
     const result = await generateAndParseJSONForScript({ model: MODEL_PRIMARY, systemInstruction, userPrompt, temperature: 0.85 });
     const text = result[spec.key];
     if (!text || typeof text !== 'string') {
-      console.warn(`[ollama] ${spec.key} attempt ${attempt}: response missing the "${spec.key}" key`);
+      console.warn(`[script] ${spec.key} attempt ${attempt}: response missing the "${spec.key}" key`);
       continue;
     }
     const words = text.replace(/\[PAUSE\]/gi, ' ').trim().split(/\s+/).filter(Boolean).length;
-    console.log(`[ollama] ${spec.key} attempt ${attempt}: ${words} words (need ≥ ${spec.minWords})`);
+    console.log(`[script] ${spec.key} attempt ${attempt}: ${words} words (need ≥ ${spec.minWords})`);
     if (words >= spec.minWords) return text;
     if (attempt === MAX_MOVEMENT_ATTEMPTS) {
       // Accept short on final attempt — total-script floor will catch overall shortfall
@@ -265,7 +265,7 @@ async function generateScript({ topic, sources, modernContext, nextTopic }) {
 
   // Step 1 — skeleton (titles, mood, planned arc)
   const skeleton = await generateScriptSkeleton({ topic, sources, modernContext, nextTopic });
-  console.log(`[ollama] skeleton: mood=${skeleton.mood}, title="${(skeleton.title_options || [])[0] || ''}"`);
+  console.log(`[script] skeleton: mood=${skeleton.mood}, title="${(skeleton.title_options || [])[0] || ''}"`);
 
   // Step 2 — each movement, sequentially, with previous movements as context
   const movements = {};
@@ -301,7 +301,7 @@ async function generateScript({ topic, sources, modernContext, nextTopic }) {
   };
 
   const totalWords = countScriptWords(script);
-  console.log(`[ollama] chunked script complete: ${totalWords} words across 5 movements`);
+  console.log(`[script] chunked script complete: ${totalWords} words across 5 movements`);
 
   if (totalWords < MIN_SCRIPT_WORDS) {
     throw new Error(`Chunked script only produced ${totalWords} words (need ≥ ${MIN_SCRIPT_WORDS}). Topic "${topic.title}" left in queue for next run.`);
@@ -317,41 +317,108 @@ function countScriptWords(script) {
     .reduce((a, b) => a + b, 0);
 }
 
-async function generateVisualPlan({ script }) {
+function countWords(text) {
+  return String(text || '').replace(/\[PAUSE\]/gi, ' ').trim().split(/\s+/).filter(Boolean).length;
+}
+
+async function generateVisualPlanMeta({ script, words, approxMinutes }) {
   const systemInstruction = loadPrompt('visual-architect');
+  const userPrompt = [
+    `<script>\n${JSON.stringify(script, null, 2)}\n</script>`,
+    `<target>\n  word_count: ${words}\n  approx_minutes: ${approxMinutes}\n</target>`,
+    '',
+    'PLANNING PHASE ONLY. Do not generate any beats yet. Return JSON with these top-level keys only:',
+    '{',
+    '  "aesthetic_style_string": "5-10 word suffix to append to every beat\'s image prompt — sets the consistent visual language",',
+    '  "thumbnail": { "background_prompt": "dramatic image prompt", "title_overlay": "3-6 words ALL CAPS, most clickable phrase", "accent_color": "#hex" },',
+    '  "shorts_segment": { "start_beat": int, "end_beat": int, "reason": "why these beats make a strong vertical short" }',
+    '}',
+    '',
+    'No beats array. Pure JSON. No markdown.',
+  ].join('\n');
+  return generateAndParseJSON({ model: MODEL_PRIMARY, systemInstruction, userPrompt, temperature: 0.7 });
+}
+
+async function generateBeatsForMovement({ movementKey, movementText, aesthetic, beatTarget, beatNumberStart }) {
+  const systemInstruction = loadPrompt('visual-architect');
+  const userPrompt = [
+    `<aesthetic_style>\n${aesthetic}\n</aesthetic_style>`,
+    `<movement_key>${movementKey}</movement_key>`,
+    `<movement_text>\n${movementText}\n</movement_text>`,
+    `<target_beat_count>${beatTarget}</target_beat_count>`,
+    `<beat_number_start>${beatNumberStart}</beat_number_start>`,
+    '',
+    `Generate EXACTLY ${beatTarget} beats covering only the <movement_text> above (±2 acceptable). Each beat covers ~8-10 words ≈ 3-4 seconds. beat_number starts at ${beatNumberStart} and increments by 1 for each subsequent beat. Append <aesthetic_style> as a suffix to every image_prompt for visual consistency.`,
+    '',
+    'Schema:',
+    '{',
+    '  "beats": [',
+    '    {',
+    '      "beat_number": int,',
+    '      "script_segment": "exact words from this movement covered by this beat",',
+    '      "duration_estimate_seconds": float (3.0-5.0),',
+    '      "image_prompt": "15-35 words, ending with the aesthetic style suffix",',
+    '      "caption_emphasis": "1-4 words pulled from the script_segment",',
+    '      "verse_overlay": false',
+    '    }',
+    '  ]',
+    '}',
+    '',
+    'Set verse_overlay to true ONLY for beats where a Quranic verse from the script is being recited (max 3 across the whole video). Pure JSON. No markdown.',
+  ].join('\n');
+  // Per-movement output is at most ~90 beats × 60 tokens = 5400 tokens. Generous cap to be safe.
+  return generateAndParseJSON({ model: MODEL_PRIMARY, systemInstruction, userPrompt, temperature: 0.7, numPredict: 16384 });
+}
+
+async function generateVisualPlan({ script }) {
   const words = countScriptWords(script);
-  // Aim for one beat per ~9 words ≈ 3.5 seconds per image. Min 100, max 400
-  // so an 18-min script gets ~310 beats and a 15-min script gets ~250.
+  // Aim for one beat per ~9 words ≈ 3.5 seconds per image. Min 100, max 400.
   // Operator spec: image changes every 3-4 seconds aligned to sentence meaning.
   const targetBeats = Math.max(100, Math.min(400, Math.round(words / 9)));
   const approxMinutes = (words / 150).toFixed(1);
-  const baseUserPrompt = [
-    `<script>\n${JSON.stringify(script, null, 2)}\n</script>`,
-    `<target>`,
-    `  word_count: ${words}`,
-    `  approx_minutes: ${approxMinutes}`,
-    `  target_beat_count: ${targetBeats}`,
-    `  seconds_per_beat: 3-4`,
-    `</target>`,
-    '',
-    `Produce EXACTLY ${targetBeats} beats (±10 is acceptable, no fewer). Each beat covers ~8-10 words ≈ 3-4 seconds — every sentence or short clause gets its own image. The image changes constantly, in sync with the meaning of each phrase. Beats MUST align with sentence/clause boundaries. NEVER compress multiple ideas into one long static beat.`,
-    '',
-    'Generate the storyboard JSON exactly per the schema in your instructions. No markdown wrapping. Pure JSON.',
-  ].join('\n');
 
-  // Validate count and retry once if the model under-delivered.
-  for (let attempt = 1; attempt <= 2; attempt++) {
-    const userPrompt = attempt === 1
-      ? baseUserPrompt
-      : `${baseUserPrompt}\n\nYOUR PREVIOUS RESPONSE HAD TOO FEW BEATS. The image will sit on screen for too long and feel static. Generate AT LEAST ${Math.round(targetBeats * 0.85)} beats. Break the script into smaller chunks of 12-15 words each.`;
-    // num_predict 32K so the JSON for ~310 beats doesn't truncate.
-    // Each beat ≈ 60 tokens; default 8K cap only fits ~133 beats.
-    const plan = await generateAndParseJSON({ model: MODEL_PRIMARY, systemInstruction, userPrompt, temperature: 0.7, numPredict: 32768 });
-    const got = (plan.beats || []).length;
-    console.log(`[ollama] visual plan attempt ${attempt}: ${got} beats (target ${targetBeats})`);
-    if (got >= targetBeats * 0.7 || attempt === 2) return plan;
-    console.warn(`[ollama] visual plan too few beats (${got}/${targetBeats}), retrying`);
+  console.log(`[visual-plan] chunked mode, target ${targetBeats} beats across 5 movements`);
+
+  // Step 1 — meta (aesthetic, thumbnail, shorts_segment). Small JSON, single call.
+  const meta = await generateVisualPlanMeta({ script, words, approxMinutes });
+  console.log(`[visual-plan] meta: aesthetic="${(meta.aesthetic_style_string || '').slice(0, 60)}..."`);
+
+  // Step 2 — beats per movement. Distribute target proportional to movement length.
+  const movements = [
+    { key: 'cold_open', text: script.cold_open || '' },
+    { key: 'naming', text: script.naming || '' },
+    { key: 'excavation', text: script.excavation || '' },
+    { key: 'mirror', text: script.mirror || '' },
+    { key: 'haunting', text: script.haunting || '' },
+  ];
+  const wordsByMovement = movements.map((m) => countWords(m.text));
+  const totalMovementWords = wordsByMovement.reduce((a, b) => a + b, 0) || 1;
+
+  const allBeats = [];
+  for (let i = 0; i < movements.length; i++) {
+    const m = movements[i];
+    const w = wordsByMovement[i];
+    const beatTarget = Math.max(10, Math.round((w / totalMovementWords) * targetBeats));
+    const beatNumberStart = allBeats.length + 1;
+    const result = await generateBeatsForMovement({
+      movementKey: m.key,
+      movementText: m.text,
+      aesthetic: meta.aesthetic_style_string || '',
+      beatTarget,
+      beatNumberStart,
+    });
+    const movementBeats = Array.isArray(result.beats) ? result.beats : [];
+    console.log(`[visual-plan] ${m.key}: ${movementBeats.length} beats (target ${beatTarget}, ${w} words)`);
+    allBeats.push(...movementBeats);
   }
+
+  console.log(`[visual-plan] complete: ${allBeats.length} beats total (target ${targetBeats})`);
+  return {
+    aesthetic_style_string: meta.aesthetic_style_string || '',
+    thumbnail: meta.thumbnail || {},
+    shorts_segment: meta.shorts_segment || {},
+    beats: allBeats,
+  };
 }
 
 async function generateMetadata({ script, visualPlan, sources, topic }) {
