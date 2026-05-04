@@ -7,6 +7,7 @@ const fs = require('fs');
 const path = require('path');
 const axios = require('axios');
 const deepseek = require('./deepseek');
+const cloudflareLLM = require('./cloudflare-llm');
 
 const OLLAMA_HOST = process.env.OLLAMA_HOST || 'http://localhost:11434';
 const MODEL_PRIMARY = process.env.OLLAMA_MODEL || 'gpt-oss:120b-cloud';
@@ -100,30 +101,45 @@ async function generateAndParseJSON(args) {
   }
 }
 
-// Script-tier router. When DEEPSEEK_API_KEY is set, all script-generation
-// calls (skeleton, the 5 movements, metadata extract) go to DeepSeek V3 —
-// it produces dramatically better narrative prose than gpt-oss:120b-cloud.
-// When DeepSeek is not configured, falls back to Ollama with the same shape
-// so the rest of the pipeline doesn't care which provider answered.
+// Script-tier router. Picks the highest-quality configured provider for
+// script-generation calls (skeleton, the 5 movements, metadata extract).
+// Priority: deepseek > cloudflare-llm > ollama. The visual plan, topic
+// generation, and modern context still go to Ollama — those produce JSON
+// outputs that exceed Cloudflare's per-call cap.
+function pickScriptProvider() {
+  if (deepseek.configured()) return 'deepseek';
+  if (cloudflareLLM.configured()) return 'cloudflare';
+  return 'ollama';
+}
+
 async function generateAndParseJSONForScript(args) {
-  const useDeepSeek = deepseek.configured();
+  const provider = pickScriptProvider();
   for (let attempt = 1; attempt <= 2; attempt++) {
     const promptForAttempt = attempt === 1
       ? args.userPrompt
       : `${args.userPrompt}\n\nIMPORTANT: Your previous response failed JSON parsing. Return STRICT, COMPLETE JSON. No trailing commas. No markdown fences. Every opening bracket/brace matched. Just JSON.`;
     try {
-      const text = useDeepSeek
-        ? await deepseek.call({
-            systemInstruction: args.systemInstruction,
-            userPrompt: promptForAttempt,
-            temperature: args.temperature,
-            jsonMode: true,
-          })
-        : await callOllama({ ...args, userPrompt: promptForAttempt });
+      let text;
+      if (provider === 'deepseek') {
+        text = await deepseek.call({
+          systemInstruction: args.systemInstruction,
+          userPrompt: promptForAttempt,
+          temperature: args.temperature,
+          jsonMode: true,
+        });
+      } else if (provider === 'cloudflare') {
+        text = await cloudflareLLM.call({
+          systemInstruction: args.systemInstruction,
+          userPrompt: promptForAttempt,
+          temperature: args.temperature,
+          jsonMode: true,
+        });
+      } else {
+        text = await callOllama({ ...args, userPrompt: promptForAttempt });
+      }
       return extractJSON(text);
     } catch (err) {
       if (attempt === 2 || !/JSON|parse|Unexpected/i.test(err.message || '')) throw err;
-      const provider = useDeepSeek ? 'deepseek' : 'ollama';
       console.warn(`[${provider}] JSON parse failed (${err.message.slice(0, 120)}) — retrying once with strict reminder`);
     }
   }
@@ -240,8 +256,12 @@ async function extractScriptMetadata({ topic, skeleton, movements, sources, next
 }
 
 async function generateScript({ topic, sources, modernContext, nextTopic }) {
-  const provider = deepseek.configured() ? `deepseek (${deepseek.MODEL_DEFAULT})` : `ollama (${MODEL_PRIMARY})`;
-  console.log(`[script-gen] chunked mode, provider: ${provider}`);
+  let providerLabel;
+  const which = pickScriptProvider();
+  if (which === 'deepseek') providerLabel = `deepseek (${deepseek.MODEL_DEFAULT})`;
+  else if (which === 'cloudflare') providerLabel = `cloudflare-llm (${cloudflareLLM.MODEL_DEFAULT})`;
+  else providerLabel = `ollama (${MODEL_PRIMARY})`;
+  console.log(`[script-gen] chunked mode, provider: ${providerLabel}`);
 
   // Step 1 — skeleton (titles, mood, planned arc)
   const skeleton = await generateScriptSkeleton({ topic, sources, modernContext, nextTopic });
