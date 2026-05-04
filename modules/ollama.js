@@ -324,7 +324,9 @@ async function generateVisualPlan({ script }) {
     const userPrompt = attempt === 1
       ? baseUserPrompt
       : `${baseUserPrompt}\n\nYOUR PREVIOUS RESPONSE HAD TOO FEW BEATS. The image will sit on screen for too long and feel static. Generate AT LEAST ${Math.round(targetBeats * 0.85)} beats. Break the script into smaller chunks of 12-15 words each.`;
-    const plan = await generateAndParseJSON({ model: MODEL_PRIMARY, systemInstruction, userPrompt, temperature: 0.7 });
+    // num_predict 32K so the JSON for ~310 beats doesn't truncate.
+    // Each beat ≈ 60 tokens; default 8K cap only fits ~133 beats.
+    const plan = await generateAndParseJSON({ model: MODEL_PRIMARY, systemInstruction, userPrompt, temperature: 0.7, numPredict: 32768 });
     const got = (plan.beats || []).length;
     console.log(`[ollama] visual plan attempt ${attempt}: ${got} beats (target ${targetBeats})`);
     if (got >= targetBeats * 0.7 || attempt === 2) return plan;
