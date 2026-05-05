@@ -112,35 +112,65 @@ function pickScriptProvider() {
   return 'ollama';
 }
 
+// Internal helper that runs ONE attempt against a chosen provider.
+// Returns the raw model text or throws.
+async function callScriptProvider(provider, { systemInstruction, userPrompt, temperature, ollamaArgs }) {
+  if (provider === 'deepseek') {
+    return deepseek.call({ systemInstruction, userPrompt, temperature, jsonMode: true });
+  }
+  if (provider === 'cloudflare') {
+    return cloudflareLLM.call({ systemInstruction, userPrompt, temperature, jsonMode: true });
+  }
+  return callOllama({ ...ollamaArgs, userPrompt });
+}
+
 async function generateAndParseJSONForScript(args) {
-  const provider = pickScriptProvider();
+  const primary = pickScriptProvider();
+  // If primary is cloudflare or deepseek, we keep ollama as an emergency
+  // fallback for upstream-side failures (408 timeouts, 5xx, rate limits).
+  // The pipeline must never fail just because one provider is having a bad day.
+  const fallback = primary !== 'ollama' ? 'ollama' : null;
+
   for (let attempt = 1; attempt <= 2; attempt++) {
     const promptForAttempt = attempt === 1
       ? args.userPrompt
       : `${args.userPrompt}\n\nIMPORTANT: Your previous response failed JSON parsing. Return STRICT, COMPLETE JSON. No trailing commas. No markdown fences. Every opening bracket/brace matched. Just JSON.`;
+
+    let text;
+    let providerUsed = primary;
     try {
-      let text;
-      if (provider === 'deepseek') {
-        text = await deepseek.call({
+      text = await callScriptProvider(primary, {
+        systemInstruction: args.systemInstruction,
+        userPrompt: promptForAttempt,
+        temperature: args.temperature,
+        ollamaArgs: args,
+      });
+    } catch (primaryErr) {
+      // Distinguish upstream-side errors (worth falling back) from JSON-parse
+      // errors (same prompt would fail on the fallback too — let outer loop retry).
+      const status = primaryErr.response && primaryErr.response.status;
+      const isUpstreamFailure = status === 408 || status === 429 || status === 402 || status === 401 || (typeof status === 'number' && status >= 500) || /timeout|ECONN|EAI_/i.test(primaryErr.code || '');
+      if (!fallback || !isUpstreamFailure) throw primaryErr;
+      console.warn(`[script] primary provider ${primary} failed (${status || primaryErr.code || primaryErr.message.slice(0, 80)}) — falling back to ${fallback}`);
+      try {
+        text = await callScriptProvider(fallback, {
           systemInstruction: args.systemInstruction,
           userPrompt: promptForAttempt,
           temperature: args.temperature,
-          jsonMode: true,
+          ollamaArgs: args,
         });
-      } else if (provider === 'cloudflare') {
-        text = await cloudflareLLM.call({
-          systemInstruction: args.systemInstruction,
-          userPrompt: promptForAttempt,
-          temperature: args.temperature,
-          jsonMode: true,
-        });
-      } else {
-        text = await callOllama({ ...args, userPrompt: promptForAttempt });
+        providerUsed = fallback;
+      } catch (fbErr) {
+        // Both providers failed — surface the original error
+        throw primaryErr;
       }
+    }
+
+    try {
       return extractJSON(text);
-    } catch (err) {
-      if (attempt === 2 || !/JSON|parse|Unexpected/i.test(err.message || '')) throw err;
-      console.warn(`[${provider}] JSON parse failed (${err.message.slice(0, 120)}) — retrying once with strict reminder`);
+    } catch (parseErr) {
+      if (attempt === 2 || !/JSON|parse|Unexpected/i.test(parseErr.message || '')) throw parseErr;
+      console.warn(`[${providerUsed}] JSON parse failed (${parseErr.message.slice(0, 120)}) — retrying once with strict reminder`);
     }
   }
 }
