@@ -6,8 +6,6 @@
 const fs = require('fs');
 const path = require('path');
 const axios = require('axios');
-const deepseek = require('./deepseek');
-const cloudflareLLM = require('./cloudflare-llm');
 
 const OLLAMA_HOST = process.env.OLLAMA_HOST || 'http://localhost:11434';
 const MODEL_PRIMARY = process.env.OLLAMA_MODEL || 'gpt-oss:120b-cloud';
@@ -101,78 +99,14 @@ async function generateAndParseJSON(args) {
   }
 }
 
-// Script-tier router. Picks the highest-quality configured provider for
-// script-generation calls (skeleton, the 5 movements, metadata extract).
-// Priority: deepseek > cloudflare-llm > ollama. The visual plan, topic
-// generation, and modern context still go to Ollama — those produce JSON
-// outputs that exceed Cloudflare's per-call cap.
-function pickScriptProvider() {
-  if (deepseek.configured()) return 'deepseek';
-  if (cloudflareLLM.configured()) return 'cloudflare';
-  return 'ollama';
-}
-
-// Internal helper that runs ONE attempt against a chosen provider.
-// Returns the raw model text or throws.
-async function callScriptProvider(provider, { systemInstruction, userPrompt, temperature, ollamaArgs }) {
-  if (provider === 'deepseek') {
-    return deepseek.call({ systemInstruction, userPrompt, temperature, jsonMode: true });
-  }
-  if (provider === 'cloudflare') {
-    return cloudflareLLM.call({ systemInstruction, userPrompt, temperature, jsonMode: true });
-  }
-  return callOllama({ ...ollamaArgs, userPrompt });
-}
-
+// Script-tier JSON wrapper. Used by the chunked script generator
+// (skeleton + 5 movements + metadata-extract) for narrative-heavy calls.
+// Identical to generateAndParseJSON today — kept as a separate function
+// so future provider swaps for the script tier (e.g. streaming Cloudflare,
+// Claude/OpenAI API, etc.) only need to touch this one function instead of
+// rewriting every call site.
 async function generateAndParseJSONForScript(args) {
-  const primary = pickScriptProvider();
-  // If primary is cloudflare or deepseek, we keep ollama as an emergency
-  // fallback for upstream-side failures (408 timeouts, 5xx, rate limits).
-  // The pipeline must never fail just because one provider is having a bad day.
-  const fallback = primary !== 'ollama' ? 'ollama' : null;
-
-  for (let attempt = 1; attempt <= 2; attempt++) {
-    const promptForAttempt = attempt === 1
-      ? args.userPrompt
-      : `${args.userPrompt}\n\nIMPORTANT: Your previous response failed JSON parsing. Return STRICT, COMPLETE JSON. No trailing commas. No markdown fences. Every opening bracket/brace matched. Just JSON.`;
-
-    let text;
-    let providerUsed = primary;
-    try {
-      text = await callScriptProvider(primary, {
-        systemInstruction: args.systemInstruction,
-        userPrompt: promptForAttempt,
-        temperature: args.temperature,
-        ollamaArgs: args,
-      });
-    } catch (primaryErr) {
-      // Distinguish upstream-side errors (worth falling back) from JSON-parse
-      // errors (same prompt would fail on the fallback too — let outer loop retry).
-      const status = primaryErr.response && primaryErr.response.status;
-      const isUpstreamFailure = status === 408 || status === 429 || status === 402 || status === 401 || (typeof status === 'number' && status >= 500) || /timeout|ECONN|EAI_/i.test(primaryErr.code || '');
-      if (!fallback || !isUpstreamFailure) throw primaryErr;
-      console.warn(`[script] primary provider ${primary} failed (${status || primaryErr.code || primaryErr.message.slice(0, 80)}) — falling back to ${fallback}`);
-      try {
-        text = await callScriptProvider(fallback, {
-          systemInstruction: args.systemInstruction,
-          userPrompt: promptForAttempt,
-          temperature: args.temperature,
-          ollamaArgs: args,
-        });
-        providerUsed = fallback;
-      } catch (fbErr) {
-        // Both providers failed — surface the original error
-        throw primaryErr;
-      }
-    }
-
-    try {
-      return extractJSON(text);
-    } catch (parseErr) {
-      if (attempt === 2 || !/JSON|parse|Unexpected/i.test(parseErr.message || '')) throw parseErr;
-      console.warn(`[${providerUsed}] JSON parse failed (${parseErr.message.slice(0, 120)}) — retrying once with strict reminder`);
-    }
-  }
+  return generateAndParseJSON(args);
 }
 
 // Hard floor: 15-minute videos require ≥ 2,250 words at the
@@ -286,12 +220,7 @@ async function extractScriptMetadata({ topic, skeleton, movements, sources, next
 }
 
 async function generateScript({ topic, sources, modernContext, nextTopic }) {
-  let providerLabel;
-  const which = pickScriptProvider();
-  if (which === 'deepseek') providerLabel = `deepseek (${deepseek.MODEL_DEFAULT})`;
-  else if (which === 'cloudflare') providerLabel = `cloudflare-llm (${cloudflareLLM.MODEL_DEFAULT})`;
-  else providerLabel = `ollama (${MODEL_PRIMARY})`;
-  console.log(`[script-gen] chunked mode, provider: ${providerLabel}`);
+  console.log(`[script-gen] chunked mode, provider: ollama (${MODEL_PRIMARY})`);
 
   // Step 1 — skeleton (titles, mood, planned arc)
   const skeleton = await generateScriptSkeleton({ topic, sources, modernContext, nextTopic });
