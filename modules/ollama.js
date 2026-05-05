@@ -36,10 +36,21 @@ function isTransientError(err) {
   if (!err) return false;
   const code = err.code;
   const status = err.response && err.response.status;
+  if (code === 'OLLAMA_EMPTY_RESPONSE') return true;
   if (code === 'ECONNRESET' || code === 'ETIMEDOUT' || code === 'EAI_AGAIN' || code === 'ECONNREFUSED') return true;
   if (status >= 500 && status < 600) return true;
   if (status === 429) return true;
   return false;
+}
+
+function makeOllamaEmptyResponseError(data) {
+  const keys = Object.keys(data || {}).join(',');
+  const doneReason = data && data.done_reason;
+  const evalCount = data && data.eval_count;
+  const err = new Error(`Ollama returned no content (done_reason=${doneReason || 'unknown'}, eval_count=${evalCount ?? 'unknown'}). Body keys: ${keys}`);
+  err.code = 'OLLAMA_EMPTY_RESPONSE';
+  err.doneReason = doneReason;
+  return err;
 }
 
 // Calls Ollama /api/chat with one message. Retries transient network errors.
@@ -64,7 +75,7 @@ async function callOllamaOnce({ model, systemInstruction, userPrompt, temperatur
     validateStatus: (s) => s === 200,
   });
   const content = resp.data && resp.data.message && resp.data.message.content;
-  if (!content) throw new Error(`Ollama returned no content. Body keys: ${Object.keys(resp.data || {}).join(',')}`);
+  if (!content || !String(content).trim()) throw makeOllamaEmptyResponseError(resp.data);
   return content;
 }
 
@@ -85,16 +96,17 @@ async function callOllama(args, { maxAttempts = 3, baseDelayMs = 2000 } = {}) {
 }
 
 async function generateAndParseJSON(args) {
-  for (let attempt = 1; attempt <= 2; attempt++) {
+  const maxJsonAttempts = args.maxJsonAttempts || 3;
+  for (let attempt = 1; attempt <= maxJsonAttempts; attempt++) {
     const promptForAttempt = attempt === 1
       ? args.userPrompt
-      : `${args.userPrompt}\n\nIMPORTANT: Your previous response failed JSON parsing. Return STRICT, COMPLETE JSON. No trailing commas. No markdown fences. Every opening bracket/brace matched. Just JSON.`;
+      : `${args.userPrompt}\n\nIMPORTANT: Your previous response failed or returned empty content. Return STRICT, COMPLETE JSON. No trailing commas. No markdown fences. Every opening bracket/brace matched. Just JSON.`;
     try {
       const text = await callOllama({ ...args, userPrompt: promptForAttempt });
       return extractJSON(text);
     } catch (err) {
-      if (attempt === 2 || !/JSON|parse|Unexpected/i.test(err.message || '')) throw err;
-      console.warn(`[ollama] JSON parse failed (${err.message.slice(0, 120)}) — retrying once with strict reminder`);
+      if (attempt === maxJsonAttempts || !/JSON|parse|Unexpected|Empty|no content/i.test(err.message || '')) throw err;
+      console.warn(`[ollama] JSON response failed (${err.message.slice(0, 120)}) - retry ${attempt}/${maxJsonAttempts} with strict reminder`);
     }
   }
 }
@@ -280,6 +292,198 @@ function countWords(text) {
   return String(text || '').replace(/\[PAUSE\]/gi, ' ').trim().split(/\s+/).filter(Boolean).length;
 }
 
+function clampNumber(value, min, max, fallback) {
+  const n = Number(value);
+  if (!Number.isFinite(n)) return fallback;
+  return Math.max(min, Math.min(max, n));
+}
+
+function compactWords(text, maxWords) {
+  return String(text || '')
+    .replace(/\[PAUSE\]/gi, ' ')
+    .replace(/\s+/g, ' ')
+    .trim()
+    .split(/\s+/)
+    .filter(Boolean)
+    .slice(0, maxWords)
+    .join(' ');
+}
+
+function fallbackPromptForMovement(movementKey, segment) {
+  const theme = compactWords(segment, 16);
+  const base = {
+    cold_open: 'A solitary modern man awake in phone light, apartment shadows, anxious reflection in dark glass',
+    naming: 'Ancient manuscript pages reflected over a modern city, a man recognizing a spiritual warning',
+    excavation: 'Cinematic desert ruins and present-day streets merging, hidden patterns revealed through light and shadow',
+    mirror: 'A lone man facing his reflection in a city window, split between comfort and repentance',
+    haunting: 'Quiet dawn over an empty prayer space, one figure carrying an unresolved question',
+  }[movementKey] || 'Cinematic Islamic documentary scene, modern life and ancient warning intertwined';
+
+  return `${base}, visual metaphor for "${theme}"`.slice(0, 240);
+}
+
+function buildFallbackVisualMeta(script) {
+  const title = (script.title_options && script.title_options[0]) || 'Akhir Zamaan';
+  return {
+    aesthetic_style_string: script.mood === 'painterly_islamic'
+      ? 'painterly Islamic realism, warm light, detailed texture'
+      : 'cinematic realism, high contrast, deep shadows, subtle gold light',
+    thumbnail: {
+      background_prompt: `Dramatic cinematic Islamic scene inspired by "${title}", single human silhouette, high contrast, no text`,
+      title_overlay: compactWords(title, 5).toUpperCase() || 'AKHIR ZAMAAN',
+      accent_color: '#D6B25E',
+    },
+    shorts_segment: { start_beat: 1, end_beat: 12, reason: 'Opening section has the clearest hook.' },
+  };
+}
+
+function buildFallbackBeatsForMovement({ movementKey, movementText, beatTarget, beatNumberStart }) {
+  const cleanText = String(movementText || '')
+    .replace(/\[PAUSE\]/gi, ' ')
+    .replace(/\s+/g, ' ')
+    .trim();
+  const words = cleanText.split(/\s+/).filter(Boolean);
+  const target = Math.max(1, beatTarget || Math.ceil(words.length / 9) || 1);
+  const beats = [];
+
+  for (let i = 0; i < target; i++) {
+    const start = Math.floor((i * words.length) / target);
+    const end = Math.max(start + 1, Math.floor(((i + 1) * words.length) / target));
+    const segment = words.slice(start, end).join(' ') || compactWords(cleanText, 12);
+    beats.push({
+      beat_number: beatNumberStart + i,
+      script_segment: segment,
+      duration_estimate_seconds: 3.8,
+      image_prompt: fallbackPromptForMovement(movementKey, segment),
+      caption_emphasis: compactWords(segment, 4),
+      verse_overlay: false,
+      fallback_visual_plan: true,
+    });
+  }
+
+  return beats;
+}
+
+function normalizeBeatsForMovement({ beats, movementKey, movementText, beatTarget, beatNumberStart }) {
+  const source = Array.isArray(beats) ? beats : [];
+  const normalized = [];
+  for (let i = 0; i < source.length; i++) {
+    const beat = source[i];
+    if (!beat || typeof beat !== 'object') continue;
+    const segment = compactWords(beat.script_segment || movementText, 24);
+    normalized.push({
+      beat_number: beatNumberStart + normalized.length,
+      script_segment: segment,
+      duration_estimate_seconds: clampNumber(beat.duration_estimate_seconds, 3, 5, 3.8),
+      image_prompt: compactWords(beat.image_prompt, 35) || fallbackPromptForMovement(movementKey, segment),
+      caption_emphasis: compactWords(beat.caption_emphasis || segment, 4),
+      verse_overlay: !!beat.verse_overlay,
+      fallback_visual_plan: !!beat.fallback_visual_plan,
+    });
+  }
+
+  const minimumUsable = Math.max(1, Math.floor((beatTarget || 1) * 0.7));
+  if (normalized.length < minimumUsable) {
+    console.warn(`[visual-plan] ${movementKey}: only ${normalized.length} usable beats; using deterministic fallback`);
+    return buildFallbackBeatsForMovement({ movementKey, movementText, beatTarget, beatNumberStart });
+  }
+
+  return normalized;
+}
+
+function trimTitle(text, maxLen = 68) {
+  const title = String(text || 'Akhir Zamaan').replace(/\s+/g, ' ').trim();
+  if (title.length <= maxLen) return title;
+  return `${title.slice(0, maxLen - 1).replace(/\s+\S*$/, '')}...`;
+}
+
+function formatTimestamp(totalSeconds) {
+  const seconds = Math.max(0, Math.round(totalSeconds || 0));
+  const m = Math.floor(seconds / 60);
+  const s = seconds % 60;
+  return `${m}:${String(s).padStart(2, '0')}`;
+}
+
+function buildFallbackChapters(script) {
+  const movements = [
+    { key: 'cold_open', label: 'The Question You Avoided' },
+    { key: 'naming', label: 'What He Called It' },
+    { key: 'excavation', label: 'The Pattern Beneath It' },
+    { key: 'mirror', label: 'Where It Finds You' },
+    { key: 'haunting', label: 'The Choice Tonight' },
+  ];
+  let elapsed = 0;
+  return movements.map((m, index) => {
+    const time = index === 0 ? '0:00' : formatTimestamp(elapsed);
+    elapsed += (countWords(script[m.key]) / 150) * 60;
+    return { time, label: m.label };
+  });
+}
+
+function sourceLabel(source) {
+  if (!source || typeof source !== 'object') return '';
+  return source.reference || source.ref || source.id || source.title || '';
+}
+
+function buildFallbackMetadata({ script, sources, topic }) {
+  const title = trimTitle((script.title_options && script.title_options[0]) || (topic && topic.title) || 'Akhir Zamaan');
+  const chapters = buildFallbackChapters(script);
+  const sourceRefs = [
+    ...((sources && sources.verses) || []),
+    ...((sources && sources.hadith) || []),
+  ].map(sourceLabel).filter(Boolean);
+  const sourceLines = sourceRefs.length
+    ? sourceRefs.map((s) => `- ${s}`).join('\n')
+    : '- Quran and hadith sources retrieved for this topic';
+  const chapterLines = chapters.map((c) => `${c.time} ${c.label}`).join('\n');
+  const question = script.pinned_comment_question || 'What part of this warning feels closest to your life right now?';
+  const description = [
+    compactWords(script.cold_open, 24) || 'A quiet warning can sit inside ordinary modern life.',
+    'This reflection connects authenticated Islamic sources to the patterns we are living through now.',
+    '',
+    'SOURCES REFERENCED IN THIS VIDEO:',
+    sourceLines,
+    '',
+    'CHAPTERS:',
+    chapterLines,
+    '',
+    'ABOUT THIS CHANNEL:',
+    'Akhir Zamaan presents authenticated verses and hadith from primary Islamic sources, woven into cinematic reflections on the modern condition. We do not issue fatwa. We invite reflection.',
+    '',
+    `COMMENT below: ${question}`,
+    '',
+    'DISCLAIMER:',
+    'This channel presents authenticated verses and hadith from primary sources. All interpretations are general reflections, not formal fatwa. For specific religious guidance, consult a qualified scholar.',
+    '',
+    '#islam #endtimes #qiyamah #akhirzamaan #quran #hadith #signsofqiyamah #islamicreminder',
+  ].join('\n');
+
+  return {
+    title,
+    description,
+    tags: [
+      'islam',
+      'end times islam',
+      'qiyamah signs',
+      'signs of the hour',
+      'akhir zamaan',
+      'quran',
+      'hadith',
+      'islamic reminder',
+      'prophetic warnings',
+      'islamic eschatology',
+      'last days islam',
+      'deen',
+      'faith',
+    ],
+    chapters,
+    category_id: 27,
+    default_language: 'en',
+    default_audio_language: 'en',
+    fallback_metadata: true,
+  };
+}
+
 async function generateVisualPlanMeta({ script, words, approxMinutes }) {
   const systemInstruction = loadPrompt('visual-architect');
   const userPrompt = [
@@ -339,7 +543,13 @@ async function generateVisualPlan({ script }) {
   console.log(`[visual-plan] chunked mode, target ${targetBeats} beats across 5 movements`);
 
   // Step 1 — meta (aesthetic, thumbnail, shorts_segment). Small JSON, single call.
-  const meta = await generateVisualPlanMeta({ script, words, approxMinutes });
+  let meta;
+  try {
+    meta = await generateVisualPlanMeta({ script, words, approxMinutes });
+  } catch (err) {
+    console.warn(`[visual-plan] meta generation failed (${err.message}) - using deterministic fallback`);
+    meta = buildFallbackVisualMeta(script);
+  }
   console.log(`[visual-plan] meta: aesthetic="${(meta.aesthetic_style_string || '').slice(0, 60)}..."`);
 
   // Step 2 — beats per movement. Distribute target proportional to movement length.
@@ -359,14 +569,26 @@ async function generateVisualPlan({ script }) {
     const w = wordsByMovement[i];
     const beatTarget = Math.max(10, Math.round((w / totalMovementWords) * targetBeats));
     const beatNumberStart = allBeats.length + 1;
-    const result = await generateBeatsForMovement({
+    let result;
+    try {
+      result = await generateBeatsForMovement({
+        movementKey: m.key,
+        movementText: m.text,
+        aesthetic: meta.aesthetic_style_string || '',
+        beatTarget,
+        beatNumberStart,
+      });
+    } catch (err) {
+      console.warn(`[visual-plan] ${m.key} generation failed (${err.message}) - using deterministic fallback`);
+      result = { beats: buildFallbackBeatsForMovement({ movementKey: m.key, movementText: m.text, beatTarget, beatNumberStart }) };
+    }
+    const movementBeats = normalizeBeatsForMovement({
+      beats: result.beats,
       movementKey: m.key,
       movementText: m.text,
-      aesthetic: meta.aesthetic_style_string || '',
       beatTarget,
       beatNumberStart,
     });
-    const movementBeats = Array.isArray(result.beats) ? result.beats : [];
     console.log(`[visual-plan] ${m.key}: ${movementBeats.length} beats (target ${beatTarget}, ${w} words)`);
     allBeats.push(...movementBeats);
   }
@@ -390,7 +612,12 @@ async function generateMetadata({ script, visualPlan, sources, topic }) {
     '',
     'Generate the metadata JSON exactly per the schema in your instructions. No markdown wrapping. Pure JSON.',
   ].join('\n\n');
-  return await generateAndParseJSON({ model: MODEL_PRIMARY, systemInstruction, userPrompt, temperature: 0.7 });
+  try {
+    return await generateAndParseJSON({ model: MODEL_PRIMARY, systemInstruction, userPrompt, temperature: 0.7 });
+  } catch (err) {
+    console.warn(`[metadata] generation failed (${err.message}) - using deterministic fallback`);
+    return buildFallbackMetadata({ script, visualPlan, sources, topic });
+  }
 }
 
 async function generateNewTopics({ existingCount, recentTopicsSample, highestIds }) {
