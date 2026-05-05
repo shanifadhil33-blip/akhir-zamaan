@@ -15,12 +15,11 @@ permissions:
 jobs:
   publish:
     runs-on: ubuntu-latest
-    # Why 180 not 120: Kokoro TTS runs on CPU (no GPU on hosted runners)
-    # and processes audio chunks sequentially at ~30s each. For a 3,300-word
-    # script that's ~85 min just for voiceover. Add LLM calls (~15 min),
-    # image gen (~10 min), captions, FFmpeg assembly, and 2h is too tight.
-    # 180 gives ~30 min of margin without being wasteful. Free-tier max is 360.
-    timeout-minutes: 180
+    # Set to the GitHub Actions free-tier maximum (6 hours). The pipeline
+    # normally finishes in ~2.5h; this just removes the wall-clock anxiety.
+    # Actual billed minutes equal actual run time, not the timeout cap —
+    # so 360 here costs the same as 120 if the run still completes in 2.5h.
+    timeout-minutes: 360
 
     env:
       # Ollama runs ON the runner (installed below) and proxies cloud-routed
