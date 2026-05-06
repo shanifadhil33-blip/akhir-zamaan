@@ -1,8 +1,8 @@
 // modules/images.js
 // Image generation. Provider chain: Cloudflare Workers AI (primary, when
 // CLOUDFLARE_ACCOUNT_ID + CLOUDFLARE_API_TOKEN are set) → Pollinations.ai
-// (fallback, free + no key but flaky). Beats are generated concurrently
-// (default 6 in flight) so the image stage finishes in minutes, not hours.
+// (fallback, free + no key but flaky). Beats are generated concurrently,
+// but throttled to avoid 429 cascades across both free-tier providers.
 
 const fs = require('fs');
 const path = require('path');
@@ -14,9 +14,21 @@ const CF_API_BASE = 'https://api.cloudflare.com/client/v4/accounts';
 // dimensions up to 2048. 1024x576 = 16:9, fits the FFmpeg Ken Burns pipeline
 // which scales to 1920x1080 anyway.
 const CF_MODEL = '@cf/black-forest-labs/flux-1-schnell';
-const IMAGE_CONCURRENCY = parseInt(process.env.IMAGE_CONCURRENCY || '6', 10);
+const IMAGE_CONCURRENCY = parseBoundedInt(process.env.IMAGE_CONCURRENCY, 3, 1, 3);
+const CF_MAX_ATTEMPTS = parseBoundedInt(process.env.CLOUDFLARE_IMAGE_ATTEMPTS, 2, 1, 5);
 
 const NEGATIVE_PROMPT = 'deformed, disfigured, bad anatomy, extra fingers, extra limbs, missing fingers, mutated hands, low quality, blurry, out of focus, jpeg artifacts, watermark, text, logo, signature, caption, ugly, pixelated, distorted faces, cartoon, anime, 3d render, plastic skin, overexposed, underexposed, oversaturated';
+
+const providerCooldownUntil = {
+  cloudflare: 0,
+  pollinations: 0,
+};
+
+function parseBoundedInt(value, fallback, min, max) {
+  const n = parseInt(value || '', 10);
+  if (!Number.isFinite(n)) return fallback;
+  return Math.max(min, Math.min(max, n));
+}
 
 function buildPollinationsUrl(prompt, { width = 1920, height = 1080, seed = 42, model = 'flux-realism', negative } = {}) {
   const encoded = encodeURIComponent(prompt);
@@ -33,6 +45,32 @@ function buildPollinationsUrl(prompt, { width = 1920, height = 1080, seed = 42, 
 }
 
 function sleep(ms) { return new Promise((r) => setTimeout(r, ms)); }
+
+function responseStatus(err) {
+  return err && err.response && err.response.status;
+}
+
+function providerName(provider) {
+  return provider === 'cloudflare' ? 'cloudflare' : 'pollinations';
+}
+
+async function waitForProviderCooldown(provider, beatNumber) {
+  const name = providerName(provider);
+  const wait = Math.max(0, providerCooldownUntil[name] - Date.now());
+  if (wait > 0) {
+    console.warn(`[images] beat ${beatNumber} waiting ${wait}ms for ${name} cooldown`);
+    await sleep(wait);
+  }
+}
+
+function markProviderCooldown(provider, err, baseMs, attempt) {
+  if (responseStatus(err) !== 429) return 0;
+  const name = providerName(provider);
+  const wait = backoffMsForError(err, baseMs, attempt);
+  providerCooldownUntil[name] = Math.max(providerCooldownUntil[name], Date.now() + wait);
+  console.warn(`[images] ${name} rate-limited; shared cooldown ${wait}ms`);
+  return wait;
+}
 
 function cfAccountId() { return (process.env.CLOUDFLARE_ACCOUNT_ID || '').trim(); }
 function cfApiToken() { return (process.env.CLOUDFLARE_API_TOKEN || '').trim(); }
@@ -68,6 +106,33 @@ async function generateBeatImageCloudflare({ prompt, outPath, width = 1024, heig
   if (buf.byteLength < 2000) throw new Error(`Cloudflare image too small (${buf.byteLength} bytes)`);
   fs.writeFileSync(outPath, buf);
   return outPath;
+}
+
+async function generateBeatImageCloudflareWithRetries({ prompt, outPath, beatNumber, width = 1024, height = 576 }) {
+  let lastErr;
+  for (let attempt = 1; attempt <= CF_MAX_ATTEMPTS; attempt++) {
+    await waitForProviderCooldown('cloudflare', beatNumber);
+    try {
+      return await generateBeatImageCloudflare({ prompt, outPath, width, height });
+    } catch (err) {
+      lastErr = err;
+      const status = responseStatus(err);
+      if (status === 429) {
+        const wait = markProviderCooldown('cloudflare', err, 20000, attempt);
+        console.warn(`[images] beat ${beatNumber} cloudflare attempt ${attempt}/${CF_MAX_ATTEMPTS} rate-limited - waiting ${wait}ms`);
+        if (attempt < CF_MAX_ATTEMPTS) await sleep(wait);
+        continue;
+      }
+      if (status >= 500 && status < 600 && attempt < CF_MAX_ATTEMPTS) {
+        const wait = backoffMsForError(err, 5000, attempt);
+        console.warn(`[images] beat ${beatNumber} cloudflare attempt ${attempt}/${CF_MAX_ATTEMPTS} failed (${status}) - waiting ${wait}ms`);
+        await sleep(wait);
+        continue;
+      }
+      throw err;
+    }
+  }
+  throw lastErr;
 }
 
 async function fetchPollinationsImage(url, outPath, timeoutMs = 90000) {
@@ -108,12 +173,15 @@ async function generateBeatImagePollinations({ prompt, outPath, beatNumber, widt
   for (let i = 0; i < variants.length; i++) {
     const v = variants[i];
     try {
+      await waitForProviderCooldown('pollinations', beatNumber);
       const url = buildPollinationsUrl(prompt, { width, height, seed: v.seed, model: v.model });
       return await fetchPollinationsImage(url, outPath);
     } catch (err) {
       lastErr = err;
-      const status = err && err.response && err.response.status;
-      const wait = backoffMsForError(err, 5000, i + 1);
+      const status = responseStatus(err);
+      const wait = status === 429
+        ? markProviderCooldown('pollinations', err, 15000, i + 1)
+        : backoffMsForError(err, 5000, i + 1);
       console.warn(`[images] beat ${beatNumber} pollinations attempt ${i + 1}/${variants.length} failed (${status || 'no-status'}: ${err.message}) — waiting ${wait}ms`);
       if (i < variants.length - 1) await sleep(wait);
     }
@@ -125,7 +193,7 @@ async function generateBeatImage({ prompt, outPath, beatNumber, width = 1920, he
   // Primary: Cloudflare Workers AI when configured. Fast, reliable, generous free tier.
   if (cloudflareConfigured()) {
     try {
-      return await generateBeatImageCloudflare({ prompt, outPath });
+      return await generateBeatImageCloudflareWithRetries({ prompt, outPath, beatNumber });
     } catch (err) {
       console.warn(`[images] beat ${beatNumber} cloudflare failed (${err.message}) — falling back to pollinations`);
     }
