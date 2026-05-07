@@ -9,7 +9,12 @@ const MUSIC_DIR = path.join(__dirname, '..', 'assets', 'music');
 const FONT_PATH = process.env.FONT_PATH || ''; // optional override
 
 function run(cmd, args, opts = {}) {
-  const result = spawnSync(cmd, args, { encoding: 'utf8', ...opts });
+  // maxBuffer: 200 MB — FFmpeg with default loglevel prints multiple lines per
+  // input frame, and a 366-beat zoompan pass produces 10+ MB of stderr. Node's
+  // default spawnSync maxBuffer is 1 MB, which throws ENOBUFS before FFmpeg
+  // even finishes. We don't actually need the verbose output; we only read
+  // the last 2000 chars on failure. Bumping the cap is the simplest fix.
+  const result = spawnSync(cmd, args, { encoding: 'utf8', maxBuffer: 200 * 1024 * 1024, ...opts });
   if (result.error) throw result.error;
   if (result.status !== 0) {
     throw new Error(`${cmd} exited ${result.status}\nSTDERR: ${result.stderr ? result.stderr.slice(-2000) : ''}`);
@@ -91,6 +96,7 @@ async function assembleVideo({ beats, audioPath, captionsAss, recitations = [], 
 
   run('ffmpeg', [
     '-y',
+    '-loglevel', 'warning',
     '-f', 'concat',
     '-safe', '0',
     '-i', concatListPath,
@@ -185,6 +191,7 @@ async function assembleVideo({ beats, audioPath, captionsAss, recitations = [], 
 
   run('ffmpeg', [
     '-y',
+    '-loglevel', 'warning',
     ...inputs,
     '-filter_complex', filters.join(';'),
     '-map', '[aout]',
@@ -203,6 +210,7 @@ async function assembleVideo({ beats, audioPath, captionsAss, recitations = [], 
   const subFilter = `ass='${escapeFilterPath(captionsAss)}'`;
   run('ffmpeg', [
     '-y',
+    '-loglevel', 'warning',
     '-i', baseVideoPath,
     '-i', mixedAudioPath,
     '-vf', subFilter,
