@@ -535,9 +535,17 @@ async function generateBeatsForMovement({ movementKey, movementText, aesthetic, 
 
 async function generateVisualPlan({ script }) {
   const words = countScriptWords(script);
-  // Aim for one beat per ~9 words ≈ 3.5 seconds per image. Min 100, max 400.
-  // Operator spec: image changes every 3-4 seconds aligned to sentence meaning.
-  const targetBeats = Math.max(100, Math.min(400, Math.round(words / 9)));
+  // Beat count: one beat per ~18 words ≈ 7-8 seconds per image. Min 80, max 150.
+  // Original spec was 3-4 sec/beat (one per 9 words), but that produced 350-400
+  // beats for a 22-min video, and free-tier image providers (Cloudflare Workers
+  // AI + Pollinations fallback) cannot sustain that volume — sustained 429s
+  // with shared cooldowns cause the image stage to take 5+ hours. 7-8 sec per
+  // beat is the realistic ceiling that ships videos. Override via env if you
+  // upgrade to a paid image tier.
+  const beatsPerWord = parseFloat(process.env.BEAT_DENSITY) || (1 / 18);
+  const minBeats = parseInt(process.env.MIN_BEATS, 10) || 80;
+  const maxBeats = parseInt(process.env.MAX_BEATS, 10) || 150;
+  const targetBeats = Math.max(minBeats, Math.min(maxBeats, Math.round(words * beatsPerWord)));
   const approxMinutes = (words / 150).toFixed(1);
 
   console.log(`[visual-plan] chunked mode, target ${targetBeats} beats across 5 movements`);

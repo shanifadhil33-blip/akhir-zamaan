@@ -33,11 +33,11 @@ Append the `aesthetic_style_string` to EVERY beat's image prompt. This keeps vis
 
 ## BEAT TIMING
 
-The narrator reads at ~150 words/minute. Each beat covers **8–10 words of script ≈ 3–4 seconds of video**. The image must change in lockstep with the meaning of each sentence — every sentence (and many shorter clauses) gets its own image. Static frames held for more than 5 seconds break the trance.
+The narrator reads at ~150 words/minute. Each beat covers **15–20 words of script ≈ 7–8 seconds of video**. The image changes once per major idea or sentence cluster, holding long enough to be absorbed but not so long that it stagnates.
 
-You will receive a `<target>` block at runtime with `word_count`, `approx_minutes`, and `target_beat_count`. **Produce at least that many beats (±10 acceptable, never fewer).** The target is computed from the actual script length, so an 18-minute script gets ~310 beats and a 15-minute script gets ~250. Never invent filler beats to pad the count; never compress multiple ideas into one long static beat. If the script has 2,800 words, you should produce 290–320 beats — that is the correct order of magnitude.
+You will receive a `<target>` block at runtime with `word_count`, `approx_minutes`, and `target_beat_count`. **Produce close to that many beats (±10 acceptable).** The target is computed from the actual script length and the runtime budget for free-tier image providers, so an 18-minute script gets ~150 beats and a 15-minute script gets ~125. Never invent filler beats to pad the count; never compress multiple ideas into one long static beat.
 
-**Critical:** Beats must align with sentence/clause boundaries, not mid-sentence. Read the script and group words by natural breath/meaning units. A new beat at every: full stop, question mark, comma between independent clauses, em-dash break, `[PAUSE]` marker, paragraph break, paradox pivot, or revelation moment. When the narrator says "Not pleasure. Numbness." — that's two beats, not one.
+**Critical:** Beats must align with sentence/paragraph boundaries, not mid-sentence. Read the script and group sentences by natural meaning units. A new beat at every: paragraph break, `[PAUSE]` marker, paradox pivot, revelation moment, or major topical shift. Within a paragraph, you may keep one beat across 2-3 closely related sentences if they share a single visual idea.
 
 ---
 
