@@ -40,7 +40,7 @@ jobs:
       AUTO_TOPIC_REFILL: ${{ vars.AUTO_TOPIC_REFILL || 'true' }}
       TOPIC_REFILL_THRESHOLD: ${{ vars.TOPIC_REFILL_THRESHOLD || '20' }}
       KOKORO_VOICE: ${{ vars.KOKORO_VOICE || 'bm_lewis' }}
-      KOKORO_SPEED: ${{ vars.KOKORO_SPEED || '0.95' }}
+      KOKORO_SPEED: ${{ vars.KOKORO_SPEED || '0.82' }}
       KOKORO_LANG: ${{ vars.KOKORO_LANG || 'en-gb' }}
       CHANNEL_NAME: Akhir Zamaan
       CHANNEL_HANDLE: '@akhirzamaan'

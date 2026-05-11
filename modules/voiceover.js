@@ -21,11 +21,14 @@ const VOICE_BY_PROVIDER = {
   edge: process.env.EDGE_VOICE || 'en-GB-RyanNeural',               // male
 };
 
-// 1500ms = a ~1.5-second beat of silence. Long enough to feel cinematic
-// after a punch line; short enough that a script with many [PAUSE] markers
-// doesn't drag. Combined with the script-engine prompt asking for [PAUSE]
-// every 2-4 sentences in dramatic moments, the voiceover gets real pacing.
-const BREAK_MS = 1500;
+// 2200ms = a ~2.2-second beat of silence after each [PAUSE] marker.
+// Was 1500 — bumped per operator feedback that the voiceover felt rushed.
+// At 2.2s, a [PAUSE] reads as a genuine cinematic breath, the kind a real
+// narrator would take to let the weight of a line land. Combined with the
+// reduced KOKORO_SPEED (0.82 default, was 0.95), the voiceover now has the
+// slow-and-calm cadence of a serious documentary, not a hurried explainer.
+// Override via env if you want it tighter for a specific video.
+const BREAK_MS = parseInt(process.env.BREAK_MS, 10) || 2200;
 const BREAK_TAG_RE = /<break\s+time="?\d+ms"?\s*\/>/gi;
 
 // Islamic honorifics: most TTS engines either skip these glyphs or mispronounce

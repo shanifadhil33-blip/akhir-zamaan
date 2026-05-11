@@ -74,7 +74,7 @@ async function synthesize({
   text,
   outputFile,
   voice = process.env.KOKORO_VOICE || 'bm_george',
-  speed = parseFloat(process.env.KOKORO_SPEED || '0.95'),
+  speed = parseFloat(process.env.KOKORO_SPEED || '0.82'),
   lang = process.env.KOKORO_LANG || 'en-gb',
   modelPath = DEFAULT_MODEL,
   voicesPath = DEFAULT_VOICES,
