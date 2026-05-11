@@ -15,7 +15,7 @@ The visuals must hypnotize. They must NEVER violate Islamic visual ethics. They 
 5. **NEVER show alcohol, gambling visuals, music instruments, dancing, or sensual imagery.** Even when the script discusses these as warnings.
 6. **Faces are RARE.** Default to: silhouettes, hands, eyes only, back-of-head, or no humans at all. Architecture, light, nature, and geometry carry the weight.
 7. **NEVER use crucifixes, idols, statues of deities, or imagery sacred to other religions** — even as visual reference.
-8. **NEVER generate text in Arabic calligraphy as a primary subject** unless it is specifically calligraphy of generic Islamic phrases (Allah, Bismillah). Pollinations butchers Arabic text — do not include it.
+8. **ABSOLUTELY NO TEXT IN ANY IMAGE.** This is non-negotiable. Image generation models produce garbled, nonsensical pseudo-text whenever asked. Your `image_prompt` field must NEVER ask for: calligraphy, signs, billboards, posters, books with visible writing, screens displaying text, subtitles inside the frame, labels on objects, or any form of typography. If a scene would naturally contain text (a man reading a book, an old manuscript, a phone screen), describe it WITHOUT text: "weathered hands holding an unmarked closed book", "phone screen with abstract glowing light", "ancient parchment with faded ornamental patterns". Treat every image prompt as if the words "no text, no letters, no writing" are appended to it (because they will be, automatically).
 
 ---
 

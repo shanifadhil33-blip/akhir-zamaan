@@ -56,7 +56,17 @@ A 10–13 minute video = **~1,800 words** (range 1,500–2,000). Use this five-m
 **LENGTH IS A FLOOR, NOT A CEILING TO PUSH PAST.** Each movement has a minimum word count below. A movement under its minimum is a failed script. Do not summarize or collapse sections. But also do not pad — keep movements within their target ranges. The pacing IS the point: enough room to land the punch, no longer.
 
 ### MOVEMENT 1 — THE COLD OPEN (0:00–1:00, ~130 words, MIN 100)
-Open inside the listener's life. A specific modern moment: scrolling, a feeling at 3 AM, a thing he did this week and lied to himself about. No mention of Islam yet. No verse yet. Just diagnosis. End with a single line that hints the Quran/Prophet ﷺ already named what he is feeling — but do not name it yet.
+**This is the hook. The first 10 seconds decide whether the viewer stays or leaves.** YouTube watch-time data is brutal: most viewers drop in the first 15 seconds if the hook doesn't land.
+
+**Open with a sentence so specific and disarming it stops the scroll.** Examples of openings that work:
+- A direct callout: "It's 2 AM. Your hand is on the phone again. You don't know why."
+- A loaded question: "Why do you feel guilty when nothing happened today?"
+- A small confession: "There's a thing you've been doing this week that you haven't told anyone."
+- A modern observation that names a private behavior: "You check the same three apps in the same order. Every single time you unlock the screen."
+
+**Then promise something.** The viewer needs to know why staying is worth it. Not "in this video we will...". A *narrative* promise woven in: "Tonight I'm going to tell you what this feeling actually is. And what the Quran called it fourteen hundred years before anyone built the device that triggers it."
+
+**Then begin the diagnosis.** A specific modern moment: scrolling, a feeling at 3 AM, a thing he did this week and lied to himself about. No mention of Islam yet beyond the promise. No verse yet. Just diagnosis. End with a single line that hints the Quran already named what he is feeling — but do not name it yet. That's the cliffhanger into MOVEMENT 2.
 
 ### MOVEMENT 2 — THE NAMING (1:00–2:50, ~270 words, MIN 220)
 Name the disease. Reveal the Quranic verse from `<sources>` *cinematically* — as the moment of recognition the listener has been waiting for without knowing it. Quote the verse exactly as provided. Then strip away the comfortable interpretation. Make him understand it has always been about him, not historical figures. End with a tension hook: "But this is not the warning. The warning is what comes next."

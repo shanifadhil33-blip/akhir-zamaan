@@ -51,7 +51,16 @@ function escapeAss(text) {
 }
 
 function buildASS(words) {
-  // ASS header: Arial Black 68pt, white with thick black outline, bottom-third placement
+  // Styling philosophy: clean documentary look, NOT YouTube-meme look.
+  //  - Font: Roboto Condensed Bold (sharp, modern, slightly compressed)
+  //          installed via fonts-roboto in the workflow
+  //  - Size: 44pt at 1080p (was 68pt — way too big)
+  //  - Color: pure white #FFFFFF
+  //  - Outline: thin 1.5px black for legibility against any background
+  //  - Shadow: subtle 1px drop for depth
+  //  - Spacing: +1 px between letters (looks tighter, more editorial)
+  //  - 5 words per line instead of all-caps shouting
+  //  - Sentence case (not ALL CAPS) — looks calmer, more cinematic
   const header = `[Script Info]
 Title: Akhir Zamaan Captions
 ScriptType: v4.00+
@@ -63,16 +72,17 @@ YCbCr Matrix: TV.709
 
 [V4+ Styles]
 Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding
-Style: Default,Arial Black,68,&H00FFFFFF,&H000000FF,&H00000000,&H80000000,1,0,0,0,100,100,0,0,1,5,2,2,80,80,160,1
+Style: Default,Roboto Condensed,44,&H00FFFFFF,&H000000FF,&H00000000,&H80000000,1,0,0,0,100,100,1,0,1,1.5,1,2,120,120,90,1
 
 [Events]
 Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
 `;
 
-  const chunks = chunkWords(words, 4);
+  // 5 words per chunk feels natural and readable at the new size
+  const chunks = chunkWords(words, 5);
   const lines = chunks.map((c) => {
-    const upper = c.text.toUpperCase();
-    return `Dialogue: 0,${msToAssTimestamp(c.start)},${msToAssTimestamp(c.end)},Default,,0,0,0,,${escapeAss(upper)}`;
+    // Keep original case — sentence case reads as cinematic, not shouty
+    return `Dialogue: 0,${msToAssTimestamp(c.start)},${msToAssTimestamp(c.end)},Default,,0,0,0,,${escapeAss(c.text)}`;
   });
 
   return header + lines.join('\n') + '\n';

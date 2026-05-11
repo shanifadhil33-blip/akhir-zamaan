@@ -17,7 +17,13 @@ const CF_MODEL = '@cf/black-forest-labs/flux-1-schnell';
 const IMAGE_CONCURRENCY = parseBoundedInt(process.env.IMAGE_CONCURRENCY, 3, 1, 3);
 const CF_MAX_ATTEMPTS = parseBoundedInt(process.env.CLOUDFLARE_IMAGE_ATTEMPTS, 2, 1, 5);
 
-const NEGATIVE_PROMPT = 'deformed, disfigured, bad anatomy, extra fingers, extra limbs, missing fingers, mutated hands, low quality, blurry, out of focus, jpeg artifacts, watermark, text, logo, signature, caption, ugly, pixelated, distorted faces, cartoon, anime, 3d render, plastic skin, overexposed, underexposed, oversaturated';
+const NEGATIVE_PROMPT = 'deformed, disfigured, bad anatomy, extra fingers, extra limbs, missing fingers, mutated hands, low quality, blurry, out of focus, jpeg artifacts, watermark, text, logo, signature, caption, ugly, pixelated, distorted faces, cartoon, anime, 3d render, plastic skin, overexposed, underexposed, oversaturated, typography, lettering, writing, words, characters, alphabet, calligraphy, sign, label, subtitle, banner, billboard';
+
+// Strong positive directive appended to every Cloudflare/Pollinations prompt.
+// Flux Schnell tends to insert garbled pseudo-Arabic/English text into images
+// unless you actively tell it not to. Negative prompts help, but a positive
+// "no text" instruction in the prompt itself is more reliable.
+const NO_TEXT_SUFFIX = '. The image must contain NO text, NO letters, NO writing, NO signs, NO calligraphy, NO subtitles, NO watermarks. Purely visual composition.';
 
 const providerCooldownUntil = {
   cloudflare: 0,
@@ -31,7 +37,11 @@ function parseBoundedInt(value, fallback, min, max) {
 }
 
 function buildPollinationsUrl(prompt, { width = 1920, height = 1080, seed = 42, model = 'flux-realism', negative } = {}) {
-  const encoded = encodeURIComponent(prompt);
+  // Append the no-text suffix to the prompt body as well — Pollinations
+  // sometimes ignores the negative_prompt URL param, but always respects
+  // instructions in the prompt itself.
+  const fullPrompt = `${prompt}${NO_TEXT_SUFFIX}`;
+  const encoded = encodeURIComponent(fullPrompt);
   const params = new URLSearchParams({
     width: String(width),
     height: String(height),
@@ -83,8 +93,12 @@ async function generateBeatImageCloudflare({ prompt, outPath, width = 1024, heig
   const accountId = cfAccountId();
   const apiToken = cfApiToken();
   const url = `${CF_API_BASE}/${accountId}/ai/run/${CF_MODEL}`;
+  // Flux Schnell doesn't reliably parse "Negative: ..." as a directive,
+  // so we use a positive "no text" instruction in the prompt body instead.
+  // Negative prompt is passed in case Cloudflare exposes it on its end.
   const resp = await axios.post(url, {
-    prompt: `${prompt}. Negative: ${NEGATIVE_PROMPT}`,
+    prompt: `${prompt}${NO_TEXT_SUFFIX}`,
+    negative_prompt: NEGATIVE_PROMPT,
     width,
     height,
     steps: 4,

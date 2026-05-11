@@ -162,7 +162,9 @@ jobs:
       - name: Install system packages (FFmpeg + espeak-ng + fonts)
         run: |
           sudo apt-get update
-          sudo apt-get install -y ffmpeg espeak-ng fonts-liberation fonts-dejavu
+          sudo apt-get install -y ffmpeg espeak-ng fonts-liberation fonts-dejavu fonts-roboto
+          # Refresh the fontconfig cache so FFmpeg's libass can find Roboto Condensed
+          fc-cache -fv > /dev/null 2>&1 || true
 
       - name: Install Python deps for Kokoro TTS
         run: pip install --quiet -r requirements.txt
