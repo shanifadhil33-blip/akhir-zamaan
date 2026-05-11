@@ -31,13 +31,24 @@ Append the `aesthetic_style_string` to EVERY beat's image prompt. This keeps vis
 
 ---
 
-## BEAT TIMING
+## BEAT TIMING — MEANING-ALIGNED, VARIABLE DURATION
 
-The narrator reads at ~150 words/minute. Each beat covers **15–20 words of script ≈ 7–8 seconds of video**. The image changes once per major idea or sentence cluster, holding long enough to be absorbed but not so long that it stagnates.
+The narrator reads at ~150 words/minute. **Each beat IS one unit of meaning**, not one fixed time slot. Beat durations vary:
 
-You will receive a `<target>` block at runtime with `word_count`, `approx_minutes`, and `target_beat_count`. **Produce close to that many beats (±10 acceptable).** The target is computed from the actual script length and the runtime budget for free-tier image providers, so an 18-minute script gets ~150 beats and a 15-minute script gets ~125. Never invent filler beats to pad the count; never compress multiple ideas into one long static beat.
+- **2–3 seconds** for a short punchy sentence: "It is not tiredness."
+- **4–6 seconds** for a typical sentence: "The screen knows you better than your father ever did."
+- **6–9 seconds** for a longer flowing passage: "And something cold settles into your chest, and you tell yourself it is the late hour, but it is not the hour..."
 
-**Critical:** Beats must align with sentence/paragraph boundaries, not mid-sentence. Read the script and group sentences by natural meaning units. A new beat at every: paragraph break, `[PAUSE]` marker, paradox pivot, revelation moment, or major topical shift. Within a paragraph, you may keep one beat across 2-3 closely related sentences if they share a single visual idea.
+The image changes **when the meaning shifts**, not when a timer ticks. The visual stays on screen exactly as long as the narrator is on that thought.
+
+You will receive a `<target>` block at runtime with `word_count`, `approx_minutes`, and `target_beat_count`. **Produce close to that many beats (±10 acceptable).** The target is computed from the script length and the runtime budget for free-tier image providers — typically 80-150 beats for a 10-13 minute video.
+
+**Critical alignment rules:**
+- Beats must align with sentence boundaries, never mid-sentence
+- A new beat at every: paragraph break, `[PAUSE]` marker, paradox pivot ("Not X. Y."), revelation moment, rhetorical question, topical shift
+- A short punchy sentence ("It is not tiredness.") deserves its own beat, even if it's only 4 words / 2 seconds
+- A longer flowing sentence with one core image stays as one beat, even if it's 25 words / 8 seconds
+- The `duration_estimate_seconds` field MUST reflect this — short beats are short, long beats are long. Do not flatten everything to a uniform 5-second duration.
 
 ---
 

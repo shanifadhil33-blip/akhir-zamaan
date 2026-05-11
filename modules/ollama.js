@@ -121,18 +121,22 @@ async function generateAndParseJSONForScript(args) {
   return generateAndParseJSON(args);
 }
 
-// Hard floor: 15-minute videos require ≥ 2,250 words at the
+// Hard floor: 10-minute videos require ≥ 1,500 words at the
 // 150-wpm narration rate (×0.95 Kokoro speed buys a small margin too).
-const MIN_SCRIPT_WORDS = 2250;
+// 10-min was the operator's revised target after seeing that 22-min runs
+// were overshooting the 150-beat image cap (free tier).
+const MIN_SCRIPT_WORDS = 1500;
 const MAX_MOVEMENT_ATTEMPTS = 3;
 
-// Per-movement word targets. Sum minimums = 2,500, sum targets = 2,800.
+// Per-movement word targets. Sum minimums = ~1,460, sum targets = ~1,780.
+// That delivers 10-13 minute videos that match the 150-beat cap at ~5 sec
+// average per beat — cinematic without being slideshow.
 const MOVEMENT_SPECS = [
-  { key: 'cold_open', minWords: 200, targetWords: 225, description: 'Movement 1 — THE COLD OPEN. Open inside the listener\'s life: a specific modern moment (scrolling, 3 AM dread, a thing he did this week and lied to himself about). NO mention of Islam yet, NO verse yet — just diagnosis of his current behavior. End with one line that hints the Quran/Prophet ﷺ already named what he is feeling, without revealing what.' },
-  { key: 'naming', minWords: 400, targetWords: 450, description: 'Movement 2 — THE NAMING. Name the disease. Reveal the verse or hadith from <sources> cinematically — as the moment of recognition the listener has been waiting for without knowing it. Quote exactly. Strip away the comfortable interpretation. Make him understand it has always been about him, not historical figures. End with: "But this is not the warning. The warning is what comes next."' },
-  { key: 'excavation', minWords: 750, targetWords: 825, description: 'Movement 3 — THE EXCAVATION. Go deeper into the source. Reveal a second verse/hadith from <sources> if available. Show how the Prophets faced the same trial in their own lives — but in a way that mirrors the listener\'s exact situation. Weave 2-3 modern parallels from <modern_context> seamlessly. Pattern interrupt every 60 seconds: rhetorical question, contradiction of the listener\'s assumption, sudden pivot.' },
-  { key: 'mirror', minWords: 600, targetWords: 675, description: 'Movement 4 — THE MIRROR. Pivot to the listener\'s life right now in 2026. Make him face what he\'s been avoiding. Use modern parallels from <modern_context> to show the Prophetic warning is happening to him this week. Build to ONE existential decision he must make — NOT a 5-step checklist, NOT three habits. ONE choice. Frame as the choice between two versions of the man he could become.' },
-  { key: 'haunting', minWords: 550, targetWords: 625, description: 'Movement 5 — THE HAUNTING. Close with a reflection that does not resolve. A question he carries for 24 hours. A specific image of the man he becomes if he chooses correctly — and the man he becomes if he doesn\'t. In the final 60 seconds: a quiet tease for the next video by name, plus subscribe CTA woven in as part of the haunting (never marketing).' },
+  { key: 'cold_open', minWords: 100, targetWords: 130, description: 'Movement 1 — THE COLD OPEN. Open inside the listener\'s life: a specific modern moment (scrolling, 3 AM dread, a thing he did this week and lied to himself about). NO mention of Islam yet, NO verse yet — just diagnosis of his current behavior. End with one line that hints the Quran already named what he is feeling, without revealing what.' },
+  { key: 'naming', minWords: 220, targetWords: 270, description: 'Movement 2 — THE NAMING. Name the disease. Reveal the Quranic verse from <sources> cinematically — as the moment of recognition the listener has been waiting for without knowing it. Quote exactly. Strip away the comfortable interpretation. Make him understand it has always been about him, not historical figures. End with: "But this is not the warning. The warning is what comes next."' },
+  { key: 'excavation', minWords: 450, targetWords: 540, description: 'Movement 3 — THE EXCAVATION. Go deeper into the Word. Reveal a second Quranic verse from <sources> if available. Show how the Prophets in the Quran faced the same trial — but in a way that mirrors the listener\'s exact situation. Weave 2-3 modern parallels from <modern_context> seamlessly. Pattern interrupt every 45 seconds: rhetorical question, contradiction of the listener\'s assumption, sudden pivot.' },
+  { key: 'mirror', minWords: 370, targetWords: 440, description: 'Movement 4 — THE MIRROR. Pivot to the listener\'s life right now in 2026. Make him face what he\'s been avoiding. Use modern parallels from <modern_context> to show the Quranic warning is happening to him this week. Build to ONE existential decision he must make — NOT a 5-step checklist, NOT three habits. ONE choice. Frame as the choice between two versions of the man he could become.' },
+  { key: 'haunting', minWords: 320, targetWords: 400, description: 'Movement 5 — THE HAUNTING. Close with a reflection that does not resolve. A question he carries for 24 hours. A specific image of the man he becomes if he chooses correctly — and the man he becomes if he doesn\'t. In the final 30-45 seconds: a quiet tease for the next video by name, plus subscribe CTA woven in as part of the haunting (never marketing).' },
 ];
 
 async function generateMovement({ spec, skeleton, previousMovements, topic, sources, modernContext, nextTopic }) {
@@ -535,14 +539,13 @@ async function generateBeatsForMovement({ movementKey, movementText, aesthetic, 
 
 async function generateVisualPlan({ script }) {
   const words = countScriptWords(script);
-  // Beat count: one beat per ~18 words ≈ 7-8 seconds per image. Min 80, max 150.
-  // Original spec was 3-4 sec/beat (one per 9 words), but that produced 350-400
-  // beats for a 22-min video, and free-tier image providers (Cloudflare Workers
-  // AI + Pollinations fallback) cannot sustain that volume — sustained 429s
-  // with shared cooldowns cause the image stage to take 5+ hours. 7-8 sec per
-  // beat is the realistic ceiling that ships videos. Override via env if you
-  // upgrade to a paid image tier.
-  const beatsPerWord = parseFloat(process.env.BEAT_DENSITY) || (1 / 18);
+  // Beat count: one beat per ~12 words ≈ 4-5 seconds per image on a 10-13 min
+  // video. Min 80, max 150 (the free-tier image-provider sustainable ceiling).
+  // For 1,500-2,000 word scripts that's 125-150 beats — fits the cap with room
+  // for the LLM to overshoot slightly without truncation. Each beat's actual
+  // duration varies (visual-architect prompt asks for meaning-aligned beats),
+  // so individual beats can be 2-3 sec or 7-8 sec — only the AVERAGE matches.
+  const beatsPerWord = parseFloat(process.env.BEAT_DENSITY) || (1 / 12);
   const minBeats = parseInt(process.env.MIN_BEATS, 10) || 80;
   const maxBeats = parseInt(process.env.MAX_BEATS, 10) || 150;
   const targetBeats = Math.max(minBeats, Math.min(maxBeats, Math.round(words * beatsPerWord)));
