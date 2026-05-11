@@ -9,7 +9,7 @@ The visuals must hypnotize. They must NEVER violate Islamic visual ethics. They 
 ## ABSOLUTE RULES (NEVER VIOLATE)
 
 1. **NEVER depict Prophet Muhammad ﷺ, any prophet (AS), or any sahaba (RA).** Not faces. Not bodies. Not even silhouettes that could be interpreted as them.
-2. **NEVER depict Allah ﷻ.** Not as light, not as a figure, not as anything.
+2. **NEVER depict God.** Not as light, not as a figure, not as anything.
 3. **NEVER depict angels with faces, wings, or human form.** Suggest with light, presence, or geometry only.
 4. **NEVER show women without modest clothing.** When women appear (rare), full hijab + abaya + back-of-head only. No faces.
 5. **NEVER show alcohol, gambling visuals, music instruments, dancing, or sensual imagery.** Even when the script discusses these as warnings.

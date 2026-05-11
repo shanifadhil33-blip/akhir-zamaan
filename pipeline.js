@@ -131,19 +131,20 @@ async function main() {
     writeArtifact(outputDir, 'visual-plan.json', visualPlan);
     console.log(`[pipeline] visual plan: ${visualPlan.beats.length} beats`);
 
-    // STAGE 6: Parallel generation — voiceover, images, recitations
-    // Thumbnail bg runs separately AFTER beats so it doesn't compete with beat
-    // generation for the same Pollinations rate limit, and so a thumbnail
-    // failure cannot kill the long-running beats/voice/recitations.
+    // STAGE 6: Parallel generation — voiceover + images.
+    // Quran Arabic recitations were removed at the operator's request — they
+    // were disrupting the narrative flow. The English voiceover carries the
+    // whole video. The recitation module + assembler overlay code is left
+    // intact in case the decision reverses, but for now no audio overlays.
     stage = '6_parallel_gen';
     console.log('[pipeline] starting parallel generation...');
-    const [voiceRes, beatsRes, recitationRes] = await Promise.all([
+    const [voiceRes, beatsRes] = await Promise.all([
       voiceover.generateVoiceover(script, outputDir),
       images.generateAllBeats(visualPlan, outputDir),
-      recitation.downloadAllRecitations(script.verses_for_recitation || [], outputDir),
     ]);
+    const recitationRes = []; // No Arabic recitations — English voiceover only
     writeArtifact(outputDir, 'recitations.json', recitationRes);
-    console.log(`[pipeline] voice: ${voiceRes.wordTimings.length} words, beats: ${beatsRes.length}, recitations: ${recitationRes.length}`);
+    console.log(`[pipeline] voice: ${voiceRes.wordTimings.length} words, beats: ${beatsRes.length}, recitations: 0 (disabled)`);
 
     // STAGE 6b: Thumbnail background (after beats — uses first beat as fallback)
     stage = '6b_thumbnail_bg';

@@ -31,11 +31,20 @@ const BREAK_TAG_RE = /<break\s+time="?\d+ms"?\s*\/>/gi;
 // Islamic honorifics: most TTS engines either skip these glyphs or mispronounce
 // the parenthetical short forms. Expand to romanized speech BEFORE TTS so the
 // reverence is actually heard in the audio. Order matters: longer matches first.
+// NOTE: operator decision May 2026 — replace "Allah" with "God" for the audio.
+// Kokoro pronounces "Allah" flat as "Alah" (no guttural stop). For an English
+// narration aimed at an English-speaking audience, "God" reads cleaner. The
+// ﷻ honorific is dropped at the same time so we never get "God jalla jalaaluhu".
+// Captions read the same processed text, so they say "God" too — voice + caps in sync.
 const HONORIFIC_REPLACEMENTS = [
+  // "Allah" → "God" — MUST run before the ﷻ expansion below so the Allah+ﷻ
+  // pair is converted as a single token instead of expanding the honorific.
+  [/Allah\s*ﷻ/g, 'God'],
+  [/\bAllah\b/g, 'God'],
   // Arabic-script honorific glyphs
   [/\u0635\u0644\u0649\s?\u0627\u0644\u0644\u0647\s?\u0639\u0644\u064A\u0647\s?\u0648\u0633\u0644\u0645/g, ' sallallahu alayhi wa sallam '], // ﷺ literal expansion if pasted as text
   [/\uFDFA/g, ' sallallahu alayhi wa sallam '], // ﷺ
-  [/\uFDFB/g, ' jalla jalaaluhu '],             // ﷻ
+  [/\uFDFB/g, ''], // \uFDFB \u2014 drop standalone (Allah \uFDFB already handled by the pair regex above)             // ﷻ
   [/\uFDFD/g, ' bismillahir rahmanir raheem '], // ﷽
   // English parenthetical short forms (all case-insensitive, with optional dots)
   [/\(\s*(?:s\.?a\.?w\.?|saw|pbuh|p\.b\.u\.h\.?)\s*\)/gi, ' sallallahu alayhi wa sallam '],
