@@ -9,6 +9,7 @@ const edgeTts = require('./edge-tts');
 const seTts = require('./streamelements-tts');
 const gtTts = require('./google-translate-tts');
 const kokoro = require('./kokoro-tts');
+const whisperAlign = require('./whisper-align');
 const { ffprobeDuration } = require('./assembler');
 
 // Voice mapping per provider. Kokoro-82M (local, unlimited, no API) is the
@@ -201,14 +202,45 @@ async function generateVoiceover(script, outputDir) {
   console.log(`[voiceover] used ${usedProvider} (${usedVoice})`);
 
   const durationSec = ffprobeDuration(outFile);
-  const wordTimings = estimateWordTimings(text, durationSec);
+
+  // Word timings: prefer Whisper forced alignment over the char-based
+  // estimator. Whisper reads the actual audio and reports real per-word
+  // start/end timestamps, which keeps captions aligned with the narrator
+  // even when Kokoro holds certain words longer than their character
+  // count would suggest. If Whisper fails (missing model, OOM, etc.),
+  // fall back silently to the estimator so the pipeline still ships.
+  let wordTimings;
+  let timingSource = 'estimated';
+  const whisperEnabled = String(process.env.WHISPER_ALIGNMENT || 'true').toLowerCase() !== 'false';
+  if (whisperEnabled) {
+    try {
+      console.log('[voiceover] running whisper forced alignment for caption sync...');
+      const aligned = await whisperAlign.alignAudio(outFile, {
+        model: process.env.WHISPER_MODEL || 'base.en',
+        language: process.env.WHISPER_LANG || 'en',
+      });
+      if (aligned && aligned.words && aligned.words.length >= 10) {
+        wordTimings = whisperAlign.toCaptionTimings(aligned.words);
+        timingSource = `whisper-${process.env.WHISPER_MODEL || 'base.en'}`;
+        console.log(`[voiceover] whisper aligned ${wordTimings.length} words against ${aligned.duration_sec.toFixed(1)}s audio`);
+      } else {
+        console.warn(`[voiceover] whisper returned too few words (${aligned && aligned.words ? aligned.words.length : 0}) - falling back to estimator`);
+      }
+    } catch (err) {
+      console.warn(`[voiceover] whisper alignment failed (${err.message.slice(0, 200)}) - falling back to estimator`);
+    }
+  }
+  if (!wordTimings) {
+    wordTimings = estimateWordTimings(text, durationSec);
+  }
 
   fs.writeFileSync(metaFile, JSON.stringify({
     provider: usedProvider,
     voice: usedVoice,
     duration_sec: durationSec,
     word_count: wordTimings.length,
-    estimated: true,
+    timing_source: timingSource,
+    estimated: timingSource === 'estimated',
     words: wordTimings,
   }, null, 2));
 

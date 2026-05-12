@@ -42,6 +42,8 @@ jobs:
       KOKORO_VOICE: ${{ vars.KOKORO_VOICE || 'bm_lewis' }}
       KOKORO_SPEED: ${{ vars.KOKORO_SPEED || '0.82' }}
       KOKORO_LANG: ${{ vars.KOKORO_LANG || 'en-gb' }}
+      WHISPER_MODEL: ${{ vars.WHISPER_MODEL || 'base.en' }}
+      WHISPER_ALIGNMENT: ${{ vars.WHISPER_ALIGNMENT || 'true' }}
       CHANNEL_NAME: Akhir Zamaan
       CHANNEL_HANDLE: '@akhirzamaan'
 
@@ -175,6 +177,14 @@ jobs:
         with:
           path: assets/kokoro
           key: kokoro-model-v1.0
+
+      - name: Cache Whisper model (~75 MB, base.en for caption alignment)
+        id: whisper-cache
+        uses: actions/cache@v4
+        with:
+          # faster-whisper downloads models into ~/.cache/huggingface by default
+          path: ~/.cache/huggingface
+          key: whisper-model-base-en-v1
 
       - name: Download Kokoro model files (cache miss only)
         if: steps.kokoro-cache.outputs.cache-hit != 'true'
