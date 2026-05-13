@@ -83,6 +83,11 @@ function sanitizeForTTS(text) {
     .replace(/[\u200B-\u200F\u202A-\u202E\u2060\uFEFF]/g, '')
     // Soft hyphen
     .replace(/\u00AD/g, '')
+    // Markdown / JSON-escape leftovers the LLM sometimes sneaks in. Without
+    // stripping these, TTS literally reads them aloud as "backslash",
+    // "asterisk", "underscore" etc — which destroys the narration. Replace
+    // with a single space so adjacent words don't merge into one syllable.
+    .replace(/[\\*_#`~|<>]/g, ' ')
     // Any remaining non-ASCII letter the LLM snuck in (Arabic, CJK, emoji)
     // — strip so espeak never chokes. Kept digits and common punctuation.
     .replace(/[^\x00-\x7F]/g, '')
@@ -173,14 +178,17 @@ async function generateVoiceover(script, outputDir) {
 
   const text = combineScript(script);
 
-  // Provider order: TTS_PROVIDER env wins, otherwise kokoro -> streamelements -> edge.
-  // Every provider in this chain MUST produce a male British/American documentary
-  // voice. google_translate was removed because its only voice is female default-en.
-  // google_cloud was removed when the project dropped all Google Cloud dependencies.
+  // Provider order: TTS_PROVIDER env wins, otherwise edge -> kokoro -> streamelements.
+  // Microsoft Azure neural voices (Edge TTS) sound dramatically more natural than
+  // Kokoro on CPU — kokoro produced a robotic, flat delivery that the operator
+  // flagged after the first finished video. Edge is free, unlimited, and the
+  // default en-GB-RyanNeural is a polished British male documentary voice.
+  // Kokoro stays as fallback for when Edge's WebSocket service is flaky.
+  // google_translate / google_cloud removed long ago (female-only / paid).
   const requested = (process.env.TTS_PROVIDER || '').toLowerCase().trim();
   const order = requested
     ? [requested]
-    : ['kokoro', 'streamelements', 'edge'];
+    : ['edge', 'kokoro', 'streamelements'];
 
   let usedProvider, usedVoice;
   let lastErr;
