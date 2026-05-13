@@ -250,7 +250,7 @@ jobs:
           echo "size_mb=${SIZE_MB}" >> "$GITHUB_OUTPUT"
           echo "Located: ${VIDEO_PATH} (${SIZE_MB} MB) — ${TITLE}"
 
-      - name: Upload final video (catbox primary, 0x0.st + bashupload fallbacks)
+      - name: Upload final video (Pixeldrain primary, catbox + 0x0.st fallbacks)
         id: bashupload
         run: |
           set -euo pipefail
@@ -258,12 +258,31 @@ jobs:
           DOWNLOAD_URL=""
           SIZE_BYTES=$(stat -c%s "${VIDEO_PATH}")
           SIZE_MB=$((SIZE_BYTES / 1024 / 1024))
+          echo "Uploading ${VIDEO_PATH} (${SIZE_MB} MB)..."
 
-          # catbox.moe: most reliable free file host as of 2026. 200MB cap on
-          # free tier, no auth, simple form POST, returns plain URL in body,
-          # files persist indefinitely. Skip if our file is over 200MB.
-          if [ "${SIZE_MB}" -le 200 ]; then
-            echo "→ Trying catbox.moe (${SIZE_MB} MB)..."
+          # Pixeldrain: most reliable free host as of mid-2026. 5GB file cap,
+          # anonymous uploads accepted, simple POST returns JSON with file ID.
+          # Anonymous file retention is ~60 days from last access, more than
+          # enough since the operator typically downloads within minutes.
+          echo "→ Trying Pixeldrain..."
+          if RESPONSE=$(curl -sS --fail --max-time 1800 \
+              -F "file=@${VIDEO_PATH}" \
+              https://pixeldrain.com/api/file 2>&1); then
+            FILE_ID=$(echo "${RESPONSE}" | jq -r '.id // empty' 2>/dev/null || true)
+            if [ -n "${FILE_ID}" ]; then
+              DOWNLOAD_URL="https://pixeldrain.com/u/${FILE_ID}"
+              echo "  ✓ Pixeldrain succeeded: ${DOWNLOAD_URL}"
+            else
+              echo "  ✗ Pixeldrain gave no file id. Response: ${RESPONSE}"
+            fi
+          else
+            echo "  ✗ Pixeldrain upload failed: ${RESPONSE}"
+          fi
+
+          # catbox.moe fallback: 200 MB cap, files persist indefinitely.
+          # Skip when our file is over 200 MB — catbox will reject with HTTP 412.
+          if [ -z "${DOWNLOAD_URL}" ] && [ "${SIZE_MB}" -le 200 ]; then
+            echo "→ Falling back to catbox.moe (${SIZE_MB} MB)..."
             if RESPONSE=$(curl -sS --fail --max-time 1800 \
                 -F "reqtype=fileupload" \
                 -F "fileToUpload=@${VIDEO_PATH}" \
@@ -278,12 +297,12 @@ jobs:
             else
               echo "  ✗ catbox.moe upload failed: ${RESPONSE}"
             fi
-          else
+          elif [ -z "${DOWNLOAD_URL}" ]; then
             echo "→ Skipping catbox.moe (file ${SIZE_MB} MB > 200 MB cap)"
           fi
 
-          # 0x0.st: secondary. No file-size cap, but has had 503s under load.
-          # Requires a custom User-Agent (bare curl UA is blocked).
+          # 0x0.st last-resort fallback. No file-size cap, but has had
+          # frequent 503s under load. Custom User-Agent required.
           if [ -z "${DOWNLOAD_URL}" ]; then
             echo "→ Falling back to 0x0.st..."
             if RESPONSE=$(curl -sS --fail --max-time 1800 \
@@ -302,21 +321,6 @@ jobs:
             fi
           fi
 
-          # bashupload.com: last resort. Had an expired SSL cert as of mid-2026
-          # and may still be broken — but if both above fail, worth trying.
-          if [ -z "${DOWNLOAD_URL}" ]; then
-            echo "→ Falling back to bashupload.com..."
-            if RESPONSE=$(curl -sS --max-time 1800 -T "${VIDEO_PATH}" https://bashupload.com/ 2>&1); then
-              CANDIDATE=$(echo "${RESPONSE}" | grep -oE 'https://bashupload\.com/[^[:space:]]+' | head -1 || true)
-              if [ -n "${CANDIDATE}" ]; then
-                DOWNLOAD_URL="${CANDIDATE}"
-                echo "  ✓ bashupload succeeded: ${DOWNLOAD_URL}"
-              fi
-            else
-              echo "  ✗ bashupload upload failed: ${RESPONSE}"
-            fi
-          fi
-
           if [ -z "${DOWNLOAD_URL}" ]; then
             echo "::error::All 3 upload providers failed. Video is still in workflow artifacts as a backup."
             exit 1
@@ -325,99 +329,40 @@ jobs:
           echo "download_url=${DOWNLOAD_URL}" >> "$GITHUB_OUTPUT"
           echo "Final download URL: ${DOWNLOAD_URL}"
 
-      - name: Deliver everything to Telegram (video link + thumbnail + captions + metadata)
+      - name: Deliver to Telegram (download link + plain-text captions)
         if: steps.bashupload.outputs.download_url != ''
         env:
           DOWNLOAD_URL: ${{ steps.bashupload.outputs.download_url }}
-          TITLE: ${{ steps.locate.outputs.title }}
-          SIZE_MB: ${{ steps.locate.outputs.size_mb }}
           OUTPUT_DIR: ${{ steps.locate.outputs.output_dir }}
         run: |
           set -euo pipefail
           if [ -z "${TELEGRAM_BOT_TOKEN:-}" ] || [ -z "${TELEGRAM_CHAT_ID:-}" ]; then
-            echo "::warning::TELEGRAM_BOT_TOKEN or TELEGRAM_CHAT_ID not set — skipping all Telegram delivery"
+            echo "::warning::TELEGRAM_BOT_TOKEN or TELEGRAM_CHAT_ID not set — skipping Telegram delivery"
             exit 0
           fi
 
           TG="https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}"
-          THUMB_PATH="${OUTPUT_DIR}thumbnail.jpg"
-          SRT_PATH="${OUTPUT_DIR}captions.srt"
-          META_PATH="${OUTPUT_DIR}metadata.json"
+          SCRIPT_TXT_PATH="${OUTPUT_DIR}script.txt"
 
-          # 1) Headline message: video download link
-          echo "→ Telegram: sending video link..."
-          MSG="🎬 Akhir Zamaan Video Ready"$'\n\n'"📥 Download: ${DOWNLOAD_URL}"
-          if [ -n "${TITLE}" ]; then
-            MSG="${MSG}"$'\n\n'"📝 Title: ${TITLE}"$'\n'"💾 Size: ${SIZE_MB} MB"
-          fi
+          # 1) Download link — single message, just the link
+          echo "→ Telegram: sending download link..."
+          MSG="🎬 Akhir Zamaan video ready"$'\n\n'"${DOWNLOAD_URL}"
           curl -sS -X POST "${TG}/sendMessage" \
             --data-urlencode "chat_id=${TELEGRAM_CHAT_ID}" \
             --data-urlencode "text=${MSG}" \
             --data-urlencode "disable_web_page_preview=false" \
             -o /dev/null -w "  sendMessage HTTP %{http_code}\n"
 
-          # 2) Thumbnail (sent as a photo so it previews in the chat)
-          if [ -f "${THUMB_PATH}" ]; then
-            echo "→ Telegram: sending thumbnail..."
-            curl -sS -X POST "${TG}/sendPhoto" \
-              -F "chat_id=${TELEGRAM_CHAT_ID}" \
-              -F "photo=@${THUMB_PATH}" \
-              -F "caption=🖼 Thumbnail (1280×720) — save and use as YouTube custom thumbnail" \
-              -o /dev/null -w "  sendPhoto HTTP %{http_code}\n"
-          else
-            echo "::warning::thumbnail.jpg not found at ${THUMB_PATH} — skipping"
-          fi
-
-          # 3) Captions file (.srt) — sent as document so it's downloadable
-          if [ -f "${SRT_PATH}" ]; then
-            echo "→ Telegram: sending captions.srt..."
+          # 2) Plain-text captions (script.txt) as a downloadable document
+          if [ -f "${SCRIPT_TXT_PATH}" ]; then
+            echo "→ Telegram: sending script.txt (plain-text captions)..."
             curl -sS -X POST "${TG}/sendDocument" \
               -F "chat_id=${TELEGRAM_CHAT_ID}" \
-              -F "document=@${SRT_PATH}" \
-              -F "caption=📑 Captions (.srt) — upload under YouTube → Subtitles → Add language → English" \
+              -F "document=@${SCRIPT_TXT_PATH}" \
+              -F "caption=📝 Full captions (plain text, no timing)" \
               -o /dev/null -w "  sendDocument HTTP %{http_code}\n"
           else
-            echo "::warning::captions.srt not found at ${SRT_PATH} — skipping"
-          fi
-
-          # 4) YouTube metadata text — title, description, tags, chapters — copy/paste ready
-          if [ -f "${META_PATH}" ]; then
-            echo "→ Telegram: sending YouTube about-section..."
-            META_TITLE=$(jq -r '.title // ""' "${META_PATH}")
-            META_DESC=$(jq -r '.description // ""' "${META_PATH}")
-            META_TAGS=$(jq -r '(.tags // []) | join(", ")' "${META_PATH}")
-            META_CHAPTERS=$(jq -r '(.chapters // []) | map("\(.time) — \(.label)") | join("\n")' "${META_PATH}")
-
-            META_MSG="📋 YouTube Upload Form (copy/paste each section)"$'\n\n'
-            META_MSG="${META_MSG}━━━ TITLE ━━━"$'\n'"${META_TITLE}"$'\n\n'
-            META_MSG="${META_MSG}━━━ DESCRIPTION ━━━"$'\n'"${META_DESC}"$'\n\n'
-            if [ -n "${META_CHAPTERS}" ]; then
-              META_MSG="${META_MSG}━━━ CHAPTERS (already in description, here for reference) ━━━"$'\n'"${META_CHAPTERS}"$'\n\n'
-            fi
-            META_MSG="${META_MSG}━━━ TAGS ━━━"$'\n'"${META_TAGS}"
-
-            # Telegram's hard limit on sendMessage text is 4096 chars. If our
-            # full metadata exceeds that, send the description as a .txt file
-            # instead so nothing is silently truncated.
-            MSG_BYTES=$(printf '%s' "${META_MSG}" | wc -c)
-            if [ "${MSG_BYTES}" -le 4000 ]; then
-              curl -sS -X POST "${TG}/sendMessage" \
-                --data-urlencode "chat_id=${TELEGRAM_CHAT_ID}" \
-                --data-urlencode "text=${META_MSG}" \
-                --data-urlencode "disable_web_page_preview=true" \
-                -o /dev/null -w "  metadata sendMessage HTTP %{http_code}\n"
-            else
-              echo "  metadata is ${MSG_BYTES} bytes (>4000) — sending as .txt document instead"
-              META_TXT="${OUTPUT_DIR}youtube-upload-form.txt"
-              printf '%s' "${META_MSG}" > "${META_TXT}"
-              curl -sS -X POST "${TG}/sendDocument" \
-                -F "chat_id=${TELEGRAM_CHAT_ID}" \
-                -F "document=@${META_TXT}" \
-                -F "caption=📋 YouTube upload form (title + description + tags + chapters)" \
-                -o /dev/null -w "  metadata sendDocument HTTP %{http_code}\n"
-            fi
-          else
-            echo "::warning::metadata.json not found at ${META_PATH} — skipping about-section"
+            echo "::warning::script.txt not found at ${SCRIPT_TXT_PATH} — skipping captions"
           fi
 
           echo "✓ Telegram delivery complete"
@@ -445,6 +390,7 @@ jobs:
             output/**/thumbnail.jpg
             output/**/captions.srt
             output/**/script.json
+            output/**/script.txt
             output/**/visual-plan.json
             output/**/metadata.json
             output/**/delivery.json

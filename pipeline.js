@@ -119,6 +119,23 @@ async function main() {
     writeArtifact(outputDir, 'script.json', script);
     console.log(`[pipeline] script generated: ${(script.cold_open || '').length + (script.naming || '').length + (script.excavation || '').length + (script.mirror || '').length + (script.haunting || '').length} chars total`);
 
+    // Plain-text captions file. The .ass file is for FFmpeg burn-in (with
+    // timing data); this .txt file is for the operator to read on their
+    // phone via Telegram — pure prose, no timing, no markup, Allah→God
+    // already applied at this point (script-engine prompt produces "God").
+    const scriptTxt = [
+      script.cold_open || '',
+      script.naming || '',
+      script.excavation || '',
+      script.mirror || '',
+      script.haunting || '',
+    ]
+      .map((s) => String(s).replace(/\[PAUSE\]/gi, '').replace(/[ \t]+/g, ' ').trim())
+      .filter(Boolean)
+      .join('\n\n');
+    writeArtifact(outputDir, 'script.txt', scriptTxt);
+    console.log(`[pipeline] script.txt written (${scriptTxt.length} chars)`);
+
     if (DRY_RUN) {
       console.log('[pipeline] DRY RUN complete — stopping after script generation');
       console.log(`Output: ${outputDir}`);
