@@ -250,37 +250,56 @@ jobs:
           echo "size_mb=${SIZE_MB}" >> "$GITHUB_OUTPUT"
           echo "Located: ${VIDEO_PATH} (${SIZE_MB} MB) — ${TITLE}"
 
-      - name: Upload final video (Pixeldrain primary, catbox + 0x0.st fallbacks)
+      - name: Upload final video (Cloudflare R2 primary, catbox + 0x0.st fallbacks)
         id: bashupload
+        env:
+          # Map R2 secrets to AWS-compatible env vars so the aws CLI picks them up
+          AWS_ACCESS_KEY_ID: ${{ secrets.R2_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.R2_SECRET_ACCESS_KEY }}
+          AWS_DEFAULT_REGION: auto
+          R2_BUCKET_NAME: ${{ secrets.R2_BUCKET_NAME }}
+          R2_ENDPOINT: ${{ secrets.R2_ENDPOINT }}
+          R2_PUBLIC_DOMAIN: ${{ secrets.R2_PUBLIC_DOMAIN }}
         run: |
           set -euo pipefail
           VIDEO_PATH="${{ steps.locate.outputs.video_path }}"
+          OUTPUT_DIR="${{ steps.locate.outputs.output_dir }}"
           DOWNLOAD_URL=""
           SIZE_BYTES=$(stat -c%s "${VIDEO_PATH}")
           SIZE_MB=$((SIZE_BYTES / 1024 / 1024))
-          echo "Uploading ${VIDEO_PATH} (${SIZE_MB} MB)..."
 
-          # Pixeldrain: most reliable free host as of mid-2026. 5GB file cap,
-          # anonymous uploads accepted, simple POST returns JSON with file ID.
-          # Anonymous file retention is ~60 days from last access, more than
-          # enough since the operator typically downloads within minutes.
-          echo "→ Trying Pixeldrain..."
-          if RESPONSE=$(curl -sS --fail --max-time 1800 \
-              -F "file=@${VIDEO_PATH}" \
-              https://pixeldrain.com/api/file 2>&1); then
-            FILE_ID=$(echo "${RESPONSE}" | jq -r '.id // empty' 2>/dev/null || true)
-            if [ -n "${FILE_ID}" ]; then
-              DOWNLOAD_URL="https://pixeldrain.com/u/${FILE_ID}"
-              echo "  ✓ Pixeldrain succeeded: ${DOWNLOAD_URL}"
+          # Build a clean object key from the timestamped output folder name
+          # e.g. "20260514_0026_why-modern-life-feels-so-empty/final.mp4"
+          SLUG=$(basename "${OUTPUT_DIR%/}")
+          OBJECT_KEY="${SLUG}/final.mp4"
+          echo "Uploading ${VIDEO_PATH} (${SIZE_MB} MB) as ${OBJECT_KEY}..."
+
+          # Cloudflare R2 PRIMARY — operator's own S3-compatible storage.
+          # Reliable because they control the account and credentials, not
+          # dependent on flaky free anonymous endpoints. 10 GB free, zero
+          # egress fees, files persist until deleted. Uses the AWS CLI
+          # which speaks S3 natively against R2's S3-compatible endpoint.
+          if [ -n "${AWS_ACCESS_KEY_ID:-}" ] && [ -n "${R2_BUCKET_NAME:-}" ] && [ -n "${R2_ENDPOINT:-}" ] && [ -n "${R2_PUBLIC_DOMAIN:-}" ]; then
+            echo "→ Uploading to Cloudflare R2 (s3://${R2_BUCKET_NAME}/${OBJECT_KEY})..."
+            # AWS CLI v1 installs in ~5 sec via pip (Python is already set up
+            # for Kokoro). v1 is fine for S3 operations including R2.
+            pip install --quiet awscli >/dev/null 2>&1 || true
+            if aws s3 cp "${VIDEO_PATH}" "s3://${R2_BUCKET_NAME}/${OBJECT_KEY}" \
+                --endpoint-url "${R2_ENDPOINT}" \
+                --no-progress 2>&1; then
+              # Strip trailing slash on public domain if present, then build URL
+              DOMAIN="${R2_PUBLIC_DOMAIN%/}"
+              DOWNLOAD_URL="${DOMAIN}/${OBJECT_KEY}"
+              echo "  ✓ R2 succeeded: ${DOWNLOAD_URL}"
             else
-              echo "  ✗ Pixeldrain gave no file id. Response: ${RESPONSE}"
+              echo "  ✗ R2 upload failed — falling through to anonymous hosts"
             fi
           else
-            echo "  ✗ Pixeldrain upload failed: ${RESPONSE}"
+            echo "→ R2 not fully configured (missing one of: R2_ACCESS_KEY_ID, R2_SECRET_ACCESS_KEY, R2_BUCKET_NAME, R2_ENDPOINT, R2_PUBLIC_DOMAIN) — using anonymous fallbacks"
           fi
 
           # catbox.moe fallback: 200 MB cap, files persist indefinitely.
-          # Skip when our file is over 200 MB — catbox will reject with HTTP 412.
+          # Anonymous endpoint has been throttled lately but still worth trying.
           if [ -z "${DOWNLOAD_URL}" ] && [ "${SIZE_MB}" -le 200 ]; then
             echo "→ Falling back to catbox.moe (${SIZE_MB} MB)..."
             if RESPONSE=$(curl -sS --fail --max-time 1800 \
@@ -301,8 +320,7 @@ jobs:
             echo "→ Skipping catbox.moe (file ${SIZE_MB} MB > 200 MB cap)"
           fi
 
-          # 0x0.st last-resort fallback. No file-size cap, but has had
-          # frequent 503s under load. Custom User-Agent required.
+          # 0x0.st last-resort fallback.
           if [ -z "${DOWNLOAD_URL}" ]; then
             echo "→ Falling back to 0x0.st..."
             if RESPONSE=$(curl -sS --fail --max-time 1800 \
@@ -322,7 +340,7 @@ jobs:
           fi
 
           if [ -z "${DOWNLOAD_URL}" ]; then
-            echo "::error::All 3 upload providers failed. Video is still in workflow artifacts as a backup."
+            echo "::error::All upload providers failed. Video is still in workflow artifacts as a backup."
             exit 1
           fi
 
