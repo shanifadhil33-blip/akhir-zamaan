@@ -105,8 +105,26 @@ function combineScript(script) {
   ].filter(Boolean);
   let combined = parts.join('\n\n');
   combined = expandHonorifics(combined);
-  combined = combined.replace(/\[PAUSE\]/gi, '<break time="700ms"/>');
+
+  // Pause-marker handling — protect break tags through sanitization.
+  //
+  // Why this dance is necessary: the [PAUSE] -> <break .../> conversion has
+  // to happen at SOME point because Kokoro's Python worker only understands
+  // <break time="Nms"/> tags. But sanitizeForTTS strips `<`, `>`, `/` (to
+  // prevent the TTS from speaking literal markdown / backslash chars). If
+  // we convert [PAUSE] before sanitize, the break tags get destroyed and
+  // the TTS reads them aloud as "break time 700 milliseconds slash".
+  //
+  // Fix: convert [PAUSE] AND any literal <break ...> tags the LLM accidentally
+  // produced into a unique uppercase-letter sentinel (no symbols, survives
+  // sanitization untouched), then restore as proper break tags AFTER sanitize.
+  // Also: use BREAK_MS for the duration instead of the old hardcoded 700ms,
+  // so the audio's pause length matches the operator's slowdown setting.
+  const BREAK_SENTINEL = 'BREAKPAUSESENTINELZZ';
+  combined = combined.replace(/\[PAUSE\]/gi, ` ${BREAK_SENTINEL} `);
+  combined = combined.replace(/<break[^>]*\/?>/gi, ` ${BREAK_SENTINEL} `);
   combined = sanitizeForTTS(combined);
+  combined = combined.replace(new RegExp(BREAK_SENTINEL, 'g'), `<break time="${BREAK_MS}ms"/>`);
   return combined;
 }
 
