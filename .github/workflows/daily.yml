@@ -44,6 +44,12 @@ jobs:
       KOKORO_LANG: ${{ vars.KOKORO_LANG || 'en-gb' }}
       WHISPER_MODEL: ${{ vars.WHISPER_MODEL || 'base.en' }}
       WHISPER_ALIGNMENT: ${{ vars.WHISPER_ALIGNMENT || 'true' }}
+      # HF_TOKEN powers both the HuggingFace Inference API (primary image
+      # provider, Flux Schnell) and faster-whisper model downloads (higher
+      # rate limits, faster cold-start). Optional — if not set, image gen
+      # falls through to Cloudflare Workers AI then Pollinations.
+      HF_TOKEN: ${{ secrets.HF_TOKEN }}
+      HF_IMAGE_MODEL: ${{ vars.HF_IMAGE_MODEL || 'black-forest-labs/FLUX.1-schnell' }}
       CHANNEL_NAME: Akhir Zamaan
       CHANNEL_HANDLE: '@akhirzamaan'
 

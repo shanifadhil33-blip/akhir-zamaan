@@ -10,12 +10,15 @@ const axios = require('axios');
 
 const POLL_BASE = 'https://image.pollinations.ai/prompt';
 const CF_API_BASE = 'https://api.cloudflare.com/client/v4/accounts';
+const HF_API_BASE = 'https://api-inference.huggingface.co/models';
 // Flux Schnell on Workers AI: fast (~4 step), high quality, multiple-of-32
 // dimensions up to 2048. 1024x576 = 16:9, fits the FFmpeg Ken Burns pipeline
 // which scales to 1920x1080 anyway.
 const CF_MODEL = '@cf/black-forest-labs/flux-1-schnell';
+const HF_MODEL = (process.env.HF_IMAGE_MODEL || 'black-forest-labs/FLUX.1-schnell').trim();
 const IMAGE_CONCURRENCY = parseBoundedInt(process.env.IMAGE_CONCURRENCY, 3, 1, 3);
 const CF_MAX_ATTEMPTS = parseBoundedInt(process.env.CLOUDFLARE_IMAGE_ATTEMPTS, 2, 1, 5);
+const HF_MAX_ATTEMPTS = parseBoundedInt(process.env.HF_IMAGE_ATTEMPTS, 3, 1, 5);
 
 const NEGATIVE_PROMPT = 'deformed, disfigured, bad anatomy, extra fingers, extra limbs, missing fingers, mutated hands, low quality, blurry, out of focus, jpeg artifacts, watermark, text, logo, signature, caption, ugly, pixelated, distorted faces, cartoon, anime, 3d render, plastic skin, overexposed, underexposed, oversaturated, typography, lettering, writing, words, characters, alphabet, calligraphy, sign, label, subtitle, banner, billboard';
 
@@ -26,6 +29,7 @@ const NEGATIVE_PROMPT = 'deformed, disfigured, bad anatomy, extra fingers, extra
 const NO_TEXT_SUFFIX = '. The image must contain NO text, NO letters, NO writing, NO signs, NO calligraphy, NO subtitles, NO watermarks. Purely visual composition.';
 
 const providerCooldownUntil = {
+  huggingface: 0,
   cloudflare: 0,
   pollinations: 0,
 };
@@ -61,8 +65,13 @@ function responseStatus(err) {
 }
 
 function providerName(provider) {
-  return provider === 'cloudflare' ? 'cloudflare' : 'pollinations';
+  if (provider === 'huggingface') return 'huggingface';
+  if (provider === 'cloudflare') return 'cloudflare';
+  return 'pollinations';
 }
+
+function hfToken() { return (process.env.HF_TOKEN || process.env.HUGGINGFACE_API_KEY || '').trim(); }
+function huggingfaceConfigured() { return !!hfToken(); }
 
 async function waitForProviderCooldown(provider, beatNumber) {
   const name = providerName(provider);
@@ -149,6 +158,83 @@ async function generateBeatImageCloudflareWithRetries({ prompt, outPath, beatNum
   throw lastErr;
 }
 
+async function generateBeatImageHuggingFace({ prompt, outPath, width = 1024, height = 576 }) {
+  // HF Inference API returns binary image bytes on success and a JSON error
+  // body on failure (rate limit, model loading, etc). We accept all status
+  // codes via validateStatus then inspect the content-type header to branch.
+  const token = hfToken();
+  const url = `${HF_API_BASE}/${HF_MODEL}`;
+  const resp = await axios.post(url, {
+    inputs: `${prompt}${NO_TEXT_SUFFIX}`,
+    parameters: {
+      width,
+      height,
+      num_inference_steps: 4,
+      guidance_scale: 0,
+    },
+    options: {
+      // Tell HF to block-wait until the model is loaded instead of returning
+      // a 503 + estimated_time. Removes a class of transient failures.
+      wait_for_model: true,
+      use_cache: false,
+    },
+  }, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+      'Content-Type': 'application/json',
+      Accept: 'image/png',
+    },
+    responseType: 'arraybuffer',
+    timeout: 120000,
+    validateStatus: () => true,
+  });
+
+  const contentType = String((resp.headers && (resp.headers['content-type'] || resp.headers['Content-Type'])) || '');
+  if (resp.status === 200 && contentType.startsWith('image/')) {
+    const buf = Buffer.from(resp.data);
+    if (buf.byteLength < 2000) throw new Error(`HuggingFace image too small (${buf.byteLength} bytes)`);
+    fs.writeFileSync(outPath, buf);
+    return outPath;
+  }
+
+  // Non-image response — parse the JSON error body
+  const bodyText = Buffer.from(resp.data || []).toString('utf8');
+  let bodyJson = null;
+  try { bodyJson = JSON.parse(bodyText); } catch (_) { /* ignore */ }
+  const errMsg = (bodyJson && (bodyJson.error || bodyJson.message)) || bodyText.slice(0, 200) || `HTTP ${resp.status}`;
+  const err = new Error(`HuggingFace error: ${errMsg}`);
+  err.response = { status: resp.status, headers: resp.headers, data: bodyJson || bodyText };
+  throw err;
+}
+
+async function generateBeatImageHuggingFaceWithRetries({ prompt, outPath, beatNumber, width = 1024, height = 576 }) {
+  let lastErr;
+  for (let attempt = 1; attempt <= HF_MAX_ATTEMPTS; attempt++) {
+    await waitForProviderCooldown('huggingface', beatNumber);
+    try {
+      return await generateBeatImageHuggingFace({ prompt, outPath, width, height });
+    } catch (err) {
+      lastErr = err;
+      const status = responseStatus(err);
+      // 429 = rate limit, 503 = model still loading despite wait_for_model
+      if (status === 429 || status === 503) {
+        const wait = markProviderCooldown('huggingface', err, 15000, attempt);
+        console.warn(`[images] beat ${beatNumber} huggingface attempt ${attempt}/${HF_MAX_ATTEMPTS} rate-limited (${status}) - waiting ${wait}ms`);
+        if (attempt < HF_MAX_ATTEMPTS) await sleep(wait);
+        continue;
+      }
+      if (typeof status === 'number' && status >= 500 && status < 600 && attempt < HF_MAX_ATTEMPTS) {
+        const wait = backoffMsForError(err, 5000, attempt);
+        console.warn(`[images] beat ${beatNumber} huggingface attempt ${attempt}/${HF_MAX_ATTEMPTS} failed (${status}) - waiting ${wait}ms`);
+        await sleep(wait);
+        continue;
+      }
+      throw err;
+    }
+  }
+  throw lastErr;
+}
+
 async function fetchPollinationsImage(url, outPath, timeoutMs = 90000) {
   const resp = await axios.get(url, {
     responseType: 'arraybuffer',
@@ -204,7 +290,18 @@ async function generateBeatImagePollinations({ prompt, outPath, beatNumber, widt
 }
 
 async function generateBeatImage({ prompt, outPath, beatNumber, width = 1920, height = 1080 }) {
-  // Primary: Cloudflare Workers AI when configured. Fast, reliable, generous free tier.
+  // Primary: HuggingFace Inference API (Flux Schnell) when HF_TOKEN is set.
+  // Reasonably generous free tier with HF account, and the model is the same
+  // Flux Schnell that Cloudflare Workers AI exposes — just on a less-throttled
+  // backend. Falls through to Cloudflare → Pollinations on any failure.
+  if (huggingfaceConfigured()) {
+    try {
+      return await generateBeatImageHuggingFaceWithRetries({ prompt, outPath, beatNumber, width: 1024, height: 576 });
+    } catch (err) {
+      console.warn(`[images] beat ${beatNumber} huggingface failed (${err.message}) — falling back to cloudflare/pollinations`);
+    }
+  }
+  // Secondary: Cloudflare Workers AI when configured.
   if (cloudflareConfigured()) {
     try {
       return await generateBeatImageCloudflareWithRetries({ prompt, outPath, beatNumber });
@@ -212,7 +309,7 @@ async function generateBeatImage({ prompt, outPath, beatNumber, width = 1920, he
       console.warn(`[images] beat ${beatNumber} cloudflare failed (${err.message}) — falling back to pollinations`);
     }
   }
-  // Fallback: Pollinations.
+  // Last-resort: Pollinations.
   return generateBeatImagePollinations({ prompt, outPath, beatNumber, width, height });
 }
 
@@ -228,7 +325,10 @@ async function generateAllBeats(visualPlan, outputDir) {
   let nextIndex = 0;
   let completed = 0;
 
-  console.log(`[images] generating ${total} beats with concurrency=${IMAGE_CONCURRENCY} (primary: ${cloudflareConfigured() ? 'cloudflare' : 'pollinations'})`);
+  const primaryProvider = huggingfaceConfigured()
+    ? `huggingface (${HF_MODEL})`
+    : (cloudflareConfigured() ? 'cloudflare' : 'pollinations');
+  console.log(`[images] generating ${total} beats with concurrency=${IMAGE_CONCURRENCY} (primary: ${primaryProvider})`);
 
   async function worker() {
     while (true) {
