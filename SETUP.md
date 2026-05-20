@@ -10,7 +10,7 @@ The pipeline generates the video for you, uploads it to a temporary file host, a
 
 Why: GitHub Actions runs the daily cron for free. The repo is where your code + state (published.json) lives.
 
-- [ ] Go to https://github.com/signup and create an account (use the email `shanifadhil33@gmail.com`)
+- [ ] Go to https://github.com/signup and create an account
 - [ ] Verify your email
 - [ ] Click the **+** button top-right → **New repository**
 - [ ] Name: `akhir-zamaan` (or anything you like)
