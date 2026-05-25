@@ -20,13 +20,63 @@ const IMAGE_CONCURRENCY = parseBoundedInt(process.env.IMAGE_CONCURRENCY, 3, 1, 3
 const CF_MAX_ATTEMPTS = parseBoundedInt(process.env.CLOUDFLARE_IMAGE_ATTEMPTS, 2, 1, 5);
 const HF_MAX_ATTEMPTS = parseBoundedInt(process.env.HF_IMAGE_ATTEMPTS, 3, 1, 5);
 
-const NEGATIVE_PROMPT = 'deformed, disfigured, bad anatomy, extra fingers, extra limbs, missing fingers, mutated hands, low quality, blurry, out of focus, jpeg artifacts, watermark, text, logo, signature, caption, ugly, pixelated, distorted faces, cartoon, anime, 3d render, plastic skin, overexposed, underexposed, oversaturated, typography, lettering, writing, words, characters, alphabet, calligraphy, sign, label, subtitle, banner, billboard';
+const NEGATIVE_PROMPT = 'deformed, disfigured, bad anatomy, extra fingers, extra limbs, missing fingers, mutated hands, low quality, blurry, out of focus, jpeg artifacts, watermark, text, logo, signature, caption, ugly, pixelated, distorted faces, cartoon, anime, 3d render, plastic skin, overexposed, underexposed, oversaturated, typography, lettering, writing, words, characters, alphabet, calligraphy, sign, label, subtitle, banner, billboard, speech bubble, thought bubble, dialogue, comic, chat bubble, phone screen text, readable display, headline, newspaper, magazine cover, book page, manuscript writing';
 
 // Strong positive directive appended to every Cloudflare/Pollinations prompt.
 // Flux Schnell tends to insert garbled pseudo-Arabic/English text into images
 // unless you actively tell it not to. Negative prompts help, but a positive
 // "no text" instruction in the prompt itself is more reliable.
-const NO_TEXT_SUFFIX = '. The image must contain NO text, NO letters, NO writing, NO signs, NO calligraphy, NO subtitles, NO watermarks. Purely visual composition.';
+const NO_TEXT_SUFFIX = '. The image must contain NO text, NO letters, NO writing, NO signs, NO calligraphy, NO subtitles, NO watermarks, NO speech bubbles, NO thought bubbles, NO readable phone or computer screens, NO open books with visible pages, NO newspaper or magazine pages. All surfaces that would normally hold text must be blank, abstract, or out of focus. Purely visual composition with shapes, light, and atmosphere only.';
+
+// Phrases the LLM sometimes slips into image prompts despite the visual-architect
+// rules — each one is a near-guaranteed trigger for Flux to render garbled
+// pseudo-text. We replace them with semantically similar but text-free
+// alternatives before any provider sees the prompt. This is the only reliable
+// defense — once Flux sees "phone screen" or "speech bubble" in the prompt body,
+// no amount of negative-prompt weighting will stop the garbled letters.
+const PROMPT_SANITIZERS = [
+  // Phones, screens, displays
+  [/\b(?:phone|smartphone|iphone|android|tablet|laptop|computer|tv|television)\s+(?:screen|display|monitor)s?\b/gi, 'dark glowing rectangle'],
+  [/\b(?:screen|display|monitor)s?\s+(?:showing|displaying|with|full of|covered in)\s+(?:text|messages?|notifications?|words?|writing|letters?|chats?|posts?|tweets?|comments?)\b/gi, 'dark glowing rectangle'],
+  [/\b(?:text|sms|chat|dm)\s+(?:messages?|notifications?|conversations?|threads?|bubbles?)\b/gi, 'faint glow'],
+  [/\bglowing\s+(?:phone|smartphone|screen|display)\b/gi, 'faint cold blue glow'],
+  [/\bnotifications?\s+(?:pop\s*ups?|alerts?)?\b/gi, 'faint pulses of light'],
+  // Speech / thought / dialogue bubbles
+  [/\b(?:speech|thought|dialogue|chat|comic)\s+bubbles?\b/gi, 'empty space'],
+  [/\bspeaking\s+(?:to|at|toward|with)\s+(?:the\s+)?(?:viewer|camera|each\s+other)\b/gi, 'gesturing toward each other'],
+  [/\b(?:saying|shouting|whispering|screaming)\s+(?:words?|phrases?|sentences?|something)\b/gi, 'expressing emotion'],
+  // Signs, billboards, posters
+  [/\bbillboards?\b/gi, 'tall blank dark structure'],
+  [/\bneon\s+signs?\b/gi, 'colored neon glow'],
+  [/\b(?:street|shop|road|warning|advertising)\s+signs?\b/gi, 'silhouette form'],
+  [/\bposters?\s+(?:on|covering|plastered)\b/gi, 'abstract panels on'],
+  [/\bgraffiti\b/gi, 'abstract markings'],
+  // Books, manuscripts, newspapers — with VISIBLE writing
+  [/\bopen\s+(?:book|manuscript|scroll|tome|journal|notebook|diary)s?\b/gi, 'closed weathered tome'],
+  [/\b(?:reading|writing|inscribing)\s+(?:a\s+|an\s+|the\s+)?(?:book|manuscript|scroll|letter|page|paper)s?\b/gi, 'holding a closed weathered tome'],
+  [/\b(?:book|manuscript|scroll)\s+(?:pages?|spread)\b/gi, 'closed weathered tome surface'],
+  [/\bnewspapers?\b/gi, 'abstract paper texture'],
+  [/\bmagazines?\b/gi, 'abstract glossy paper'],
+  [/\bletters?\s+(?:and|or)\s+(?:numbers?|symbols?)\b/gi, 'geometric patterns'],
+  // Direct text-asking words
+  [/\b(?:typography|calligraphy|inscription|engraving|hieroglyphs?|runes?)\b/gi, 'ornamental pattern'],
+  [/\b(?:visible|readable|legible)\s+(?:text|words?|writing|letters?)\b/gi, 'abstract patterns'],
+  [/\b(?:written|inscribed|engraved|carved)\s+(?:text|words?|letters?|phrases?|messages?)\b/gi, 'abstract relief carving'],
+  [/\bwith\s+(?:the\s+words?|the\s+text|writing|letters?)\s+["'][^"']+["']/gi, ''],
+  // Catch-all: bare nouns "text" / "words" / "writing" when used as visible subject
+  [/\b(?:the\s+)?(?:text|words?|writing|letters?|captions?|subtitles?)\s+(?:on|across|in|filling)\b/gi, 'abstract pattern on'],
+];
+
+function sanitizePrompt(rawPrompt) {
+  if (!rawPrompt) return rawPrompt;
+  let p = String(rawPrompt);
+  for (const [pattern, replacement] of PROMPT_SANITIZERS) {
+    p = p.replace(pattern, replacement);
+  }
+  // Collapse runs of whitespace + stray commas left behind after replacements
+  p = p.replace(/\s{2,}/g, ' ').replace(/\s+,/g, ',').replace(/,\s*,/g, ',').trim();
+  return p;
+}
 
 const providerCooldownUntil = {
   huggingface: 0,
@@ -44,7 +94,7 @@ function buildPollinationsUrl(prompt, { width = 1920, height = 1080, seed = 42, 
   // Append the no-text suffix to the prompt body as well — Pollinations
   // sometimes ignores the negative_prompt URL param, but always respects
   // instructions in the prompt itself.
-  const fullPrompt = `${prompt}${NO_TEXT_SUFFIX}`;
+  const fullPrompt = `${sanitizePrompt(prompt)}${NO_TEXT_SUFFIX}`;
   const encoded = encodeURIComponent(fullPrompt);
   const params = new URLSearchParams({
     width: String(width),
@@ -106,7 +156,7 @@ async function generateBeatImageCloudflare({ prompt, outPath, width = 1024, heig
   // so we use a positive "no text" instruction in the prompt body instead.
   // Negative prompt is passed in case Cloudflare exposes it on its end.
   const resp = await axios.post(url, {
-    prompt: `${prompt}${NO_TEXT_SUFFIX}`,
+    prompt: `${sanitizePrompt(prompt)}${NO_TEXT_SUFFIX}`,
     negative_prompt: NEGATIVE_PROMPT,
     width,
     height,
@@ -165,7 +215,7 @@ async function generateBeatImageHuggingFace({ prompt, outPath, width = 1024, hei
   const token = hfToken();
   const url = `${HF_API_BASE}/${HF_MODEL}`;
   const resp = await axios.post(url, {
-    inputs: `${prompt}${NO_TEXT_SUFFIX}`,
+    inputs: `${sanitizePrompt(prompt)}${NO_TEXT_SUFFIX}`,
     parameters: {
       width,
       height,
