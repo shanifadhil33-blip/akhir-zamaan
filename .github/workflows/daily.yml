@@ -284,6 +284,18 @@ jobs:
           R2_BUCKET_NAME_C="$(trim "${R2_BUCKET_NAME:-}")"
           R2_ENDPOINT_C="$(trim "${R2_ENDPOINT:-}")"
           R2_PUBLIC_DOMAIN_C="$(trim "${R2_PUBLIC_DOMAIN:-}")"
+          # Defensive: if R2_ENDPOINT was pasted with the bucket name appended
+          # as a path (Cloudflare's R2 UI displays a bucket-scoped URL on the
+          # bucket page, separate from the account-level S3 endpoint), strip
+          # it. Otherwise aws-cli + path-style addressing produces
+          # `…/<bucket>/<bucket>/<key>` and R2 stores the file with the
+          # bucket name as a folder prefix — files exist but the public-dev
+          # URL points to the wrong key and 404s.
+          R2_ENDPOINT_C="${R2_ENDPOINT_C%/}"
+          if [ -n "${R2_BUCKET_NAME_C}" ] && [ "${R2_ENDPOINT_C%/${R2_BUCKET_NAME_C}}" != "${R2_ENDPOINT_C}" ]; then
+            echo "  ⚠ R2_ENDPOINT had trailing /${R2_BUCKET_NAME_C} — stripping (use the account-level S3 endpoint, not the bucket URL)"
+            R2_ENDPOINT_C="${R2_ENDPOINT_C%/${R2_BUCKET_NAME_C}}"
+          fi
 
           # Build a clean object key from the timestamped output folder name
           # e.g. "20260514_0026_why-modern-life-feels-so-empty/final.mp4"
