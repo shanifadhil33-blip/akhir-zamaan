@@ -4,6 +4,14 @@
 const fs = require('fs');
 const path = require('path');
 
+// Whisper's word_timestamps come from DTW over cross-attention weights; the
+// detected onset is biased ~200-300ms LATER than the actual phoneme. Result:
+// captions appear visibly behind the voiceover. Shift every chunk earlier by
+// CAPTION_LEAD_MS to compensate. Both start and end are shifted by the same
+// amount — the chunk's on-screen duration stays the same, it just lands at
+// the right moment. Override via env if your TTS has a different bias.
+const CAPTION_LEAD_MS = parseInt(process.env.CAPTION_LEAD_MS, 10) || 280;
+
 function msToSrtTimestamp(ms) {
   const totalMs = Math.max(0, Math.floor(ms));
   const hours = Math.floor(totalMs / 3600000);
@@ -28,9 +36,14 @@ function chunkWords(words, wordsPerChunk = 4) {
   for (let i = 0; i < words.length; i += wordsPerChunk) {
     const slice = words.slice(i, i + wordsPerChunk);
     if (!slice.length) continue;
-    const start = slice[0].offset_ms;
+    const rawStart = slice[0].offset_ms;
     const last = slice[slice.length - 1];
-    const end = last.offset_ms + last.duration_ms;
+    const rawEnd = last.offset_ms + last.duration_ms;
+    // Shift earlier to undo Whisper's onset-detection lag (see CAPTION_LEAD_MS).
+    // clamp start at 0; keep at least a 200ms visible duration so a chunk
+    // that started near t=0 doesn't collapse.
+    const start = Math.max(0, rawStart - CAPTION_LEAD_MS);
+    const end = Math.max(start + 200, rawEnd - CAPTION_LEAD_MS);
     const text = slice.map((w) => w.text).join(' ');
     chunks.push({ start, end, text });
   }
