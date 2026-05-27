@@ -67,12 +67,15 @@ function buildASS(words) {
   // Styling philosophy: clean documentary look, NOT YouTube-meme look.
   //  - Font: Roboto Condensed Bold (sharp, modern, slightly compressed)
   //          installed via fonts-roboto in the workflow
-  //  - Size: 44pt at 1080p (was 68pt — way too big)
+  //  - Size: 52pt at 1080p — readable on phones without dominating the frame
+  //          (started at 44pt which felt small on small screens; 68pt was the
+  //          opposite extreme. 52pt is the comfortable middle.)
   //  - Color: pure white #FFFFFF
-  //  - Outline: thin 1.5px black for legibility against any background
+  //  - Outline: 2px black for legibility against any background at the new size
   //  - Shadow: subtle 1px drop for depth
   //  - Spacing: +1 px between letters (looks tighter, more editorial)
-  //  - 5 words per line instead of all-caps shouting
+  //  - 5 words per chunk — at 52pt this still fits on one line within the
+  //    1680px text area (1920 − 2×120 margin), no wrapping
   //  - Sentence case (not ALL CAPS) — looks calmer, more cinematic
   const header = `[Script Info]
 Title: Akhir Zamaan Captions
@@ -85,7 +88,7 @@ YCbCr Matrix: TV.709
 
 [V4+ Styles]
 Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding
-Style: Default,Roboto Condensed,44,&H00FFFFFF,&H000000FF,&H00000000,&H80000000,1,0,0,0,100,100,1,0,1,1.5,1,2,120,120,90,1
+Style: Default,Roboto Condensed,52,&H00FFFFFF,&H000000FF,&H00000000,&H80000000,1,0,0,0,100,100,1,0,1,2,1,2,120,120,90,1
 
 [Events]
 Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
