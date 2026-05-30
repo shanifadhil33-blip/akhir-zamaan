@@ -4,1389 +4,2601 @@
     "title": "Why Modern Life Feels So Empty — A Quranic Diagnosis",
     "theme": "Spiritual emptiness despite material abundance — the heart's dependence on its Creator",
     "modern_angle": "The 'I have everything but feel nothing' generation — Maslow's pyramid satisfied, soul still starving",
-    "quran_chapters": [13, 50],
-    "specific_verses": [28],
-    "context": "13:28 — hearts find rest only in the remembrance of Allah. Connect to the post-materialist crisis: full fridges, empty souls; productivity peaks, depression peaks alongside."
-  },
-  {
-    "id": "ml_2",
-    "title": "The Disease Of Likes — Social Media And The Nafs Exposed",
-    "theme": "Vanity (riya), validation-seeking, and the manufactured self",
-    "modern_angle": "Posting for the algorithm, deleting if engagement is low, the dopamine-anxiety loop of public self-display",
-    "quran_chapters": [104, 107],
-    "context": "Surah Al-Humazah on the slanderer/scorer who counts wealth. Surah Al-Maa'un on those who pray to be seen. Connect to 2026 attention economy where every post is a scoreboard."
-  },
-  {
-    "id": "ml_3",
-    "title": "Why You Feel Lonely In A Crowded Room — The Quranic Heart",
-    "theme": "Spiritual loneliness as the absence of remembrance, not absence of people",
-    "modern_angle": "700 followers, group chats lit up, still hollow at 2 AM",
-    "quran_chapters": [13, 50],
-    "specific_verses": [28],
-    "context": "13:28 ('hearts find rest'); 50:16 (closer than jugular vein). Connect to the loneliness epidemic in hyper-connected gen Z."
-  },
-  {
-    "id": "ml_4",
-    "title": "Anxiety Is Not Just Chemical — The Spiritual Roots We Ignore",
-    "theme": "Tranquility (sakeenah) as a divine gift, not a serotonin level",
-    "modern_angle": "SSRIs, meditation apps, breathwork — and the missing dimension nobody mentions",
-    "quran_chapters": [48, 13],
-    "specific_verses": [4],
-    "context": "48:4 — Allah is the One who sends down sakeenah into the hearts of the believers. Frame anxiety as a soul untethered from its Source."
-  },
-  {
-    "id": "ml_5",
-    "title": "The Rat Race Trap — How The Dunya Hijacks Your Fitrah",
-    "theme": "At-Takathur — the love of accumulation that distracts until the grave",
-    "modern_angle": "Career ladders, FIRE movement, hustle culture — running toward a finish line that doesn't exist",
-    "quran_chapters": [102],
-    "context": "Surah At-Takathur — competition in worldly increase distracts you, until you visit the graves. Connect to 60-hour weeks for things you'll never use."
-  },
-  {
-    "id": "ml_6",
-    "title": "Why Toxic Relationships Feel Addictive — Attachment In The Quran",
-    "theme": "Misplaced love (mahabba) and idolizing creation over Creator",
-    "modern_angle": "Trauma-bonding, situationships, the addiction to the chase",
-    "quran_chapters": [2, 30],
-    "specific_verses": [165],
-    "context": "2:165 — those who take rivals besides Allah, loving them as they love Allah. Connect to the modern script where romantic obsession replaces spiritual longing."
-  },
-  {
-    "id": "ml_7",
-    "title": "Burnout Is A Soul Problem, Not A Schedule Problem",
-    "theme": "Exhaustion of the heart that productivity advice cannot reach",
-    "modern_angle": "The 4-day work week, time-blocking, productivity gurus — and people still hollowed out",
-    "quran_chapters": [94],
-    "context": "Surah Ash-Sharh — 'with hardship comes ease.' Reframe burnout as a heart that has lost its anchor, not a calendar that needs better gaps."
-  },
-  {
-    "id": "ml_8",
-    "title": "Imposter Syndrome And Arrogance — Two Sides Of The Same Ego",
-    "theme": "The nafs oscillating between self-aggrandizement and self-disgust — both rooted in 'I'",
-    "modern_angle": "LinkedIn humble-brags, the fake-modesty contest, the silent arrogance of 'I don't deserve this'",
-    "quran_chapters": [40, 31],
-    "specific_verses": [35],
-    "context": "40:35 ('every arrogant tyrant'); 31:18 (don't walk on the earth in arrogance). Diagnose both poles as the same disease — refusal to surrender the I."
-  },
-  {
-    "id": "ml_9",
-    "title": "Why Death Feels Distant But Is Actually Nearer Than You Think",
-    "theme": "Heedlessness about the appointed hour",
-    "modern_angle": "Anti-aging biotech, life-extension podcasts, the cultural taboo against discussing mortality",
-    "quran_chapters": [3, 63],
-    "specific_verses": [185],
-    "context": "3:185 — every soul will taste death. Connect to 2026's wellness/longevity industry that pretends otherwise."
-  },
-  {
-    "id": "ml_10",
-    "title": "Depression And Despair — When You've Forgotten Ar-Rahman",
-    "theme": "Hopelessness (qunoot) as the spiritual root of clinical depression",
-    "modern_angle": "Antidepressant prescriptions doubling decade-over-decade, suicide rates climbing in 'developed' nations",
-    "quran_chapters": [12, 39],
-    "specific_verses": [87],
-    "context": "12:87 ('do not despair of the mercy of Allah'); 39:53 (do not despair of His mercy). Reframe despair as a forgotten name of Allah."
-  },
-  {
-    "id": "ml_11",
-    "title": "The Perfect Life Illusion — Instagram Vs. Surah Al-Hadid",
-    "theme": "Dunya as adornment that decays — the curated highlight reel as a cosmic deception",
-    "modern_angle": "Filters, vacation photos, lifestyle creators — the new mirage",
-    "quran_chapters": [57],
-    "specific_verses": [20],
-    "context": "57:20 — life of this world is play, amusement, adornment, mutual boasting, increase in wealth and children. Connect to the algorithmic gospel of 'success.'"
-  },
-  {
-    "id": "ml_12",
-    "title": "Healing Your Inner Child With Verses You've Never Paused On",
-    "theme": "Trauma, mercy, and the verses that address the unhealed self",
-    "modern_angle": "Therapy culture, inner-child work, generational healing language — overlapping with Quranic mercy without realizing it",
-    "quran_chapters": [93],
-    "context": "Surah Ad-Duha — addressed to the orphaned Prophet ﷺ. 'Did He not find you orphaned and shelter you?' A verse that names every wounded child without naming them."
-  },
-  {
-    "id": "ml_13",
-    "title": "Why You Keep Sabotaging Your Own Peace — A Quranic Mirror",
-    "theme": "The nafs that whispers against itself; self-sabotage as spiritual disease",
-    "modern_angle": "Procrastinating on prayer while productive at work; binge-watching after a good day; ruining what you love",
-    "quran_chapters": [12],
-    "specific_verses": [53],
-    "context": "12:53 — 'the nafs commands evil unless my Lord has mercy.' Diagnose self-sabotage as a soul that hasn't been disciplined."
-  },
-  {
-    "id": "ml_14",
-    "title": "The Scrolling Sickness — Time, Attention, And Al-Asr",
-    "theme": "Time as the ultimate non-renewable; heedlessness as the modern theft",
-    "modern_angle": "5-7 hours/day on phones; the algorithm; the grave that's coming on time regardless of how you spent yours",
-    "quran_chapters": [103],
-    "context": "Surah Al-Asr — 'by time, mankind is in loss.' Connect to screen-time data as proof of modern collective loss."
-  },
-  {
-    "id": "ml_15",
-    "title": "Dopamine, Desires, And Deen — What Brain Science Confirms",
-    "theme": "The hawa (desire) that the Quran warned about, mapped onto modern neuroscience",
-    "modern_angle": "Neuroscientists 'discovering' what the Quran said about following desires breaking the heart",
-    "quran_chapters": [45],
-    "specific_verses": [23],
-    "context": "45:23 — 'have you seen the one who takes his desire as his god?' Connect to dopamine-loop research, Andrew Huberman's audience, and the 'discovery' of pre-frontal-cortex decision-making."
+    "quran_chapters": [
+      13,
+      50
+    ],
+    "specific_verses": [
+      28
+    ],
+    "context": "13:28 — hearts find rest only in the remembrance of Allah. Connect to the post-materialist crisis: full fridges, empty souls; productivity peaks, depression peaks alongside.",
+    "hadith_book": {
+      "collection": "bukhari",
+      "book": 81,
+      "limit": 5
+    }
   },
   {
     "id": "ca_1",
     "title": "The Dajjal System Is Already Here — But Not As You Think",
     "theme": "Mass deception as a system, not a single figure",
     "modern_angle": "Algorithmic feeds, deepfakes, the manufacture of consent at planetary scale",
-    "quran_chapters": [7, 18],
-    "context": "7 (Al-A'raf) on the seducer who reveals reality and conceals the consequence. Frame Dajjal less as a coming person and more as the system already misleading billions in real time."
-  },
-  {
-    "id": "ca_2",
-    "title": "Global Inflation And The Quranic Law Of Riba",
-    "theme": "Interest as cosmic injustice, not just financial inefficiency",
-    "modern_angle": "Central banks, inflation hitting 9% in 2022-23, mortgages eating life decades, currency printing",
-    "quran_chapters": [2, 3],
-    "specific_verses": [275],
-    "context": "2:275-281 — Allah destroys riba and gives increase for charities. Connect to 2026's wealth concentration: Forbes top 10 doubled net worth since 2020 while median real wages stagnated."
-  },
-  {
-    "id": "ca_3",
-    "title": "Why The Powerful Keep Winning — Pharaoh's Playbook Then And Now",
-    "theme": "The strongman archetype the Quran maps in detail",
-    "modern_angle": "Authoritarian comeback in 2024-26, technocratic capture, the Pharaoh-as-system",
-    "quran_chapters": [28, 79],
-    "context": "28 (Al-Qasas) — Pharaoh dividing people, oppressing one tribe, claiming divinity. 79:24 — 'I am your lord most high.' Map onto modern power: divide, surveil, claim ultimate authority."
-  },
-  {
-    "id": "ca_4",
-    "title": "Social Justice Movements — Are They Missing The Quranic Foundation?",
-    "theme": "Justice ('adl) as a divine attribute vs. justice as a tribal flag",
-    "modern_angle": "BLM, MeToo, decolonization discourse — fragmented because they reject the Source that anchors justice",
-    "quran_chapters": [4, 5],
-    "specific_verses": [135],
-    "context": "4:135 — stand firmly for justice even against yourselves. Reframe justice movements that succeed and fail by whether their root is divine standard or shifting consensus."
-  },
-  {
-    "id": "ca_5",
-    "title": "War In The Modern World — Malhamah, Armageddon, And Today's Headlines",
-    "theme": "End-time bloodshed as cyclical pattern visible in real time",
-    "modern_angle": "2022 Russia invasion, Gaza 2023-24, Sudan civil war, the seemingly permanent state of pre-war",
-    "quran_chapters": [27, 30],
-    "specific_verses": [82],
-    "context": "27:82 — 'when the word befalls them, We will bring forth a beast.' 30 (Ar-Rum) on the cycle of empires. Connect to a world that hasn't had a year of peace in living memory."
-  },
-  {
-    "id": "ca_6",
-    "title": "The Fall Of Nations — A Pattern You Can Predict With Surah Al-An'am",
-    "theme": "The cyclical destruction of corrupt civilizations as cosmic law",
-    "modern_angle": "American empire wobbling, EU fracturing, China's demographic collapse — all on the same arc the Quran maps",
-    "quran_chapters": [6, 17],
-    "specific_verses": [6],
-    "context": "6:6 — 'How many generations We destroyed before them.' 17:16 — when We intend to destroy a city We send the affluent to commit fasiq, and the word befalls them. Connect to 2026's late-empire indicators."
-  },
-  {
-    "id": "ca_7",
-    "title": "Surveillance, Privacy, And The One Who Knows All — The True Watcher",
-    "theme": "Allah as Al-Raqib (the Watcher) — the only Watcher you should fear",
-    "modern_angle": "Smart TVs listening, app permissions, government databases, cookie tracking, China's social credit",
-    "quran_chapters": [50, 4],
-    "specific_verses": [16],
-    "context": "50:16-18 — Allah closer than the jugular; angels recording. Reframe modern surveillance dread as a small cousin of the original Watcher who never misses a thought."
-  },
-  {
-    "id": "ca_8",
-    "title": "Media Manipulation — How False Narratives Mirror What The Quran Warned",
-    "theme": "Falsehood (batil) dressed as truth; the war over reality itself",
-    "modern_angle": "Deepfakes, AI-generated articles, narrative laundering through 'verified' accounts",
-    "quran_chapters": [2, 49],
-    "specific_verses": [42],
-    "context": "2:42 — 'do not mix truth with falsehood and conceal the truth knowingly.' 49:6 — verify reports from corrupt sources. Connect to a media environment where 60% of what you see is manufactured."
-  },
-  {
-    "id": "ca_9",
-    "title": "Gender Wars — What The Quran Actually Says About Men, Women, And Worth",
-    "theme": "Differentiation without hierarchy of worth; the design beneath the noise",
-    "modern_angle": "Red-pill / blue-pill discourse, 4B movement, hookup culture, masculinity podcasts",
-    "quran_chapters": [33, 4],
-    "specific_verses": [35],
-    "context": "33:35 — Allah lists believing men and women alongside each other for forgiveness and reward. 4:1 — created from a single soul. Cut through the modern gender war using the Source that names both."
-  },
-  {
-    "id": "ca_10",
-    "title": "The Rise Of Artificial Intelligence — A Sign, A Test, Or A Tool Of Dajjal?",
-    "theme": "Mass deception via systems that 'speak,' 'see,' and 'judge'",
-    "modern_angle": "GPT-4/5, Sora video, AI lawyers, AI imams, agents that make decisions for humans",
-    "quran_chapters": [27],
-    "specific_verses": [82],
-    "context": "27:82 — the Beast that emerges and speaks/marks people. Engage AI as the deception that multiplies the speaker without multiplying the soul behind the words."
-  },
-  {
-    "id": "ca_11",
-    "title": "Water Wars Are Coming — Quranic Warnings About A Thirsty Earth",
-    "theme": "Water as creation's central sign; the corruption of the rivers",
-    "modern_angle": "Cape Town day zero, Chennai 2019, Egypt-Ethiopia dam tensions, depleting aquifers across the US",
-    "quran_chapters": [21, 23],
-    "specific_verses": [30],
-    "context": "21:30 — from water We made every living thing. 23:18 — We send water from the sky in measured amounts. Connect to a planet running out of the most-named substance in the Quran."
-  },
-  {
-    "id": "ca_12",
-    "title": "Refugees And The Stranger — Quranic Parallels You're Not Thinking About",
-    "theme": "Hijrah (migration) and the sacred status of the displaced",
-    "modern_angle": "100M displaced globally as of 2024 — Syrians, Rohingya, Sudanese, Ukrainians, Palestinians",
-    "quran_chapters": [4, 8],
-    "specific_verses": [97],
-    "context": "4:97-100 — those who emigrate in the cause of Allah find vast spaces and provision. Reframe the political 'migrant crisis' as the Quranic test of a host society."
-  },
-  {
-    "id": "ca_13",
-    "title": "When Law Becomes Injustice — The Difference Between Shariah And Tyranny",
-    "theme": "Just rule vs. systems that wear religious labels for power",
-    "modern_angle": "Authoritarian regimes that brand themselves 'Islamic'; Western powers that brand themselves 'free' while jailing dissent",
-    "quran_chapters": [4, 5],
-    "specific_verses": [58],
-    "context": "4:58 — render trusts to whom they are due, judge with justice. Diagnose what fails in any system that claims to be just but consistently delivers the opposite."
-  },
-  {
-    "id": "ca_14",
-    "title": "Elections, Loyalty, And The Psychology Of Crowds In Surah Al-A'raf",
-    "theme": "Tribal allegiance as a substitute for God-consciousness",
-    "modern_angle": "Identity politics, partisan derangement, the 'my team must win' addiction",
-    "quran_chapters": [7],
-    "context": "Surah Al-A'raf — the people of Pharaoh follow him into the sea. Connect to the followership patterns of every modern political tribe."
-  },
-  {
-    "id": "ca_15",
-    "title": "Globalism, Tribalism, And The Babel Syndrome — A Quranic Lens",
-    "theme": "The pendulum between tower-builders and tribe-defenders",
-    "modern_angle": "WEF/Davos elite vs. nationalist resurgence — both missing the Source that places them in scale",
-    "quran_chapters": [49, 30],
-    "specific_verses": [13],
-    "context": "49:13 — 'We made you peoples and tribes that you may know one another, the noblest among you is the most God-conscious.' Cut through both globalism and tribalism using the criterion neither admits."
+    "quran_chapters": [
+      7,
+      18
+    ],
+    "context": "7 (Al-A'raf) on the seducer who reveals reality and conceals the consequence. Frame Dajjal less as a coming person and more as the system already misleading billions in real time.",
+    "hadith_book": {
+      "collection": "muslim",
+      "book": 54,
+      "limit": 6
+    }
   },
   {
     "id": "sc_1",
     "title": "The Expanding Universe — Allah's Own Words Before The Telescope",
     "theme": "Cosmological expansion stated in the Quran 1300 years before Hubble",
     "modern_angle": "Hubble constant, JWST observations, the discomfort of cosmologists with a universe that knows it had a beginning",
-    "quran_chapters": [51],
-    "specific_verses": [47],
+    "quran_chapters": [
+      51
+    ],
+    "specific_verses": [
+      47
+    ],
     "context": "51:47 — 'and the heaven We constructed with strength, and indeed, We are its expander.' Connect to Hubble's 1929 confirmation and JWST's 2022+ deep-field results."
-  },
-  {
-    "id": "sc_2",
-    "title": "Your Skin Will Talk — Nerve Endings, Pain, And The Day Of Judgment",
-    "theme": "The Quranic detail that pain receptors live in the skin (4:56)",
-    "modern_angle": "Modern neurology confirms: skin grafted from another body has new pain perception when the original skin is destroyed",
-    "quran_chapters": [4],
-    "specific_verses": [56],
-    "context": "4:56 — when their skins are roasted We replace them with new skins so they can taste the punishment. Anatomical precision modern science only mapped in the 20th century."
-  },
-  {
-    "id": "sc_3",
-    "title": "Embryology In The Quran — It's Not Just A Scientific Miracle Story",
-    "theme": "The stages of human development as a sign that demands surrender",
-    "modern_angle": "Modern embryology, IVF, the moral conversations about life's beginning",
-    "quran_chapters": [23, 22],
-    "specific_verses": [12],
-    "context": "23:12-14 — drop, leech, lump of flesh, bones, clothing of flesh. 22:5. Connect to 2026 embryology textbooks that match the sequence with eerie precision."
-  },
-  {
-    "id": "sc_4",
-    "title": "The Sun Will Extinguish — Quranic Cosmology And The End Of All Stars",
-    "theme": "Stellar death as cosmic announcement of the end",
-    "modern_angle": "Stars dying daily across the observable universe; the Sun's predicted lifespan; heat-death cosmology",
-    "quran_chapters": [81, 82],
-    "specific_verses": [1],
-    "context": "81:1-3 — when the sun is wrapped up; when the stars fall. Connect to modern stellar cosmology and the astrophysical certainty that every star burns out."
-  },
-  {
-    "id": "sc_5",
-    "title": "DNA, Fingerprints, And The Resurrection — You Will Be You Again",
-    "theme": "Identity persistence after death — anatomical and spiritual",
-    "modern_angle": "Forensic genealogy, fingerprint biometrics, biotech identity proofs",
-    "quran_chapters": [75],
-    "specific_verses": [3],
-    "context": "75:3-4 — 'does man think We will not assemble his bones? Yes, we are able to put together his fingertips in perfect order.' Modern fingerprint uniqueness as Quranic proof."
-  },
-  {
-    "id": "sc_6",
-    "title": "Black Holes And The Oath Of The Stars That Vanish",
-    "theme": "Allah's oath by celestial objects that 'recede and disappear' (At-Takwir)",
-    "modern_angle": "Black holes — discovered observationally only in 2019 (Event Horizon Telescope); the Quranic oath made 1400 years prior",
-    "quran_chapters": [81],
-    "specific_verses": [15],
-    "context": "81:15-16 — 'I swear by the receding stars, that run their course and hide.' Engage the EHT image and modern astrophysical understanding of supermassive black holes."
-  },
-  {
-    "id": "sc_7",
-    "title": "The Unseen World Of Microbes — The Hidden Realms",
-    "theme": "Worlds within worlds — Allah creates what you do not see",
-    "modern_angle": "Microbiome research, the trillions of organisms living in/on you, dark matter/energy",
-    "quran_chapters": [16],
-    "specific_verses": [8],
-    "context": "16:8 — 'and He creates that which you do not know.' Connect to the 2010s microbiome explosion, dark matter (~85% of the universe), and the Quranic frame for unseen creation."
-  },
-  {
-    "id": "sc_8",
-    "title": "Mountains As Pegs — How Plate Tectonics Proves A Quranic Image",
-    "theme": "The mountain as anchor for the moving earth",
-    "modern_angle": "Plate tectonics (theory only confirmed in 1960s); isostatic equilibrium; mountain roots extending below the surface",
-    "quran_chapters": [78, 21],
-    "specific_verses": [7],
-    "context": "78:7 — 'and the mountains as pegs.' 21:31 — 'firm mountains lest the earth shake them.' Connect to the deep geological roots of mountains discovered only after seismology matured."
-  },
-  {
-    "id": "sc_9",
-    "title": "The Sleep Cycle And Death — Why Sleep Is The Sister Of Death",
-    "theme": "Sleep as a daily encounter with the soul-leaving-body principle",
-    "modern_angle": "Modern sleep science: consciousness pauses, memory consolidates, the brain 'shuts down' but the body persists",
-    "quran_chapters": [39],
-    "specific_verses": [42],
-    "context": "39:42 — Allah takes the souls at the time of their death and those that do not die during their sleep. Reframe the nightly ritual as a rehearsal."
-  },
-  {
-    "id": "sc_10",
-    "title": "Time Dilation, Physics, And A Day With Your Lord",
-    "theme": "Relativistic time stated in the Quran centuries before Einstein",
-    "modern_angle": "Special and general relativity; GPS satellites that must adjust for time dilation; the Quranic verse that scales different days differently",
-    "quran_chapters": [22, 70],
-    "specific_verses": [47],
-    "context": "22:47 — 'a day with your Lord is like a thousand years.' 70:4 — 'a day whose measure is fifty thousand years.' Connect to Einstein 1905, 1915, and the GPS adjustments running every microsecond."
-  },
-  {
-    "id": "sc_11",
-    "title": "The Living Ocean — Water, Waves, And Verses Science Can't Exhaust",
-    "theme": "The Quran's specific oceanographic descriptions that match modern observation",
-    "modern_angle": "Halocline boundaries, deep-sea darkness, internal waves — all imaged only after submersibles existed",
-    "quran_chapters": [25, 24],
-    "specific_verses": [53],
-    "context": "25:53 — two seas, one sweet one salty, with a barrier between them. 24:40 — darkness of a deep sea covered by waves. Connect to halocline imagery and the 2-mile-deep darkness mapped only post-1960."
-  },
-  {
-    "id": "sc_12",
-    "title": "Birds In Formation — Quranic Sign Language In The Sky",
-    "theme": "Bird flight as a divine sign held aloft by no one but the Most Merciful",
-    "modern_angle": "Aerodynamics, flock-intelligence research, drone swarms imitating starling murmurations",
-    "quran_chapters": [67, 16],
-    "specific_verses": [19],
-    "context": "67:19 — 'do they not see the birds above them, spreading and folding their wings? None upholds them except the Most Merciful.' Connect to fluid dynamics and the still-incomplete biology of long-distance bird migration."
-  },
-  {
-    "id": "sc_13",
-    "title": "The Big Bang In 21:30 — More Than A Soundbite",
-    "theme": "The cosmic moment that physicists name and the Quran already named",
-    "modern_angle": "Lemaitre 1927, Hubble 1929, the 1964 cosmic microwave background discovery",
-    "quran_chapters": [21],
-    "specific_verses": [30],
-    "context": "21:30 — 'the heavens and earth were one piece, then We parted them.' Engage seriously, not as proof-text — as a verse that pre-states a model physicists arrived at by accident."
-  },
-  {
-    "id": "sc_14",
-    "title": "Why Fire Needs Air — The Physics Of Hell And The Breath Of Life",
-    "theme": "Combustion, oxygen, and the Quranic descriptions of fire",
-    "modern_angle": "Modern combustion physics; the discovery of oxygen (Lavoisier 1778); the Quran's pre-modern accuracy",
-    "quran_chapters": [56],
-    "specific_verses": [71],
-    "context": "56:71-73 — 'have you considered the fire you ignite? Did you cause its tree to grow?' Engage fire as a sign embedded in the most ordinary act."
-  },
-  {
-    "id": "sc_15",
-    "title": "The Iron Sent Down — A Metal From The Stars And A Verse From The Sky",
-    "theme": "Iron's cosmic origin in supernovae, named in the Surah named after it",
-    "modern_angle": "Stellar nucleosynthesis (theory matured in the 1950s); iron forged only in dying massive stars",
-    "quran_chapters": [57],
-    "specific_verses": [25],
-    "context": "57:25 — 'and We sent down iron, in which is great might.' Connect to the astrophysical fact that every iron atom on earth was forged in an exploding star millions of years ago."
   },
   {
     "id": "hi_1",
     "title": "The Tower Of Babel — Was It Nimrod's Project? What The Quran Hints",
     "theme": "Authority that overreaches its scale, and the divine response",
     "modern_angle": "Modern megaprojects (Burj Khalifa, The Line, NEOM) and the psychological pattern they repeat",
-    "quran_chapters": [40, 28],
-    "specific_verses": [36],
-    "context": "40:36-37 — Pharaoh asking Haman to build a high tower to 'reach the means of the heavens.' Connect to the human urge to build upward as a substitute for upward-of-the-soul."
-  },
-  {
-    "id": "hi_2",
-    "title": "Thamud And Petra — The Silent City That Still Warns",
-    "theme": "A people who carved palaces from rock and were destroyed by what they refused to hear",
-    "modern_angle": "Petra/Madain Saleh today as Instagram destinations — what tourists don't know about who lived there",
-    "quran_chapters": [15, 7],
-    "specific_verses": [80],
-    "context": "15:80-84 — Thamud carved homes from mountains. 7:73-79 — the she-camel and their refusal. Connect to Madain Saleh as a Quranic warning visible from satellite."
-  },
-  {
-    "id": "hi_3",
-    "title": "The Pharaoh's Body — What The Nile Gave Up That Confirms Surah Yunus",
-    "theme": "The preserved corpse that the Quran predicted would remain as a sign",
-    "modern_angle": "The 1881 discovery of Ramesses II's mummy; modern forensic analysis confirming drowning indicators",
-    "quran_chapters": [10],
-    "specific_verses": [90],
-    "context": "10:90-92 — 'today We will preserve your body so you may be a sign for those who come after.' Connect to the actual mummy on display in Cairo, Maurice Bucaille's analysis."
-  },
-  {
-    "id": "hi_4",
-    "title": "The Dead Sea, Sodom, And A Highway You Can Drive Through",
-    "theme": "Geographically present remains of a people destroyed for their sin",
-    "modern_angle": "Sodom and Gomorrah archaeology near the Dead Sea; the geological evidence of catastrophic event",
-    "quran_chapters": [15, 11],
-    "specific_verses": [82],
-    "context": "15:74 — 'We turned them upside down.' 11:82-83 — stones rained from the sky. Connect to the 'Mt Sodom' salt formations and the lowest place on earth."
-  },
-  {
-    "id": "hi_5",
-    "title": "Alexander, Gog And Magog — A Wall, A History, And A Future Breach",
-    "theme": "Dhul-Qarnayn and the barrier",
-    "modern_angle": "Modern speculation about the wall's location (Caucasus, Derbent), and the meaning of 'when the promise approaches'",
-    "quran_chapters": [18, 21],
-    "specific_verses": [83],
-    "context": "18:83-101 — Dhul-Qarnayn builds the barrier. 21:96 — the breach as a sign of the approaching Hour. Engage carefully without sectarian speculation."
-  },
-  {
-    "id": "hi_6",
-    "title": "Ancient Egypt's Magicians — Why They Fell Prostrate So Fast",
-    "theme": "The recognition of truth that overwhelms long-held falsehood instantly",
-    "modern_angle": "Modern conversion stories of scientists, atheists, ex-celebrities — the same instant-recognition pattern",
-    "quran_chapters": [7, 26],
-    "specific_verses": [120],
-    "context": "7:120-126 — Pharaoh's magicians fall prostrate immediately upon seeing the truth, knowing they will be killed. Connect to the modern phenomenon of dramatic, sudden faith reversals."
-  },
-  {
-    "id": "hi_7",
-    "title": "The Lost Gardens Of Sheba — A Kingdom That Chose Pride Over Gratitude",
-    "theme": "The civilization erased for ingratitude",
-    "modern_angle": "Yemen archaeology, the Marib dam collapse, modern ungrateful prosperity",
-    "quran_chapters": [34],
-    "specific_verses": [15],
-    "context": "34:15-19 — Sheba had two gardens, prospered, then turned away. We sent the flood of the dam. Connect to Yemen's actual archaeological record and the cycle this verse names."
-  },
-  {
-    "id": "hi_8",
-    "title": "The Sleepers Of The Cave — A Story For Every Era Of Persecution",
-    "theme": "Faith hidden in the cave; time that bends for the believing",
-    "modern_angle": "Modern Muslims hiding faith in hostile environments; the digital cave (encrypted messaging, private accounts)",
-    "quran_chapters": [18],
-    "specific_verses": [9],
-    "context": "18:9-26 — the youth who fled to the cave; 309 years of sleep. Connect to the modern condition of believing privately in environments that punish public faith."
-  },
-  {
-    "id": "hi_9",
-    "title": "The Year Of The Elephant — Small Armies, Strange Birds, And Hubris",
-    "theme": "The defeat of the proud by what looked too small to matter",
-    "modern_angle": "Modern military hubris: empires destroyed by insurgencies, viruses, and supply-chain shocks",
-    "quran_chapters": [105],
-    "context": "Surah Al-Fil — the elephant army, the small birds carrying small stones. Connect to the asymmetric collapses of modern superpowers."
-  },
-  {
-    "id": "hi_10",
-    "title": "Noah's Ark — A Global Flood Or A Local Warning? What Geology Can't Deny",
-    "theme": "The judgment that erased a civilization that had everything",
-    "modern_angle": "Mt Ararat anomalies, Black Sea deluge hypothesis, flood myths in every ancient culture",
-    "quran_chapters": [11, 71],
-    "specific_verses": [25],
-    "context": "11:25-49 — Noah's full account in detail. 71 (Surah Nuh). Connect to the geological-archaeological fingerprints of catastrophic flood across multiple ancient sites."
-  },
-  {
-    "id": "hi_11",
-    "title": "The Golden Calf — Why Smart People Still Worship Stupid Things",
-    "theme": "Idolatry as a default of the unsupervised heart",
-    "modern_angle": "Crypto pumpamentals, AI worship, celebrity culture — the new calves",
-    "quran_chapters": [7, 20],
-    "specific_verses": [148],
-    "context": "7:148; 20:85-91 — Bani Israel make a calf that lows. Connect to the human tendency to make objects of worship out of whatever shines."
-  },
-  {
-    "id": "hi_12",
-    "title": "The Library Of Baghdad — When Muslims Lost Knowledge, The World Went Dark",
-    "theme": "What happens to a civilization that abandons the Source",
-    "modern_angle": "1258 Mongol sack of Baghdad; modern Muslim education indices; the loss not just of books but of orientation",
-    "quran_chapters": [3, 17],
-    "specific_verses": [16],
-    "context": "17:16 — 'when We intend to destroy a city, We send the affluent to commit fasiq.' Connect to the Baghdad library's destruction as a Quranic-pattern event."
-  },
-  {
-    "id": "hi_13",
-    "title": "The Roman-Persian War Foretold — Surah Ar-Rum's Stunning Prediction",
-    "theme": "The verifiable historical prediction made when no one could foresee it",
-    "modern_angle": "Engaging modern historical reception: Edward Gibbon, Heraclius's campaigns of 622-628 CE",
-    "quran_chapters": [30],
-    "specific_verses": [2],
-    "context": "30:2-4 — 'the Romans have been defeated, but after their defeat they will be victorious in 3 to 9 years.' Connect to the documented Byzantine reversal under Heraclius."
-  },
-  {
-    "id": "hi_14",
-    "title": "The Story Of Yusuf — The Most Detailed Quranic Narrative",
-    "theme": "Yusuf's full arc from the well to the throne",
-    "modern_angle": "The longest single Quranic narrative; the modern man caught between ambition and integrity",
-    "quran_chapters": [12],
-    "context": "Surah Yusuf — the entire surah is a single sustained narrative. The unique story-form Allah uses only here. Engage why the Quran spends an entire surah on one man's life when others are scattered across many."
-  },
-  {
-    "id": "hi_15",
-    "title": "The People Of The Trench — When Faith Was Punished By Fire",
-    "theme": "Believers tortured for refusing to renounce",
-    "modern_angle": "Modern persecution of believers — Uyghurs, Rohingya, Christians in N. Korea, Muslims in India",
-    "quran_chapters": [85],
-    "specific_verses": [4],
-    "context": "85:4-8 — 'cursed were the people of the trench... they tortured the believers and were witnesses to what they did.' Connect to modern testimonies of contemporary martyrdom."
+    "quran_chapters": [
+      40,
+      28
+    ],
+    "specific_verses": [
+      36
+    ],
+    "context": "40:36-37 — Pharaoh asking Haman to build a high tower to 'reach the means of the heavens.' Connect to the human urge to build upward as a substitute for upward-of-the-soul.",
+    "hadith_book": {
+      "collection": "bukhari",
+      "book": 81,
+      "limit": 5
+    }
   },
   {
     "id": "et_1",
     "title": "The Smoke (Ad-Dukhan) — Volcanic Winter Or Nuclear Fallout?",
     "theme": "The Quranic sign of pervasive smoke covering the earth",
     "modern_angle": "Massive wildfire seasons (Australia 2020, Canada 2023), volcanic winters, the nuclear-winter scenarios",
-    "quran_chapters": [44],
-    "specific_verses": [10],
-    "context": "44:10-11 — 'await the day when the sky brings forth visible smoke covering the people; this is a painful punishment.' Engage carefully without claiming dates."
-  },
-  {
-    "id": "et_2",
-    "title": "The Beast From The Earth — Technologies That Speak And Mark",
-    "theme": "An entity that speaks and identifies people",
-    "modern_angle": "AI assistants, biometric IDs, China's social credit system — none of which are 'the' Beast but all of which echo the pattern",
-    "quran_chapters": [27],
-    "specific_verses": [82],
-    "context": "27:82 — 'when the word befalls them, We will bring forth a beast that will speak to them.' Engage the verse without sectarian speculation."
-  },
-  {
-    "id": "et_3",
-    "title": "The Sun Rising From The West — Could A Pole Shift Fulfil It?",
-    "theme": "The cosmic sign whose physical mechanism we now have models for",
-    "modern_angle": "Earth's magnetic field weakening 9% per century; geomagnetic reversal models; auroras visible at unusual latitudes",
-    "quran_chapters": [6],
-    "specific_verses": [158],
-    "context": "6:158 — 'on the day some of the signs of your Lord arrive, no soul will benefit from its faith if it had not believed before.' Connect to the geomagnetic data without claiming dates."
-  },
-  {
-    "id": "et_4",
-    "title": "The Land Of Arabia Returning To Rivers — A Climate Prophecy",
-    "theme": "Quranic indication of Arabia's transformation",
-    "modern_angle": "Saudi green initiatives, NEOM's river projects, paleo-climate evidence Arabia was once green",
-    "quran_chapters": [21],
-    "specific_verses": [104],
-    "context": "21:104 — 'on the day We will fold the heavens like a written scroll.' Connect to climatological evidence Arabia was lush 6000 years ago and modern megaprojects attempting reversal."
-  },
-  {
-    "id": "et_5",
-    "title": "Tall Buildings Competing — The Quran's Reminder About Adornment",
-    "theme": "The vertical race to nowhere",
-    "modern_angle": "Burj Khalifa, Jeddah Tower, The Line, Merdeka 118 — the global skyscraper arms race",
-    "quran_chapters": [57, 102],
-    "specific_verses": [20],
-    "context": "57:20 — 'mutual boasting and increase in wealth and children.' 102 (At-Takathur). Map onto modern architectural one-upmanship."
-  },
-  {
-    "id": "et_6",
-    "title": "The Mahdi — A Real Leader Or A Romantic Escape?",
-    "theme": "Awaited deliverers and the danger of waiting passively",
-    "modern_angle": "Messianic movements throughout 2020-2026 (cult leaders, online Mahdi-claimants); the political longing for a savior",
-    "quran_chapters": [3, 24],
-    "specific_verses": [55],
-    "context": "Engage the topic carefully — the Quran's language about awaited justice, without committing to sectarian timing claims."
-  },
-  {
-    "id": "et_7",
-    "title": "The Descent Of Jesus — Why It's Not Just A Muslim Story",
-    "theme": "Isa (AS) as Quranic figure, not Christian property",
-    "modern_angle": "Christian eschatology booming in 2024-26; shared Abrahamic anticipation; the Quran's specific role for Isa in the end times",
-    "quran_chapters": [4, 43],
-    "specific_verses": [157],
-    "context": "4:157-159 — they did not kill him, Allah raised him. 43:61 — he is a sign of the Hour. Connect to the cross-faith anticipation without polemic."
-  },
-  {
-    "id": "et_8",
-    "title": "Ya'juj And Ma'juj — Are They Already Tunneling Through?",
-    "theme": "The barrier and its breach",
-    "modern_angle": "The Quranic indication 18:97 of melting/penetrating the barrier; modern speculation",
-    "quran_chapters": [18, 21],
-    "specific_verses": [97],
-    "context": "18:96-99 and 21:96. Engage the imagery of barrier-breach without naming dates. The 'pouring forth from every hill' as poetic imagery for a unique end-time release."
-  },
-  {
-    "id": "et_9",
-    "title": "The Great Smoke, The Locusts, Or The Cyber-Apocalypse — Decoding Signs",
-    "theme": "Modern phenomena that map onto Quranic eschatological imagery",
-    "modern_angle": "2020 East-Africa locust swarms, wildfire smoke globalization, infrastructure ransomware",
-    "quran_chapters": [44, 27],
-    "specific_verses": [10],
-    "context": "44:10. Engage which modern signs map provisionally onto Quranic imagery and where speculation should stop."
-  },
-  {
-    "id": "et_10",
-    "title": "The Collapse Of The Kaaba — What Could Possibly Make That Happen?",
-    "theme": "End-time signs around the holiest site",
-    "modern_angle": "Modern Mecca expansion, the projected eschatological shift",
-    "quran_chapters": [105, 14],
-    "specific_verses": [37],
-    "context": "Engage the Quranic frame for the Sacred House without committing to specific timing claims."
-  },
-  {
-    "id": "et_11",
-    "title": "Time Contracting — A Quranic Lens On Why Decades Feel Like Months",
-    "theme": "Subjective time compression as a sign of modernity",
-    "modern_angle": "The neuroscience of perceived time speeding up with novelty saturation",
-    "quran_chapters": [70, 22],
-    "specific_verses": [4],
-    "context": "70:4 — a day whose measure is fifty thousand years. Engage the modern perception that 'time moves faster' through the Quranic frame of relative time."
-  },
-  {
-    "id": "et_12",
-    "title": "The Fire That Will Gather Mankind — A World War Or A Geological Event?",
-    "theme": "An end-time fire that drives people from one direction",
-    "modern_angle": "Wildfire mass-displacement events; climate refugees pushed in single directions",
-    "quran_chapters": [50, 21],
-    "specific_verses": [44],
-    "context": "Engage the Quranic language about gathering and the natural-disaster patterns of 2020-2026 without sectarian timing claims."
-  },
-  {
-    "id": "et_13",
-    "title": "Constantinople's Conquest — Spiritual, Not Military?",
-    "theme": "Cities and their spiritual reconquest",
-    "modern_angle": "Istanbul/Constantinople in modern Muslim consciousness; the meaning of 'conquest' in spiritual vs. material terms",
-    "quran_chapters": [110],
-    "context": "Surah An-Nasr — when the help of Allah and the conquest comes. Engage the historical/eschatological frame without speculation."
-  },
-  {
-    "id": "et_14",
-    "title": "The Three Major Sinkings — Earthquakes That Change The Map",
-    "theme": "Geological transformation as sign",
-    "modern_angle": "2004 Indian Ocean tsunami, 2011 Tohoku quake, the 2023 Turkey-Syria event — the increasing frequency of map-altering quakes",
-    "quran_chapters": [99, 70],
-    "context": "Surah Az-Zalzalah — the earth quakes its tremor. Connect to USGS data on increasing major-quake frequency this decade."
-  },
-  {
-    "id": "et_15",
-    "title": "And When The Stars Fall — Could It Be A Meteor Storm Or Satellite Chaos?",
-    "theme": "Stellar/celestial chaos as Quranic sign",
-    "modern_angle": "Kessler syndrome (uncontrolled satellite cascade), increasing meteor-shower visibility, near-earth asteroid tracking",
-    "quran_chapters": [81],
-    "specific_verses": [2],
-    "context": "81:2 — 'when the stars fall, dispersing.' 82:2. Engage the imagery without claiming the date."
+    "quran_chapters": [
+      44
+    ],
+    "specific_verses": [
+      10
+    ],
+    "context": "44:10-11 — 'await the day when the sky brings forth visible smoke covering the people; this is a painful punishment.' Engage carefully without claiming dates.",
+    "hadith_book": {
+      "collection": "muslim",
+      "book": 54,
+      "limit": 6
+    }
   },
   {
     "id": "tc_1",
     "title": "The TikTok Brain And The Quran's Call To Tadabbur",
     "theme": "Reflection (tadabbur) as the antidote to attention destruction",
     "modern_angle": "Average focused-attention now under 47 seconds; teenage attention spans, the 'TikTok brain' literature",
-    "quran_chapters": [38, 47],
-    "specific_verses": [29],
+    "quran_chapters": [
+      38,
+      47
+    ],
+    "specific_verses": [
+      29
+    ],
     "context": "38:29 — 'a Book We sent down so they may reflect on its verses.' 47:24 — 'do they not reflect upon the Quran?' Connect to the inability to read a single chapter slowly anymore."
-  },
-  {
-    "id": "tc_2",
-    "title": "Cancel Culture — Public Shaming Vs. The Quranic Ethic Of Covering Faults",
-    "theme": "The Quranic preference for concealment of others' sins (sitr)",
-    "modern_angle": "Twitter pile-ons, cancellation campaigns, the modern public stoning",
-    "quran_chapters": [49, 24],
-    "specific_verses": [11],
-    "context": "49:11-12 — do not ridicule, do not backbite. Connect to the cancellation reflex as the inverse of Quranic mercy."
-  },
-  {
-    "id": "tc_3",
-    "title": "Online Fame — Why The Pursuit Of Praise Destroys The Soul",
-    "theme": "Riya (showing off) as silent shirk",
-    "modern_angle": "Influencer economy, attention-as-currency, the algorithmic incentive for self-display",
-    "quran_chapters": [107, 76],
-    "specific_verses": [4],
-    "context": "107:4-7 — those who pray to be seen. Connect to the modern compulsion to perform virtue/struggle/identity for engagement."
-  },
-  {
-    "id": "tc_4",
-    "title": "Dating Apps, Situationships, And The Quranic View Of Sacred Bonds",
-    "theme": "The covenant (mithaq) between souls vs. the swipe economy",
-    "modern_angle": "Tinder/Hinge/Bumble dynamics, the rise of situationships, decline of marriage rates",
-    "quran_chapters": [4, 30],
-    "specific_verses": [21],
-    "context": "30:21 — He created mates for you that you may find tranquility, and put love and mercy between you. 4:21 — a solemn covenant. Contrast with the disposable economics of swipe dating."
-  },
-  {
-    "id": "tc_5",
-    "title": "Why We Curate Our Personalities — Hypocrisy In A Digital Age",
-    "theme": "Nifaq (hypocrisy) as the gap between the public self and the private self",
-    "modern_angle": "Multiple Instagram accounts, the public persona vs. the burner, the curated/private self",
-    "quran_chapters": [63, 2],
-    "specific_verses": [8],
-    "context": "63 (Al-Munafiqun); 2:8-20. Connect to the modern fragmentation of self across digital identities."
-  },
-  {
-    "id": "tc_6",
-    "title": "Video Games, Escapism, And Forgetting The Grave",
-    "theme": "The dunya as play (la'ib); the trap of immersive distraction",
-    "modern_angle": "AAA games, gacha mechanics, MMORPGs as second lives, VR immersion",
-    "quran_chapters": [57, 6],
-    "specific_verses": [20],
-    "context": "57:20 — 'the life of this world is play and amusement.' Connect to the literal industry built on play that consumes spiritual time."
-  },
-  {
-    "id": "tc_7",
-    "title": "The Adab Of Screens — Quranic Etiquette For Digital Life",
-    "theme": "Adab (etiquette) for a domain that didn't exist when the rules were written",
-    "modern_angle": "Phone addiction, scroll discipline, what constitutes private/public in a screen-mediated life",
-    "quran_chapters": [24, 17],
-    "specific_verses": [27],
-    "context": "24:27 — do not enter homes other than your own without permission. Apply the Quranic principle of consent/privacy to direct messages, screenshots, and parasocial intrusion."
-  },
-  {
-    "id": "tc_8",
-    "title": "When Robots Say La Ilaha Illa Allah — AI, Consciousness, And The Soul",
-    "theme": "The question of soul (ruh) and what makes humans non-replicable",
-    "modern_angle": "LLMs that 'pray', AI imams, the philosophical panic about machine consciousness",
-    "quran_chapters": [17, 15],
-    "specific_verses": [85],
-    "context": "17:85 — 'they ask you about the soul; say it is from the command of my Lord.' 15:29 — 'I breathed into him from My spirit.' Engage the irreducibility of ruh."
-  },
-  {
-    "id": "tc_9",
-    "title": "The Metaverse And The Ultimate Illusion — Dunya's Final Trick?",
-    "theme": "Layered illusion: the dunya is itself an illusion, and the metaverse is an illusion within it",
-    "modern_angle": "VR headsets, Apple Vision Pro, virtual real estate, digital identity",
-    "quran_chapters": [29, 57],
-    "specific_verses": [64],
-    "context": "29:64 — 'the life of this world is nothing but amusement and play.' Frame the metaverse as the illusion-of-an-illusion."
-  },
-  {
-    "id": "tc_10",
-    "title": "Filtering Your Face, Forgetting Your Fitrah",
-    "theme": "The natural form (fitrah) being edited away",
-    "modern_angle": "Beauty filters, FaceApp, plastic surgery normalization in teenagers, BDD (body dysmorphic disorder) rates rising",
-    "quran_chapters": [30, 95],
-    "specific_verses": [30],
-    "context": "30:30 — 'the fitrah upon which Allah has created people; no change in the creation of Allah.' 95:4 — 'We created man in the best stature.' Engage the modern industry of unmaking the face."
-  },
-  {
-    "id": "tc_11",
-    "title": "Crypto, Scams, And Greed — Wealth In The Quran Is Test, Not Trust",
-    "theme": "Wealth (mal) as a trial, never a metric of worth",
-    "modern_angle": "Memecoins, NFT collapses, crypto scams, the 2022-2024 fraud epidemic",
-    "quran_chapters": [64, 89],
-    "specific_verses": [15],
-    "context": "64:15 — 'your wealth and your children are only a trial.' 89:20 — 'and you love wealth with immense love.' Engage the financialization of everything."
-  },
-  {
-    "id": "tc_12",
-    "title": "The Internet Of Things — A World Where Everything Witnesses",
-    "theme": "Allah's witnesses (the angels, the day, the limbs themselves) and the modern simulacrum",
-    "modern_angle": "Smart speakers, doorbell cameras, refrigerators with cameras, Apple's continuity of telemetry",
-    "quran_chapters": [50, 41],
-    "specific_verses": [21],
-    "context": "41:20-22 — 'their hearing, their sight, their skins will testify.' Connect to the literal modern fact that your skin's smartwatch is testifying about you 24/7."
-  },
-  {
-    "id": "tc_13",
-    "title": "How Memes Shape Belief — Yes, This Affects Your Aqeedah",
-    "theme": "Repetition and emotion as belief formation; the Quran's awareness of crowd cognition",
-    "modern_angle": "Meme cycles, dopamine-conditioned ideology, the 4chan-to-mainstream pipeline",
-    "quran_chapters": [33, 9],
-    "specific_verses": [67],
-    "context": "9:67 — 'they enjoin evil and forbid good.' 33:67-68. Engage the modern phenomenon of belief formed via image/sound bite rather than reflection."
-  },
-  {
-    "id": "tc_14",
-    "title": "Crowdsourcing Evil — Online Mobs And The Herd Behavior The Quran Warns",
-    "theme": "Following the multitude into error",
-    "modern_angle": "Twitter pile-ons, viral cancellation, mob accusations against the innocent",
-    "quran_chapters": [6],
-    "specific_verses": [116],
-    "context": "6:116 — 'if you obey most of those on earth, they will mislead you from the way of Allah.' Diagnose the algorithmic mob as the modern fulfillment of this verse."
-  },
-  {
-    "id": "tc_15",
-    "title": "Your Screen Knows You Better Than Your Parents — And That's A Sign",
-    "theme": "Intimate knowledge that belongs to Allah being claimed by the algorithm",
-    "modern_angle": "Recommendation algorithms predicting purchases, moods, breakups, pregnancies before the user knows",
-    "quran_chapters": [50, 6],
-    "specific_verses": [16],
-    "context": "50:16 — closer than the jugular vein. Engage the modern algorithmic intimacy as a small mocking-imitation of true divine knowledge."
   },
   {
     "id": "dr_1",
     "title": "Why Allah Swears By The Fig And The Olive — A Map Of Revelation",
     "theme": "The geography of revelation embedded in an oath",
     "modern_angle": "Jerusalem, Mt. Sinai, Mecca — three lands the oath maps onto, contested still in 2026",
-    "quran_chapters": [95],
+    "quran_chapters": [
+      95
+    ],
     "context": "Surah At-Tin — the oath by the fig, the olive, Mt Sinai, the secure city. Engage the geography this oath traces and what it means in 2026 to walk on those lands."
-  },
-  {
-    "id": "dr_2",
-    "title": "The Ant In The Valley — Collective Intelligence Science Now Confirms",
-    "theme": "The Quranic moment of an ant warning her colony",
-    "modern_angle": "Ant pheromone communication research, swarm intelligence, the discovery that ant colonies have referential signaling",
-    "quran_chapters": [27],
-    "specific_verses": [18],
-    "context": "27:18 — the ant says 'enter your homes lest Solomon and his soldiers crush you unknowingly.' Engage the specificity (warning a group, naming a threat, including unawareness as a clause) and how myrmecology confirms this kind of communication."
-  },
-  {
-    "id": "dr_3",
-    "title": "When The Earth Throws Out Its Burdens — What Actually Happens?",
-    "theme": "The earth's seismic and apocalyptic disclosure",
-    "modern_angle": "Geological discoveries from old-earth oil/gas/mineral excavation; the literal modern emptying of what the earth held",
-    "quran_chapters": [99],
-    "context": "Surah Az-Zalzalah — when the earth is shaken and brings forth its burdens. Engage the modern industrial-scale emptying as a small partial fulfillment."
-  },
-  {
-    "id": "dr_4",
-    "title": "The Holy Land — Why Geography Is Destiny In The Quran",
-    "theme": "Land as covenant and stage of revelation",
-    "modern_angle": "Israel/Palestine, the Aqsa, the modern reduction of sacred geography to political real estate",
-    "quran_chapters": [17, 5],
-    "specific_verses": [1],
-    "context": "17:1 — the journey to Al-Aqsa whose surroundings We have blessed. Engage the Quranic frame for sacred land in 2026's geopolitics."
-  },
-  {
-    "id": "dr_5",
-    "title": "Bees, Architecture, And The Mathematical Miracle Of The Hexagon",
-    "theme": "Inspired (wahy) intelligence that solves geometry",
-    "modern_angle": "The honeycomb conjecture proven only in 1999; biomimetic architecture; the verse that calls bee-instinct 'wahy'",
-    "quran_chapters": [16],
-    "specific_verses": [68],
-    "context": "16:68-69 — 'your Lord inspired the bee.' Engage the recent mathematical proof that hexagonal structure is optimal — and the verse that called it inspiration centuries before."
-  },
-  {
-    "id": "dr_6",
-    "title": "The Cow Of The Israelites — Why That Story Keeps Repeating In Your Life",
-    "theme": "The pattern of evading clear command through endless questions",
-    "modern_angle": "The way modern Muslims hedge clear obligations with infinite caveat-seeking",
-    "quran_chapters": [2],
-    "specific_verses": [67],
-    "context": "2:67-71 — 'go and slaughter a cow.' 'Which cow?' 'What color?' Engage the modern equivalent: every clear instruction met with 'but what about...?'"
-  },
-  {
-    "id": "dr_7",
-    "title": "Music, Sound, And The Voice That Will Shout The Truth",
-    "theme": "The Day of Judgment's announcement; the centrality of voice/sound",
-    "modern_angle": "The modern saturation of audio (podcasts, streaming, AI voices) — and the silence that the announcement breaks",
-    "quran_chapters": [50, 36],
-    "specific_verses": [42],
-    "context": "50:42 — 'the day they will hear the shout in truth.' Engage the contrast between the audio noise of modern life and the singular voice that will end it all."
-  },
-  {
-    "id": "dr_8",
-    "title": "The Spider's Web — The Fragile Home That's A Cosmic Metaphor",
-    "theme": "Things relied upon that cannot bear weight",
-    "modern_angle": "Modern dependencies: streaming subscriptions, social capital, fiat currency, digital identity",
-    "quran_chapters": [29],
-    "specific_verses": [41],
-    "context": "29:41 — 'the example of those who take protectors besides Allah is like the spider that takes a home; the weakest of homes is the spider's home.' Engage the modern array of fragile reliances."
-  },
-  {
-    "id": "dr_9",
-    "title": "Why The Number 19 Is Not What You Think — The Danger Of Obsession",
-    "theme": "The line between sign-recognition and superstition",
-    "modern_angle": "Numerology Twitter, gematria revival, the conspiracy-theory industry around Quranic numbers",
-    "quran_chapters": [74],
-    "specific_verses": [30],
-    "context": "74:30-31 — 'over it are nineteen.' Engage with care: what the verse says about its purpose (testing those who deny, increasing the faith of those who believe) — and where that purpose is corrupted into obsession."
-  },
-  {
-    "id": "dr_10",
-    "title": "The Final Verse Revealed — What Allah Chose To Say Last",
-    "theme": "The closing word of revelation",
-    "modern_angle": "Modern Muslim distance from this specific verse; what it means that 'today I have completed your religion'",
-    "quran_chapters": [5],
-    "specific_verses": [3],
-    "context": "5:3 — 'today I have perfected for you your religion and completed My favor upon you.' Engage what it means that this is what was chosen as the final transmission."
   },
   {
     "id": "lst_1",
     "title": "Lust — Why Allah Calls It The Zina Of The Eyes Before The Act",
     "theme": "The chain of sin that begins with the gaze",
     "modern_angle": "Endless lust-coded content one swipe away; the first look that's never just the first look",
-    "quran_chapters": [24],
-    "specific_verses": [30],
-    "context": "24:30-31 — 'tell the believing men to lower their gaze and guard their chastity.' The pre-emptive command before the act because the act begins with the eye."
+    "quran_chapters": [
+      24
+    ],
+    "specific_verses": [
+      30
+    ],
+    "context": "24:30-31 — 'tell the believing men to lower their gaze and guard their chastity.' The pre-emptive command before the act because the act begins with the eye.",
+    "hadith_book": {
+      "collection": "bukhari",
+      "book": 67,
+      "limit": 5
+    }
+  },
+  {
+    "id": "ml_2",
+    "title": "The Disease Of Likes — Social Media And The Nafs Exposed",
+    "theme": "Vanity (riya), validation-seeking, and the manufactured self",
+    "modern_angle": "Posting for the algorithm, deleting if engagement is low, the dopamine-anxiety loop of public self-display",
+    "quran_chapters": [
+      104,
+      107
+    ],
+    "context": "Surah Al-Humazah on the slanderer/scorer who counts wealth. Surah Al-Maa'un on those who pray to be seen. Connect to 2026 attention economy where every post is a scoreboard.",
+    "hadith_book": {
+      "collection": "bukhari",
+      "book": 34,
+      "limit": 5
+    }
+  },
+  {
+    "id": "ca_2",
+    "title": "Global Inflation And The Quranic Law Of Riba",
+    "theme": "Interest as cosmic injustice, not just financial inefficiency",
+    "modern_angle": "Central banks, inflation hitting 9% in 2022-23, mortgages eating life decades, currency printing",
+    "quran_chapters": [
+      2,
+      3
+    ],
+    "specific_verses": [
+      275
+    ],
+    "context": "2:275-281 — Allah destroys riba and gives increase for charities. Connect to 2026's wealth concentration: Forbes top 10 doubled net worth since 2020 while median real wages stagnated.",
+    "hadith_book": {
+      "collection": "bukhari",
+      "book": 34,
+      "limit": 5
+    }
+  },
+  {
+    "id": "sc_2",
+    "title": "Your Skin Will Talk — Nerve Endings, Pain, And The Day Of Judgment",
+    "theme": "The Quranic detail that pain receptors live in the skin (4:56)",
+    "modern_angle": "Modern neurology confirms: skin grafted from another body has new pain perception when the original skin is destroyed",
+    "quran_chapters": [
+      4
+    ],
+    "specific_verses": [
+      56
+    ],
+    "context": "4:56 — when their skins are roasted We replace them with new skins so they can taste the punishment. Anatomical precision modern science only mapped in the 20th century."
+  },
+  {
+    "id": "hi_2",
+    "title": "Thamud And Petra — The Silent City That Still Warns",
+    "theme": "A people who carved palaces from rock and were destroyed by what they refused to hear",
+    "modern_angle": "Petra/Madain Saleh today as Instagram destinations — what tourists don't know about who lived there",
+    "quran_chapters": [
+      15,
+      7
+    ],
+    "specific_verses": [
+      80
+    ],
+    "context": "15:80-84 — Thamud carved homes from mountains. 7:73-79 — the she-camel and their refusal. Connect to Madain Saleh as a Quranic warning visible from satellite."
+  },
+  {
+    "id": "et_2",
+    "title": "The Beast From The Earth — Technologies That Speak And Mark",
+    "theme": "An entity that speaks and identifies people",
+    "modern_angle": "AI assistants, biometric IDs, China's social credit system — none of which are 'the' Beast but all of which echo the pattern",
+    "quran_chapters": [
+      27
+    ],
+    "specific_verses": [
+      82
+    ],
+    "context": "27:82 — 'when the word befalls them, We will bring forth a beast that will speak to them.' Engage the verse without sectarian speculation.",
+    "hadith_book": {
+      "collection": "muslim",
+      "book": 54,
+      "limit": 6
+    }
+  },
+  {
+    "id": "tc_2",
+    "title": "Cancel Culture — Public Shaming Vs. The Quranic Ethic Of Covering Faults",
+    "theme": "The Quranic preference for concealment of others' sins (sitr)",
+    "modern_angle": "Twitter pile-ons, cancellation campaigns, the modern public stoning",
+    "quran_chapters": [
+      49,
+      24
+    ],
+    "specific_verses": [
+      11
+    ],
+    "context": "49:11-12 — do not ridicule, do not backbite. Connect to the cancellation reflex as the inverse of Quranic mercy."
+  },
+  {
+    "id": "dr_2",
+    "title": "The Ant In The Valley — Collective Intelligence Science Now Confirms",
+    "theme": "The Quranic moment of an ant warning her colony",
+    "modern_angle": "Ant pheromone communication research, swarm intelligence, the discovery that ant colonies have referential signaling",
+    "quran_chapters": [
+      27
+    ],
+    "specific_verses": [
+      18
+    ],
+    "context": "27:18 — the ant says 'enter your homes lest Solomon and his soldiers crush you unknowingly.' Engage the specificity (warning a group, naming a threat, including unawareness as a clause) and how myrmecology confirms this kind of communication."
   },
   {
     "id": "lst_2",
     "title": "The Story Of Yusuf — The Ultimate Blueprint For Fighting Temptation",
     "theme": "The Quranic case study of a man who chose prison over zina",
     "modern_angle": "The 2026 male caught between privacy and access; the choice in the moment when no one is watching",
-    "quran_chapters": [12],
-    "specific_verses": [23],
-    "context": "12:23-35 — Yusuf and the wife of Aziz, the chosen prison. Engage the precise blueprint: physical flight, verbal refusal, divine appeal, accepting consequence."
+    "quran_chapters": [
+      12
+    ],
+    "specific_verses": [
+      23
+    ],
+    "context": "12:23-35 — Yusuf and the wife of Aziz, the chosen prison. Engage the precise blueprint: physical flight, verbal refusal, divine appeal, accepting consequence.",
+    "hadith_book": {
+      "collection": "bukhari",
+      "book": 67,
+      "limit": 5
+    }
+  },
+  {
+    "id": "ml_3",
+    "title": "Why You Feel Lonely In A Crowded Room — The Quranic Heart",
+    "theme": "Spiritual loneliness as the absence of remembrance, not absence of people",
+    "modern_angle": "700 followers, group chats lit up, still hollow at 2 AM",
+    "quran_chapters": [
+      13,
+      50
+    ],
+    "specific_verses": [
+      28
+    ],
+    "context": "13:28 ('hearts find rest'); 50:16 (closer than jugular vein). Connect to the loneliness epidemic in hyper-connected gen Z.",
+    "hadith_book": {
+      "collection": "bukhari",
+      "book": 81,
+      "limit": 5
+    }
+  },
+  {
+    "id": "ca_3",
+    "title": "Why The Powerful Keep Winning — Pharaoh's Playbook Then And Now",
+    "theme": "The strongman archetype the Quran maps in detail",
+    "modern_angle": "Authoritarian comeback in 2024-26, technocratic capture, the Pharaoh-as-system",
+    "quran_chapters": [
+      28,
+      79
+    ],
+    "context": "28 (Al-Qasas) — Pharaoh dividing people, oppressing one tribe, claiming divinity. 79:24 — 'I am your lord most high.' Map onto modern power: divide, surveil, claim ultimate authority."
+  },
+  {
+    "id": "sc_3",
+    "title": "Embryology In The Quran — It's Not Just A Scientific Miracle Story",
+    "theme": "The stages of human development as a sign that demands surrender",
+    "modern_angle": "Modern embryology, IVF, the moral conversations about life's beginning",
+    "quran_chapters": [
+      23,
+      22
+    ],
+    "specific_verses": [
+      12
+    ],
+    "context": "23:12-14 — drop, leech, lump of flesh, bones, clothing of flesh. 22:5. Connect to 2026 embryology textbooks that match the sequence with eerie precision."
+  },
+  {
+    "id": "hi_3",
+    "title": "The Pharaoh's Body — What The Nile Gave Up That Confirms Surah Yunus",
+    "theme": "The preserved corpse that the Quran predicted would remain as a sign",
+    "modern_angle": "The 1881 discovery of Ramesses II's mummy; modern forensic analysis confirming drowning indicators",
+    "quran_chapters": [
+      10
+    ],
+    "specific_verses": [
+      90
+    ],
+    "context": "10:90-92 — 'today We will preserve your body so you may be a sign for those who come after.' Connect to the actual mummy on display in Cairo, Maurice Bucaille's analysis."
+  },
+  {
+    "id": "et_3",
+    "title": "The Sun Rising From The West — Could A Pole Shift Fulfil It?",
+    "theme": "The cosmic sign whose physical mechanism we now have models for",
+    "modern_angle": "Earth's magnetic field weakening 9% per century; geomagnetic reversal models; auroras visible at unusual latitudes",
+    "quran_chapters": [
+      6
+    ],
+    "specific_verses": [
+      158
+    ],
+    "context": "6:158 — 'on the day some of the signs of your Lord arrive, no soul will benefit from its faith if it had not believed before.' Connect to the geomagnetic data without claiming dates.",
+    "hadith_book": {
+      "collection": "muslim",
+      "book": 54,
+      "limit": 6
+    }
+  },
+  {
+    "id": "tc_3",
+    "title": "Online Fame — Why The Pursuit Of Praise Destroys The Soul",
+    "theme": "Riya (showing off) as silent shirk",
+    "modern_angle": "Influencer economy, attention-as-currency, the algorithmic incentive for self-display",
+    "quran_chapters": [
+      107,
+      76
+    ],
+    "specific_verses": [
+      4
+    ],
+    "context": "107:4-7 — those who pray to be seen. Connect to the modern compulsion to perform virtue/struggle/identity for engagement.",
+    "hadith_book": {
+      "collection": "bukhari",
+      "book": 81,
+      "limit": 5
+    }
+  },
+  {
+    "id": "dr_3",
+    "title": "When The Earth Throws Out Its Burdens — What Actually Happens?",
+    "theme": "The earth's seismic and apocalyptic disclosure",
+    "modern_angle": "Geological discoveries from old-earth oil/gas/mineral excavation; the literal modern emptying of what the earth held",
+    "quran_chapters": [
+      99
+    ],
+    "context": "Surah Az-Zalzalah — when the earth is shaken and brings forth its burdens. Engage the modern industrial-scale emptying as a small partial fulfillment."
   },
   {
     "id": "lst_3",
     "title": "Why The Quran Links Illicit Desire To Fahisha — The Hole That Keeps Growing",
     "theme": "Fahisha (gross indecency) as a category, not a single act",
     "modern_angle": "The gradient from a curious search to acts unimaginable five years prior",
-    "quran_chapters": [17],
-    "specific_verses": [32],
-    "context": "17:32 — 'do not approach zina; it is a fahisha and an evil way.' The verb 'approach' (taqrabu) names the gradient — it isn't just the act, it's the trajectory."
+    "quran_chapters": [
+      17
+    ],
+    "specific_verses": [
+      32
+    ],
+    "context": "17:32 — 'do not approach zina; it is a fahisha and an evil way.' The verb 'approach' (taqrabu) names the gradient — it isn't just the act, it's the trajectory.",
+    "hadith_book": {
+      "collection": "bukhari",
+      "book": 67,
+      "limit": 5
+    }
+  },
+  {
+    "id": "ml_4",
+    "title": "Anxiety Is Not Just Chemical — The Spiritual Roots We Ignore",
+    "theme": "Tranquility (sakeenah) as a divine gift, not a serotonin level",
+    "modern_angle": "SSRIs, meditation apps, breathwork — and the missing dimension nobody mentions",
+    "quran_chapters": [
+      48,
+      13
+    ],
+    "specific_verses": [
+      4
+    ],
+    "context": "48:4 — Allah is the One who sends down sakeenah into the hearts of the believers. Frame anxiety as a soul untethered from its Source.",
+    "hadith_book": {
+      "collection": "bukhari",
+      "book": 81,
+      "limit": 5
+    }
+  },
+  {
+    "id": "ca_4",
+    "title": "Social Justice Movements — Are They Missing The Quranic Foundation?",
+    "theme": "Justice ('adl) as a divine attribute vs. justice as a tribal flag",
+    "modern_angle": "BLM, MeToo, decolonization discourse — fragmented because they reject the Source that anchors justice",
+    "quran_chapters": [
+      4,
+      5
+    ],
+    "specific_verses": [
+      135
+    ],
+    "context": "4:135 — stand firmly for justice even against yourselves. Reframe justice movements that succeed and fail by whether their root is divine standard or shifting consensus."
+  },
+  {
+    "id": "sc_4",
+    "title": "The Sun Will Extinguish — Quranic Cosmology And The End Of All Stars",
+    "theme": "Stellar death as cosmic announcement of the end",
+    "modern_angle": "Stars dying daily across the observable universe; the Sun's predicted lifespan; heat-death cosmology",
+    "quran_chapters": [
+      81,
+      82
+    ],
+    "specific_verses": [
+      1
+    ],
+    "context": "81:1-3 — when the sun is wrapped up; when the stars fall. Connect to modern stellar cosmology and the astrophysical certainty that every star burns out.",
+    "hadith_book": {
+      "collection": "muslim",
+      "book": 53,
+      "limit": 5
+    }
+  },
+  {
+    "id": "hi_4",
+    "title": "The Dead Sea, Sodom, And A Highway You Can Drive Through",
+    "theme": "Geographically present remains of a people destroyed for their sin",
+    "modern_angle": "Sodom and Gomorrah archaeology near the Dead Sea; the geological evidence of catastrophic event",
+    "quran_chapters": [
+      15,
+      11
+    ],
+    "specific_verses": [
+      82
+    ],
+    "context": "15:74 — 'We turned them upside down.' 11:82-83 — stones rained from the sky. Connect to the 'Mt Sodom' salt formations and the lowest place on earth."
+  },
+  {
+    "id": "et_4",
+    "title": "The Land Of Arabia Returning To Rivers — A Climate Prophecy",
+    "theme": "Quranic indication of Arabia's transformation",
+    "modern_angle": "Saudi green initiatives, NEOM's river projects, paleo-climate evidence Arabia was once green",
+    "quran_chapters": [
+      21
+    ],
+    "specific_verses": [
+      104
+    ],
+    "context": "21:104 — 'on the day We will fold the heavens like a written scroll.' Connect to climatological evidence Arabia was lush 6000 years ago and modern megaprojects attempting reversal.",
+    "hadith_book": {
+      "collection": "muslim",
+      "book": 54,
+      "limit": 6
+    }
+  },
+  {
+    "id": "tc_4",
+    "title": "Dating Apps, Situationships, And The Quranic View Of Sacred Bonds",
+    "theme": "The covenant (mithaq) between souls vs. the swipe economy",
+    "modern_angle": "Tinder/Hinge/Bumble dynamics, the rise of situationships, decline of marriage rates",
+    "quran_chapters": [
+      4,
+      30
+    ],
+    "specific_verses": [
+      21
+    ],
+    "context": "30:21 — He created mates for you that you may find tranquility, and put love and mercy between you. 4:21 — a solemn covenant. Contrast with the disposable economics of swipe dating.",
+    "hadith_book": {
+      "collection": "bukhari",
+      "book": 67,
+      "limit": 5
+    }
+  },
+  {
+    "id": "dr_4",
+    "title": "The Holy Land — Why Geography Is Destiny In The Quran",
+    "theme": "Land as covenant and stage of revelation",
+    "modern_angle": "Israel/Palestine, the Aqsa, the modern reduction of sacred geography to political real estate",
+    "quran_chapters": [
+      17,
+      5
+    ],
+    "specific_verses": [
+      1
+    ],
+    "context": "17:1 — the journey to Al-Aqsa whose surroundings We have blessed. Engage the Quranic frame for sacred land in 2026's geopolitics."
   },
   {
     "id": "lst_4",
     "title": "The Hidden Disease — Lust As A Sign Of A Sick Qalb",
     "theme": "The heart with disease (qulub fiha marad) and how lust exposes it",
     "modern_angle": "The man who prays but cannot stop; the woman who is veiled in public and unveiled in DMs",
-    "quran_chapters": [33, 2],
-    "specific_verses": [32],
-    "context": "33:32 — 'do not be soft in speech lest one in whose heart is disease covet you.' Diagnose the heart-disease frame in modern life."
+    "quran_chapters": [
+      33,
+      2
+    ],
+    "specific_verses": [
+      32
+    ],
+    "context": "33:32 — 'do not be soft in speech lest one in whose heart is disease covet you.' Diagnose the heart-disease frame in modern life.",
+    "hadith_book": {
+      "collection": "bukhari",
+      "book": 67,
+      "limit": 5
+    }
+  },
+  {
+    "id": "ml_5",
+    "title": "The Rat Race Trap — How The Dunya Hijacks Your Fitrah",
+    "theme": "At-Takathur — the love of accumulation that distracts until the grave",
+    "modern_angle": "Career ladders, FIRE movement, hustle culture — running toward a finish line that doesn't exist",
+    "quran_chapters": [
+      102
+    ],
+    "context": "Surah At-Takathur — competition in worldly increase distracts you, until you visit the graves. Connect to 60-hour weeks for things you'll never use.",
+    "hadith_book": {
+      "collection": "muslim",
+      "book": 54,
+      "limit": 6
+    }
+  },
+  {
+    "id": "ca_5",
+    "title": "War In The Modern World — Malhamah, Armageddon, And Today's Headlines",
+    "theme": "End-time bloodshed as cyclical pattern visible in real time",
+    "modern_angle": "2022 Russia invasion, Gaza 2023-24, Sudan civil war, the seemingly permanent state of pre-war",
+    "quran_chapters": [
+      27,
+      30
+    ],
+    "specific_verses": [
+      82
+    ],
+    "context": "27:82 — 'when the word befalls them, We will bring forth a beast.' 30 (Ar-Rum) on the cycle of empires. Connect to a world that hasn't had a year of peace in living memory.",
+    "hadith_book": {
+      "collection": "muslim",
+      "book": 54,
+      "limit": 6
+    }
+  },
+  {
+    "id": "sc_5",
+    "title": "DNA, Fingerprints, And The Resurrection — You Will Be You Again",
+    "theme": "Identity persistence after death — anatomical and spiritual",
+    "modern_angle": "Forensic genealogy, fingerprint biometrics, biotech identity proofs",
+    "quran_chapters": [
+      75
+    ],
+    "specific_verses": [
+      3
+    ],
+    "context": "75:3-4 — 'does man think We will not assemble his bones? Yes, we are able to put together his fingertips in perfect order.' Modern fingerprint uniqueness as Quranic proof.",
+    "hadith_book": {
+      "collection": "muslim",
+      "book": 53,
+      "limit": 5
+    }
+  },
+  {
+    "id": "hi_5",
+    "title": "Alexander, Gog And Magog — A Wall, A History, And A Future Breach",
+    "theme": "Dhul-Qarnayn and the barrier",
+    "modern_angle": "Modern speculation about the wall's location (Caucasus, Derbent), and the meaning of 'when the promise approaches'",
+    "quran_chapters": [
+      18,
+      21
+    ],
+    "specific_verses": [
+      83
+    ],
+    "context": "18:83-101 — Dhul-Qarnayn builds the barrier. 21:96 — the breach as a sign of the approaching Hour. Engage carefully without sectarian speculation.",
+    "hadith_book": {
+      "collection": "muslim",
+      "book": 54,
+      "limit": 6
+    }
+  },
+  {
+    "id": "et_5",
+    "title": "Tall Buildings Competing — The Quran's Reminder About Adornment",
+    "theme": "The vertical race to nowhere",
+    "modern_angle": "Burj Khalifa, Jeddah Tower, The Line, Merdeka 118 — the global skyscraper arms race",
+    "quran_chapters": [
+      57,
+      102
+    ],
+    "specific_verses": [
+      20
+    ],
+    "context": "57:20 — 'mutual boasting and increase in wealth and children.' 102 (At-Takathur). Map onto modern architectural one-upmanship.",
+    "hadith_book": {
+      "collection": "muslim",
+      "book": 54,
+      "limit": 6
+    }
+  },
+  {
+    "id": "tc_5",
+    "title": "Why We Curate Our Personalities — Hypocrisy In A Digital Age",
+    "theme": "Nifaq (hypocrisy) as the gap between the public self and the private self",
+    "modern_angle": "Multiple Instagram accounts, the public persona vs. the burner, the curated/private self",
+    "quran_chapters": [
+      63,
+      2
+    ],
+    "specific_verses": [
+      8
+    ],
+    "context": "63 (Al-Munafiqun); 2:8-20. Connect to the modern fragmentation of self across digital identities."
+  },
+  {
+    "id": "dr_5",
+    "title": "Bees, Architecture, And The Mathematical Miracle Of The Hexagon",
+    "theme": "Inspired (wahy) intelligence that solves geometry",
+    "modern_angle": "The honeycomb conjecture proven only in 1999; biomimetic architecture; the verse that calls bee-instinct 'wahy'",
+    "quran_chapters": [
+      16
+    ],
+    "specific_verses": [
+      68
+    ],
+    "context": "16:68-69 — 'your Lord inspired the bee.' Engage the recent mathematical proof that hexagonal structure is optimal — and the verse that called it inspiration centuries before."
   },
   {
     "id": "lst_5",
     "title": "When The Body Will Testify — How The Limbs Record Every Glance",
     "theme": "The eyes, the ears, the skin as future witnesses",
     "modern_angle": "Modern phenomena: the brain literally records pornographic images permanently; behavioral neuroscience confirms what the verse said about testifying",
-    "quran_chapters": [41, 36],
-    "specific_verses": [21],
-    "context": "41:20-22 — 'their hearing, their sight, their skins will testify.' Connect to neuroplasticity and the inability to un-see. The body's literal storage as a future legal record."
+    "quran_chapters": [
+      41,
+      36
+    ],
+    "specific_verses": [
+      21
+    ],
+    "context": "41:20-22 — 'their hearing, their sight, their skins will testify.' Connect to neuroplasticity and the inability to un-see. The body's literal storage as a future legal record.",
+    "hadith_book": {
+      "collection": "bukhari",
+      "book": 67,
+      "limit": 5
+    }
+  },
+  {
+    "id": "ml_6",
+    "title": "Why Toxic Relationships Feel Addictive — Attachment In The Quran",
+    "theme": "Misplaced love (mahabba) and idolizing creation over Creator",
+    "modern_angle": "Trauma-bonding, situationships, the addiction to the chase",
+    "quran_chapters": [
+      2,
+      30
+    ],
+    "specific_verses": [
+      165
+    ],
+    "context": "2:165 — those who take rivals besides Allah, loving them as they love Allah. Connect to the modern script where romantic obsession replaces spiritual longing."
+  },
+  {
+    "id": "ca_6",
+    "title": "The Fall Of Nations — A Pattern You Can Predict With Surah Al-An'am",
+    "theme": "The cyclical destruction of corrupt civilizations as cosmic law",
+    "modern_angle": "American empire wobbling, EU fracturing, China's demographic collapse — all on the same arc the Quran maps",
+    "quran_chapters": [
+      6,
+      17
+    ],
+    "specific_verses": [
+      6
+    ],
+    "context": "6:6 — 'How many generations We destroyed before them.' 17:16 — when We intend to destroy a city We send the affluent to commit fasiq, and the word befalls them. Connect to 2026's late-empire indicators."
+  },
+  {
+    "id": "sc_6",
+    "title": "Black Holes And The Oath Of The Stars That Vanish",
+    "theme": "Allah's oath by celestial objects that 'recede and disappear' (At-Takwir)",
+    "modern_angle": "Black holes — discovered observationally only in 2019 (Event Horizon Telescope); the Quranic oath made 1400 years prior",
+    "quran_chapters": [
+      81
+    ],
+    "specific_verses": [
+      15
+    ],
+    "context": "81:15-16 — 'I swear by the receding stars, that run their course and hide.' Engage the EHT image and modern astrophysical understanding of supermassive black holes."
+  },
+  {
+    "id": "hi_6",
+    "title": "Ancient Egypt's Magicians — Why They Fell Prostrate So Fast",
+    "theme": "The recognition of truth that overwhelms long-held falsehood instantly",
+    "modern_angle": "Modern conversion stories of scientists, atheists, ex-celebrities — the same instant-recognition pattern",
+    "quran_chapters": [
+      7,
+      26
+    ],
+    "specific_verses": [
+      120
+    ],
+    "context": "7:120-126 — Pharaoh's magicians fall prostrate immediately upon seeing the truth, knowing they will be killed. Connect to the modern phenomenon of dramatic, sudden faith reversals."
+  },
+  {
+    "id": "et_6",
+    "title": "The Mahdi — A Real Leader Or A Romantic Escape?",
+    "theme": "Awaited deliverers and the danger of waiting passively",
+    "modern_angle": "Messianic movements throughout 2020-2026 (cult leaders, online Mahdi-claimants); the political longing for a savior",
+    "quran_chapters": [
+      3,
+      24
+    ],
+    "specific_verses": [
+      55
+    ],
+    "context": "Engage the topic carefully — the Quran's language about awaited justice, without committing to sectarian timing claims.",
+    "hadith_book": {
+      "collection": "muslim",
+      "book": 54,
+      "limit": 6
+    }
+  },
+  {
+    "id": "tc_6",
+    "title": "Video Games, Escapism, And Forgetting The Grave",
+    "theme": "The dunya as play (la'ib); the trap of immersive distraction",
+    "modern_angle": "AAA games, gacha mechanics, MMORPGs as second lives, VR immersion",
+    "quran_chapters": [
+      57,
+      6
+    ],
+    "specific_verses": [
+      20
+    ],
+    "context": "57:20 — 'the life of this world is play and amusement.' Connect to the literal industry built on play that consumes spiritual time.",
+    "hadith_book": {
+      "collection": "muslim",
+      "book": 53,
+      "limit": 5
+    }
+  },
+  {
+    "id": "dr_6",
+    "title": "The Cow Of The Israelites — Why That Story Keeps Repeating In Your Life",
+    "theme": "The pattern of evading clear command through endless questions",
+    "modern_angle": "The way modern Muslims hedge clear obligations with infinite caveat-seeking",
+    "quran_chapters": [
+      2
+    ],
+    "specific_verses": [
+      67
+    ],
+    "context": "2:67-71 — 'go and slaughter a cow.' 'Which cow?' 'What color?' Engage the modern equivalent: every clear instruction met with 'but what about...?'"
   },
   {
     "id": "lst_6",
     "title": "Why Shaytan's Favorite Trap For Men Is A Woman, Not An Argument",
     "theme": "The Quranic chronology of the original temptation",
     "modern_angle": "The modern man who survives every theological challenge until the algorithm shows him a face",
-    "quran_chapters": [7, 20],
-    "specific_verses": [20],
-    "context": "7:20 — 'so Shaytan whispered to them.' 20:120-121. Engage the pattern that the assault on the soul comes through desire, not debate."
+    "quran_chapters": [
+      7,
+      20
+    ],
+    "specific_verses": [
+      20
+    ],
+    "context": "7:20 — 'so Shaytan whispered to them.' 20:120-121. Engage the pattern that the assault on the soul comes through desire, not debate.",
+    "hadith_book": {
+      "collection": "bukhari",
+      "book": 67,
+      "limit": 5
+    }
+  },
+  {
+    "id": "ml_7",
+    "title": "Burnout Is A Soul Problem, Not A Schedule Problem",
+    "theme": "Exhaustion of the heart that productivity advice cannot reach",
+    "modern_angle": "The 4-day work week, time-blocking, productivity gurus — and people still hollowed out",
+    "quran_chapters": [
+      94
+    ],
+    "context": "Surah Ash-Sharh — 'with hardship comes ease.' Reframe burnout as a heart that has lost its anchor, not a calendar that needs better gaps.",
+    "hadith_book": {
+      "collection": "bukhari",
+      "book": 81,
+      "limit": 5
+    }
+  },
+  {
+    "id": "ca_7",
+    "title": "Surveillance, Privacy, And The One Who Knows All — The True Watcher",
+    "theme": "Allah as Al-Raqib (the Watcher) — the only Watcher you should fear",
+    "modern_angle": "Smart TVs listening, app permissions, government databases, cookie tracking, China's social credit",
+    "quran_chapters": [
+      50,
+      4
+    ],
+    "specific_verses": [
+      16
+    ],
+    "context": "50:16-18 — Allah closer than the jugular; angels recording. Reframe modern surveillance dread as a small cousin of the original Watcher who never misses a thought.",
+    "hadith_book": {
+      "collection": "muslim",
+      "book": 32,
+      "limit": 5
+    }
+  },
+  {
+    "id": "sc_7",
+    "title": "The Unseen World Of Microbes — The Hidden Realms",
+    "theme": "Worlds within worlds — Allah creates what you do not see",
+    "modern_angle": "Microbiome research, the trillions of organisms living in/on you, dark matter/energy",
+    "quran_chapters": [
+      16
+    ],
+    "specific_verses": [
+      8
+    ],
+    "context": "16:8 — 'and He creates that which you do not know.' Connect to the 2010s microbiome explosion, dark matter (~85% of the universe), and the Quranic frame for unseen creation."
+  },
+  {
+    "id": "hi_7",
+    "title": "The Lost Gardens Of Sheba — A Kingdom That Chose Pride Over Gratitude",
+    "theme": "The civilization erased for ingratitude",
+    "modern_angle": "Yemen archaeology, the Marib dam collapse, modern ungrateful prosperity",
+    "quran_chapters": [
+      34
+    ],
+    "specific_verses": [
+      15
+    ],
+    "context": "34:15-19 — Sheba had two gardens, prospered, then turned away. We sent the flood of the dam. Connect to Yemen's actual archaeological record and the cycle this verse names."
+  },
+  {
+    "id": "et_7",
+    "title": "The Descent Of Jesus — Why It's Not Just A Muslim Story",
+    "theme": "Isa (AS) as Quranic figure, not Christian property",
+    "modern_angle": "Christian eschatology booming in 2024-26; shared Abrahamic anticipation; the Quran's specific role for Isa in the end times",
+    "quran_chapters": [
+      4,
+      43
+    ],
+    "specific_verses": [
+      157
+    ],
+    "context": "4:157-159 — they did not kill him, Allah raised him. 43:61 — he is a sign of the Hour. Connect to the cross-faith anticipation without polemic.",
+    "hadith_book": {
+      "collection": "muslim",
+      "book": 54,
+      "limit": 6
+    }
+  },
+  {
+    "id": "tc_7",
+    "title": "The Adab Of Screens — Quranic Etiquette For Digital Life",
+    "theme": "Adab (etiquette) for a domain that didn't exist when the rules were written",
+    "modern_angle": "Phone addiction, scroll discipline, what constitutes private/public in a screen-mediated life",
+    "quran_chapters": [
+      24,
+      17
+    ],
+    "specific_verses": [
+      27
+    ],
+    "context": "24:27 — do not enter homes other than your own without permission. Apply the Quranic principle of consent/privacy to direct messages, screenshots, and parasocial intrusion."
+  },
+  {
+    "id": "dr_7",
+    "title": "Music, Sound, And The Voice That Will Shout The Truth",
+    "theme": "The Day of Judgment's announcement; the centrality of voice/sound",
+    "modern_angle": "The modern saturation of audio (podcasts, streaming, AI voices) — and the silence that the announcement breaks",
+    "quran_chapters": [
+      50,
+      36
+    ],
+    "specific_verses": [
+      42
+    ],
+    "context": "50:42 — 'the day they will hear the shout in truth.' Engage the contrast between the audio noise of modern life and the singular voice that will end it all."
   },
   {
     "id": "lst_7",
     "title": "The Second Gaze — Why The First Look Might Be Forgiven",
     "theme": "The Quranic discipline of the eye",
     "modern_angle": "The split-second of choice; the auto-pilot of the second tap",
-    "quran_chapters": [24],
-    "specific_verses": [30],
-    "context": "24:30. Engage the discipline of recognizing the moment of the second look as the moment of war."
+    "quran_chapters": [
+      24
+    ],
+    "specific_verses": [
+      30
+    ],
+    "context": "24:30. Engage the discipline of recognizing the moment of the second look as the moment of war.",
+    "hadith_book": {
+      "collection": "bukhari",
+      "book": 67,
+      "limit": 5
+    }
+  },
+  {
+    "id": "ml_8",
+    "title": "Imposter Syndrome And Arrogance — Two Sides Of The Same Ego",
+    "theme": "The nafs oscillating between self-aggrandizement and self-disgust — both rooted in 'I'",
+    "modern_angle": "LinkedIn humble-brags, the fake-modesty contest, the silent arrogance of 'I don't deserve this'",
+    "quran_chapters": [
+      40,
+      31
+    ],
+    "specific_verses": [
+      35
+    ],
+    "context": "40:35 ('every arrogant tyrant'); 31:18 (don't walk on the earth in arrogance). Diagnose both poles as the same disease — refusal to surrender the I.",
+    "hadith_book": {
+      "collection": "bukhari",
+      "book": 67,
+      "limit": 5
+    }
+  },
+  {
+    "id": "ca_8",
+    "title": "Media Manipulation — How False Narratives Mirror What The Quran Warned",
+    "theme": "Falsehood (batil) dressed as truth; the war over reality itself",
+    "modern_angle": "Deepfakes, AI-generated articles, narrative laundering through 'verified' accounts",
+    "quran_chapters": [
+      2,
+      49
+    ],
+    "specific_verses": [
+      42
+    ],
+    "context": "2:42 — 'do not mix truth with falsehood and conceal the truth knowingly.' 49:6 — verify reports from corrupt sources. Connect to a media environment where 60% of what you see is manufactured.",
+    "hadith_book": {
+      "collection": "muslim",
+      "book": 32,
+      "limit": 5
+    }
+  },
+  {
+    "id": "sc_8",
+    "title": "Mountains As Pegs — How Plate Tectonics Proves A Quranic Image",
+    "theme": "The mountain as anchor for the moving earth",
+    "modern_angle": "Plate tectonics (theory only confirmed in 1960s); isostatic equilibrium; mountain roots extending below the surface",
+    "quran_chapters": [
+      78,
+      21
+    ],
+    "specific_verses": [
+      7
+    ],
+    "context": "78:7 — 'and the mountains as pegs.' 21:31 — 'firm mountains lest the earth shake them.' Connect to the deep geological roots of mountains discovered only after seismology matured."
+  },
+  {
+    "id": "hi_8",
+    "title": "The Sleepers Of The Cave — A Story For Every Era Of Persecution",
+    "theme": "Faith hidden in the cave; time that bends for the believing",
+    "modern_angle": "Modern Muslims hiding faith in hostile environments; the digital cave (encrypted messaging, private accounts)",
+    "quran_chapters": [
+      18
+    ],
+    "specific_verses": [
+      9
+    ],
+    "context": "18:9-26 — the youth who fled to the cave; 309 years of sleep. Connect to the modern condition of believing privately in environments that punish public faith."
+  },
+  {
+    "id": "et_8",
+    "title": "Ya'juj And Ma'juj — Are They Already Tunneling Through?",
+    "theme": "The barrier and its breach",
+    "modern_angle": "The Quranic indication 18:97 of melting/penetrating the barrier; modern speculation",
+    "quran_chapters": [
+      18,
+      21
+    ],
+    "specific_verses": [
+      97
+    ],
+    "context": "18:96-99 and 21:96. Engage the imagery of barrier-breach without naming dates. The 'pouring forth from every hill' as poetic imagery for a unique end-time release.",
+    "hadith_book": {
+      "collection": "muslim",
+      "book": 54,
+      "limit": 6
+    }
+  },
+  {
+    "id": "tc_8",
+    "title": "When Robots Say La Ilaha Illa Allah — AI, Consciousness, And The Soul",
+    "theme": "The question of soul (ruh) and what makes humans non-replicable",
+    "modern_angle": "LLMs that 'pray', AI imams, the philosophical panic about machine consciousness",
+    "quran_chapters": [
+      17,
+      15
+    ],
+    "specific_verses": [
+      85
+    ],
+    "context": "17:85 — 'they ask you about the soul; say it is from the command of my Lord.' 15:29 — 'I breathed into him from My spirit.' Engage the irreducibility of ruh.",
+    "hadith_book": {
+      "collection": "bukhari",
+      "book": 81,
+      "limit": 5
+    }
+  },
+  {
+    "id": "dr_8",
+    "title": "The Spider's Web — The Fragile Home That's A Cosmic Metaphor",
+    "theme": "Things relied upon that cannot bear weight",
+    "modern_angle": "Modern dependencies: streaming subscriptions, social capital, fiat currency, digital identity",
+    "quran_chapters": [
+      29
+    ],
+    "specific_verses": [
+      41
+    ],
+    "context": "29:41 — 'the example of those who take protectors besides Allah is like the spider that takes a home; the weakest of homes is the spider's home.' Engage the modern array of fragile reliances."
   },
   {
     "id": "lst_8",
     "title": "Guarding The Chastity (Hifdh Al-Furuj) Is A Mindset, Not Just An Action",
     "theme": "The Quranic definition of chastity as a continuous orientation",
     "modern_angle": "The man who 'doesn't watch porn' but consumes lust-coded media all day; the woman who covers her body but reveals her conversation",
-    "quran_chapters": [23, 70],
-    "specific_verses": [5],
-    "context": "23:5-7; 70:29-31 — those who guard their chastity. The verb is hifdh — a continuous guarding, not a one-time decision."
+    "quran_chapters": [
+      23,
+      70
+    ],
+    "specific_verses": [
+      5
+    ],
+    "context": "23:5-7; 70:29-31 — those who guard their chastity. The verb is hifdh — a continuous guarding, not a one-time decision.",
+    "hadith_book": {
+      "collection": "bukhari",
+      "book": 67,
+      "limit": 5
+    }
+  },
+  {
+    "id": "ml_9",
+    "title": "Why Death Feels Distant But Is Actually Nearer Than You Think",
+    "theme": "Heedlessness about the appointed hour",
+    "modern_angle": "Anti-aging biotech, life-extension podcasts, the cultural taboo against discussing mortality",
+    "quran_chapters": [
+      3,
+      63
+    ],
+    "specific_verses": [
+      185
+    ],
+    "context": "3:185 — every soul will taste death. Connect to 2026's wellness/longevity industry that pretends otherwise.",
+    "hadith_book": {
+      "collection": "muslim",
+      "book": 54,
+      "limit": 6
+    }
+  },
+  {
+    "id": "ca_9",
+    "title": "Gender Wars — What The Quran Actually Says About Men, Women, And Worth",
+    "theme": "Differentiation without hierarchy of worth; the design beneath the noise",
+    "modern_angle": "Red-pill / blue-pill discourse, 4B movement, hookup culture, masculinity podcasts",
+    "quran_chapters": [
+      33,
+      4
+    ],
+    "specific_verses": [
+      35
+    ],
+    "context": "33:35 — Allah lists believing men and women alongside each other for forgiveness and reward. 4:1 — created from a single soul. Cut through the modern gender war using the Source that names both.",
+    "hadith_book": {
+      "collection": "bukhari",
+      "book": 81,
+      "limit": 5
+    }
+  },
+  {
+    "id": "sc_9",
+    "title": "The Sleep Cycle And Death — Why Sleep Is The Sister Of Death",
+    "theme": "Sleep as a daily encounter with the soul-leaving-body principle",
+    "modern_angle": "Modern sleep science: consciousness pauses, memory consolidates, the brain 'shuts down' but the body persists",
+    "quran_chapters": [
+      39
+    ],
+    "specific_verses": [
+      42
+    ],
+    "context": "39:42 — Allah takes the souls at the time of their death and those that do not die during their sleep. Reframe the nightly ritual as a rehearsal.",
+    "hadith_book": {
+      "collection": "muslim",
+      "book": 53,
+      "limit": 5
+    }
+  },
+  {
+    "id": "hi_9",
+    "title": "The Year Of The Elephant — Small Armies, Strange Birds, And Hubris",
+    "theme": "The defeat of the proud by what looked too small to matter",
+    "modern_angle": "Modern military hubris: empires destroyed by insurgencies, viruses, and supply-chain shocks",
+    "quran_chapters": [
+      105
+    ],
+    "context": "Surah Al-Fil — the elephant army, the small birds carrying small stones. Connect to the asymmetric collapses of modern superpowers."
+  },
+  {
+    "id": "et_9",
+    "title": "The Great Smoke, The Locusts, Or The Cyber-Apocalypse — Decoding Signs",
+    "theme": "Modern phenomena that map onto Quranic eschatological imagery",
+    "modern_angle": "2020 East-Africa locust swarms, wildfire smoke globalization, infrastructure ransomware",
+    "quran_chapters": [
+      44,
+      27
+    ],
+    "specific_verses": [
+      10
+    ],
+    "context": "44:10. Engage which modern signs map provisionally onto Quranic imagery and where speculation should stop.",
+    "hadith_book": {
+      "collection": "muslim",
+      "book": 54,
+      "limit": 6
+    }
+  },
+  {
+    "id": "tc_9",
+    "title": "The Metaverse And The Ultimate Illusion — Dunya's Final Trick?",
+    "theme": "Layered illusion: the dunya is itself an illusion, and the metaverse is an illusion within it",
+    "modern_angle": "VR headsets, Apple Vision Pro, virtual real estate, digital identity",
+    "quran_chapters": [
+      29,
+      57
+    ],
+    "specific_verses": [
+      64
+    ],
+    "context": "29:64 — 'the life of this world is nothing but amusement and play.' Frame the metaverse as the illusion-of-an-illusion."
+  },
+  {
+    "id": "dr_9",
+    "title": "Why The Number 19 Is Not What You Think — The Danger Of Obsession",
+    "theme": "The line between sign-recognition and superstition",
+    "modern_angle": "Numerology Twitter, gematria revival, the conspiracy-theory industry around Quranic numbers",
+    "quran_chapters": [
+      74
+    ],
+    "specific_verses": [
+      30
+    ],
+    "context": "74:30-31 — 'over it are nineteen.' Engage with care: what the verse says about its purpose (testing those who deny, increasing the faith of those who believe) — and where that purpose is corrupted into obsession."
   },
   {
     "id": "lst_9",
     "title": "How Lust Drowns The Nur On Your Face — The Light That Disappears",
     "theme": "Spiritual radiance (nur) and what dims it",
     "modern_angle": "The visible facial change in addicts and the visible change in those who repent",
-    "quran_chapters": [24, 57],
-    "specific_verses": [35],
-    "context": "24:35 — 'Allah is the light of the heavens and the earth.' Engage the literal visible effect of internal state on external appearance."
+    "quran_chapters": [
+      24,
+      57
+    ],
+    "specific_verses": [
+      35
+    ],
+    "context": "24:35 — 'Allah is the light of the heavens and the earth.' Engage the literal visible effect of internal state on external appearance.",
+    "hadith_book": {
+      "collection": "bukhari",
+      "book": 67,
+      "limit": 5
+    }
+  },
+  {
+    "id": "ml_10",
+    "title": "Depression And Despair — When You've Forgotten Ar-Rahman",
+    "theme": "Hopelessness (qunoot) as the spiritual root of clinical depression",
+    "modern_angle": "Antidepressant prescriptions doubling decade-over-decade, suicide rates climbing in 'developed' nations",
+    "quran_chapters": [
+      12,
+      39
+    ],
+    "specific_verses": [
+      87
+    ],
+    "context": "12:87 ('do not despair of the mercy of Allah'); 39:53 (do not despair of His mercy). Reframe despair as a forgotten name of Allah.",
+    "hadith_book": {
+      "collection": "bukhari",
+      "book": 81,
+      "limit": 5
+    }
+  },
+  {
+    "id": "ca_10",
+    "title": "The Rise Of Artificial Intelligence — A Sign, A Test, Or A Tool Of Dajjal?",
+    "theme": "Mass deception via systems that 'speak,' 'see,' and 'judge'",
+    "modern_angle": "GPT-4/5, Sora video, AI lawyers, AI imams, agents that make decisions for humans",
+    "quran_chapters": [
+      27
+    ],
+    "specific_verses": [
+      82
+    ],
+    "context": "27:82 — the Beast that emerges and speaks/marks people. Engage AI as the deception that multiplies the speaker without multiplying the soul behind the words.",
+    "hadith_book": {
+      "collection": "muslim",
+      "book": 54,
+      "limit": 6
+    }
+  },
+  {
+    "id": "sc_10",
+    "title": "Time Dilation, Physics, And A Day With Your Lord",
+    "theme": "Relativistic time stated in the Quran centuries before Einstein",
+    "modern_angle": "Special and general relativity; GPS satellites that must adjust for time dilation; the Quranic verse that scales different days differently",
+    "quran_chapters": [
+      22,
+      70
+    ],
+    "specific_verses": [
+      47
+    ],
+    "context": "22:47 — 'a day with your Lord is like a thousand years.' 70:4 — 'a day whose measure is fifty thousand years.' Connect to Einstein 1905, 1915, and the GPS adjustments running every microsecond."
+  },
+  {
+    "id": "hi_10",
+    "title": "Noah's Ark — A Global Flood Or A Local Warning? What Geology Can't Deny",
+    "theme": "The judgment that erased a civilization that had everything",
+    "modern_angle": "Mt Ararat anomalies, Black Sea deluge hypothesis, flood myths in every ancient culture",
+    "quran_chapters": [
+      11,
+      71
+    ],
+    "specific_verses": [
+      25
+    ],
+    "context": "11:25-49 — Noah's full account in detail. 71 (Surah Nuh). Connect to the geological-archaeological fingerprints of catastrophic flood across multiple ancient sites."
+  },
+  {
+    "id": "et_10",
+    "title": "The Collapse Of The Kaaba — What Could Possibly Make That Happen?",
+    "theme": "End-time signs around the holiest site",
+    "modern_angle": "Modern Mecca expansion, the projected eschatological shift",
+    "quran_chapters": [
+      105,
+      14
+    ],
+    "specific_verses": [
+      37
+    ],
+    "context": "Engage the Quranic frame for the Sacred House without committing to specific timing claims.",
+    "hadith_book": {
+      "collection": "muslim",
+      "book": 54,
+      "limit": 6
+    }
+  },
+  {
+    "id": "tc_10",
+    "title": "Filtering Your Face, Forgetting Your Fitrah",
+    "theme": "The natural form (fitrah) being edited away",
+    "modern_angle": "Beauty filters, FaceApp, plastic surgery normalization in teenagers, BDD (body dysmorphic disorder) rates rising",
+    "quran_chapters": [
+      30,
+      95
+    ],
+    "specific_verses": [
+      30
+    ],
+    "context": "30:30 — 'the fitrah upon which Allah has created people; no change in the creation of Allah.' 95:4 — 'We created man in the best stature.' Engage the modern industry of unmaking the face.",
+    "hadith_book": {
+      "collection": "bukhari",
+      "book": 81,
+      "limit": 5
+    }
+  },
+  {
+    "id": "dr_10",
+    "title": "The Final Verse Revealed — What Allah Chose To Say Last",
+    "theme": "The closing word of revelation",
+    "modern_angle": "Modern Muslim distance from this specific verse; what it means that 'today I have completed your religion'",
+    "quran_chapters": [
+      5
+    ],
+    "specific_verses": [
+      3
+    ],
+    "context": "5:3 — 'today I have perfected for you your religion and completed My favor upon you.' Engage what it means that this is what was chosen as the final transmission."
   },
   {
     "id": "lst_10",
     "title": "Maryam — The Perfect Example Of Chastity Without Marriage",
     "theme": "Maryam as the Quranic blueprint for purity in the absence of marriage",
     "modern_angle": "The unmarried Muslim — male or female — being told there is no path; the Quran says otherwise",
-    "quran_chapters": [19, 66],
-    "specific_verses": [12],
-    "context": "19:16-29; 66:12 — 'Maryam, daughter of Imran, who guarded her chastity.' Engage the radical example of purity sustained without the conventional outlet."
+    "quran_chapters": [
+      19,
+      66
+    ],
+    "specific_verses": [
+      12
+    ],
+    "context": "19:16-29; 66:12 — 'Maryam, daughter of Imran, who guarded her chastity.' Engage the radical example of purity sustained without the conventional outlet.",
+    "hadith_book": {
+      "collection": "bukhari",
+      "book": 67,
+      "limit": 5
+    }
+  },
+  {
+    "id": "ml_11",
+    "title": "The Perfect Life Illusion — Instagram Vs. Surah Al-Hadid",
+    "theme": "Dunya as adornment that decays — the curated highlight reel as a cosmic deception",
+    "modern_angle": "Filters, vacation photos, lifestyle creators — the new mirage",
+    "quran_chapters": [
+      57
+    ],
+    "specific_verses": [
+      20
+    ],
+    "context": "57:20 — life of this world is play, amusement, adornment, mutual boasting, increase in wealth and children. Connect to the algorithmic gospel of 'success.'",
+    "hadith_book": {
+      "collection": "bukhari",
+      "book": 34,
+      "limit": 5
+    }
+  },
+  {
+    "id": "ca_11",
+    "title": "Water Wars Are Coming — Quranic Warnings About A Thirsty Earth",
+    "theme": "Water as creation's central sign; the corruption of the rivers",
+    "modern_angle": "Cape Town day zero, Chennai 2019, Egypt-Ethiopia dam tensions, depleting aquifers across the US",
+    "quran_chapters": [
+      21,
+      23
+    ],
+    "specific_verses": [
+      30
+    ],
+    "context": "21:30 — from water We made every living thing. 23:18 — We send water from the sky in measured amounts. Connect to a planet running out of the most-named substance in the Quran."
+  },
+  {
+    "id": "sc_11",
+    "title": "The Living Ocean — Water, Waves, And Verses Science Can't Exhaust",
+    "theme": "The Quran's specific oceanographic descriptions that match modern observation",
+    "modern_angle": "Halocline boundaries, deep-sea darkness, internal waves — all imaged only after submersibles existed",
+    "quran_chapters": [
+      25,
+      24
+    ],
+    "specific_verses": [
+      53
+    ],
+    "context": "25:53 — two seas, one sweet one salty, with a barrier between them. 24:40 — darkness of a deep sea covered by waves. Connect to halocline imagery and the 2-mile-deep darkness mapped only post-1960."
+  },
+  {
+    "id": "hi_11",
+    "title": "The Golden Calf — Why Smart People Still Worship Stupid Things",
+    "theme": "Idolatry as a default of the unsupervised heart",
+    "modern_angle": "Crypto pumpamentals, AI worship, celebrity culture — the new calves",
+    "quran_chapters": [
+      7,
+      20
+    ],
+    "specific_verses": [
+      148
+    ],
+    "context": "7:148; 20:85-91 — Bani Israel make a calf that lows. Connect to the human tendency to make objects of worship out of whatever shines.",
+    "hadith_book": {
+      "collection": "bukhari",
+      "book": 81,
+      "limit": 5
+    }
+  },
+  {
+    "id": "et_11",
+    "title": "Time Contracting — A Quranic Lens On Why Decades Feel Like Months",
+    "theme": "Subjective time compression as a sign of modernity",
+    "modern_angle": "The neuroscience of perceived time speeding up with novelty saturation",
+    "quran_chapters": [
+      70,
+      22
+    ],
+    "specific_verses": [
+      4
+    ],
+    "context": "70:4 — a day whose measure is fifty thousand years. Engage the modern perception that 'time moves faster' through the Quranic frame of relative time.",
+    "hadith_book": {
+      "collection": "muslim",
+      "book": 54,
+      "limit": 6
+    }
+  },
+  {
+    "id": "tc_11",
+    "title": "Crypto, Scams, And Greed — Wealth In The Quran Is Test, Not Trust",
+    "theme": "Wealth (mal) as a trial, never a metric of worth",
+    "modern_angle": "Memecoins, NFT collapses, crypto scams, the 2022-2024 fraud epidemic",
+    "quran_chapters": [
+      64,
+      89
+    ],
+    "specific_verses": [
+      15
+    ],
+    "context": "64:15 — 'your wealth and your children are only a trial.' 89:20 — 'and you love wealth with immense love.' Engage the financialization of everything.",
+    "hadith_book": {
+      "collection": "bukhari",
+      "book": 34,
+      "limit": 5
+    }
   },
   {
     "id": "lst_11",
     "title": "Do Not Approach Zina — Why It's Not Just Don't Do It",
     "theme": "The Quranic verb that names the gradient",
     "modern_angle": "Subscribing to lust-adjacent content, sliding-into-DMs culture, 'just talking,' 'just looking'",
-    "quran_chapters": [17],
-    "specific_verses": [32],
-    "context": "17:32 — 'and do not approach zina.' The choice of la taqrabu over la taf'alu. Engage the difference between the law and the spirit of the law."
+    "quran_chapters": [
+      17
+    ],
+    "specific_verses": [
+      32
+    ],
+    "context": "17:32 — 'and do not approach zina.' The choice of la taqrabu over la taf'alu. Engage the difference between the law and the spirit of the law.",
+    "hadith_book": {
+      "collection": "bukhari",
+      "book": 67,
+      "limit": 5
+    }
+  },
+  {
+    "id": "ml_12",
+    "title": "Healing Your Inner Child With Verses You've Never Paused On",
+    "theme": "Trauma, mercy, and the verses that address the unhealed self",
+    "modern_angle": "Therapy culture, inner-child work, generational healing language — overlapping with Quranic mercy without realizing it",
+    "quran_chapters": [
+      93
+    ],
+    "context": "Surah Ad-Duha — addressed to the orphaned Prophet ﷺ. 'Did He not find you orphaned and shelter you?' A verse that names every wounded child without naming them."
+  },
+  {
+    "id": "ca_12",
+    "title": "Refugees And The Stranger — Quranic Parallels You're Not Thinking About",
+    "theme": "Hijrah (migration) and the sacred status of the displaced",
+    "modern_angle": "100M displaced globally as of 2024 — Syrians, Rohingya, Sudanese, Ukrainians, Palestinians",
+    "quran_chapters": [
+      4,
+      8
+    ],
+    "specific_verses": [
+      97
+    ],
+    "context": "4:97-100 — those who emigrate in the cause of Allah find vast spaces and provision. Reframe the political 'migrant crisis' as the Quranic test of a host society."
+  },
+  {
+    "id": "sc_12",
+    "title": "Birds In Formation — Quranic Sign Language In The Sky",
+    "theme": "Bird flight as a divine sign held aloft by no one but the Most Merciful",
+    "modern_angle": "Aerodynamics, flock-intelligence research, drone swarms imitating starling murmurations",
+    "quran_chapters": [
+      67,
+      16
+    ],
+    "specific_verses": [
+      19
+    ],
+    "context": "67:19 — 'do they not see the birds above them, spreading and folding their wings? None upholds them except the Most Merciful.' Connect to fluid dynamics and the still-incomplete biology of long-distance bird migration."
+  },
+  {
+    "id": "hi_12",
+    "title": "The Library Of Baghdad — When Muslims Lost Knowledge, The World Went Dark",
+    "theme": "What happens to a civilization that abandons the Source",
+    "modern_angle": "1258 Mongol sack of Baghdad; modern Muslim education indices; the loss not just of books but of orientation",
+    "quran_chapters": [
+      3,
+      17
+    ],
+    "specific_verses": [
+      16
+    ],
+    "context": "17:16 — 'when We intend to destroy a city, We send the affluent to commit fasiq.' Connect to the Baghdad library's destruction as a Quranic-pattern event."
+  },
+  {
+    "id": "et_12",
+    "title": "The Fire That Will Gather Mankind — A World War Or A Geological Event?",
+    "theme": "An end-time fire that drives people from one direction",
+    "modern_angle": "Wildfire mass-displacement events; climate refugees pushed in single directions",
+    "quran_chapters": [
+      50,
+      21
+    ],
+    "specific_verses": [
+      44
+    ],
+    "context": "Engage the Quranic language about gathering and the natural-disaster patterns of 2020-2026 without sectarian timing claims.",
+    "hadith_book": {
+      "collection": "muslim",
+      "book": 54,
+      "limit": 6
+    }
+  },
+  {
+    "id": "tc_12",
+    "title": "The Internet Of Things — A World Where Everything Witnesses",
+    "theme": "Allah's witnesses (the angels, the day, the limbs themselves) and the modern simulacrum",
+    "modern_angle": "Smart speakers, doorbell cameras, refrigerators with cameras, Apple's continuity of telemetry",
+    "quran_chapters": [
+      50,
+      41
+    ],
+    "specific_verses": [
+      21
+    ],
+    "context": "41:20-22 — 'their hearing, their sight, their skins will testify.' Connect to the literal modern fact that your skin's smartwatch is testifying about you 24/7."
   },
   {
     "id": "lst_12",
     "title": "The Neuroscience Of A Lustful Gaze — Dopamine Loops That Enslave",
     "theme": "The chemical mechanism that the verse pre-named as 'enslavement'",
     "modern_angle": "Andrew Huberman, dopamine research, the 'novelty bonus' that drives compulsive viewing",
-    "quran_chapters": [25, 45],
-    "specific_verses": [43],
-    "context": "25:43; 45:23 — 'have you seen the one who takes his desire as his god?' Connect to the dopamine literature of 2020-2026."
+    "quran_chapters": [
+      25,
+      45
+    ],
+    "specific_verses": [
+      43
+    ],
+    "context": "25:43; 45:23 — 'have you seen the one who takes his desire as his god?' Connect to the dopamine literature of 2020-2026.",
+    "hadith_book": {
+      "collection": "bukhari",
+      "book": 67,
+      "limit": 5
+    }
+  },
+  {
+    "id": "ml_13",
+    "title": "Why You Keep Sabotaging Your Own Peace — A Quranic Mirror",
+    "theme": "The nafs that whispers against itself; self-sabotage as spiritual disease",
+    "modern_angle": "Procrastinating on prayer while productive at work; binge-watching after a good day; ruining what you love",
+    "quran_chapters": [
+      12
+    ],
+    "specific_verses": [
+      53
+    ],
+    "context": "12:53 — 'the nafs commands evil unless my Lord has mercy.' Diagnose self-sabotage as a soul that hasn't been disciplined.",
+    "hadith_book": {
+      "collection": "bukhari",
+      "book": 81,
+      "limit": 5
+    }
+  },
+  {
+    "id": "ca_13",
+    "title": "When Law Becomes Injustice — The Difference Between Shariah And Tyranny",
+    "theme": "Just rule vs. systems that wear religious labels for power",
+    "modern_angle": "Authoritarian regimes that brand themselves 'Islamic'; Western powers that brand themselves 'free' while jailing dissent",
+    "quran_chapters": [
+      4,
+      5
+    ],
+    "specific_verses": [
+      58
+    ],
+    "context": "4:58 — render trusts to whom they are due, judge with justice. Diagnose what fails in any system that claims to be just but consistently delivers the opposite."
+  },
+  {
+    "id": "sc_13",
+    "title": "The Big Bang In 21:30 — More Than A Soundbite",
+    "theme": "The cosmic moment that physicists name and the Quran already named",
+    "modern_angle": "Lemaitre 1927, Hubble 1929, the 1964 cosmic microwave background discovery",
+    "quran_chapters": [
+      21
+    ],
+    "specific_verses": [
+      30
+    ],
+    "context": "21:30 — 'the heavens and earth were one piece, then We parted them.' Engage seriously, not as proof-text — as a verse that pre-states a model physicists arrived at by accident."
+  },
+  {
+    "id": "hi_13",
+    "title": "The Roman-Persian War Foretold — Surah Ar-Rum's Stunning Prediction",
+    "theme": "The verifiable historical prediction made when no one could foresee it",
+    "modern_angle": "Engaging modern historical reception: Edward Gibbon, Heraclius's campaigns of 622-628 CE",
+    "quran_chapters": [
+      30
+    ],
+    "specific_verses": [
+      2
+    ],
+    "context": "30:2-4 — 'the Romans have been defeated, but after their defeat they will be victorious in 3 to 9 years.' Connect to the documented Byzantine reversal under Heraclius.",
+    "hadith_book": {
+      "collection": "muslim",
+      "book": 32,
+      "limit": 5
+    }
+  },
+  {
+    "id": "et_13",
+    "title": "Constantinople's Conquest — Spiritual, Not Military?",
+    "theme": "Cities and their spiritual reconquest",
+    "modern_angle": "Istanbul/Constantinople in modern Muslim consciousness; the meaning of 'conquest' in spiritual vs. material terms",
+    "quran_chapters": [
+      110
+    ],
+    "context": "Surah An-Nasr — when the help of Allah and the conquest comes. Engage the historical/eschatological frame without speculation.",
+    "hadith_book": {
+      "collection": "muslim",
+      "book": 54,
+      "limit": 6
+    }
+  },
+  {
+    "id": "tc_13",
+    "title": "How Memes Shape Belief — Yes, This Affects Your Aqeedah",
+    "theme": "Repetition and emotion as belief formation; the Quran's awareness of crowd cognition",
+    "modern_angle": "Meme cycles, dopamine-conditioned ideology, the 4chan-to-mainstream pipeline",
+    "quran_chapters": [
+      33,
+      9
+    ],
+    "specific_verses": [
+      67
+    ],
+    "context": "9:67 — 'they enjoin evil and forbid good.' 33:67-68. Engage the modern phenomenon of belief formed via image/sound bite rather than reflection."
   },
   {
     "id": "lst_13",
     "title": "Why Porn Rewires Your Brain More Than Cocaine — A Quranic Breakdown",
     "theme": "The chemistry of compulsion the verse warned about",
     "modern_angle": "Brain imaging studies of pornography users; the prefrontal cortex changes; erectile dysfunction in 20-year-olds",
-    "quran_chapters": [17, 91],
-    "specific_verses": [9],
-    "context": "91:7-10 — 'and the soul and Him who proportioned it; He inspired it to its corruption and to its righteousness.' Engage the modern neuroscience confirmation of soul-corruption being mechanical."
+    "quran_chapters": [
+      17,
+      91
+    ],
+    "specific_verses": [
+      9
+    ],
+    "context": "91:7-10 — 'and the soul and Him who proportioned it; He inspired it to its corruption and to its righteousness.' Engage the modern neuroscience confirmation of soul-corruption being mechanical.",
+    "hadith_book": {
+      "collection": "bukhari",
+      "book": 67,
+      "limit": 5
+    }
+  },
+  {
+    "id": "ml_14",
+    "title": "The Scrolling Sickness — Time, Attention, And Al-Asr",
+    "theme": "Time as the ultimate non-renewable; heedlessness as the modern theft",
+    "modern_angle": "5-7 hours/day on phones; the algorithm; the grave that's coming on time regardless of how you spent yours",
+    "quran_chapters": [
+      103
+    ],
+    "context": "Surah Al-Asr — 'by time, mankind is in loss.' Connect to screen-time data as proof of modern collective loss.",
+    "hadith_book": {
+      "collection": "muslim",
+      "book": 53,
+      "limit": 5
+    }
+  },
+  {
+    "id": "ca_14",
+    "title": "Elections, Loyalty, And The Psychology Of Crowds In Surah Al-A'raf",
+    "theme": "Tribal allegiance as a substitute for God-consciousness",
+    "modern_angle": "Identity politics, partisan derangement, the 'my team must win' addiction",
+    "quran_chapters": [
+      7
+    ],
+    "context": "Surah Al-A'raf — the people of Pharaoh follow him into the sea. Connect to the followership patterns of every modern political tribe."
+  },
+  {
+    "id": "sc_14",
+    "title": "Why Fire Needs Air — The Physics Of Hell And The Breath Of Life",
+    "theme": "Combustion, oxygen, and the Quranic descriptions of fire",
+    "modern_angle": "Modern combustion physics; the discovery of oxygen (Lavoisier 1778); the Quran's pre-modern accuracy",
+    "quran_chapters": [
+      56
+    ],
+    "specific_verses": [
+      71
+    ],
+    "context": "56:71-73 — 'have you considered the fire you ignite? Did you cause its tree to grow?' Engage fire as a sign embedded in the most ordinary act."
+  },
+  {
+    "id": "hi_14",
+    "title": "The Story Of Yusuf — The Most Detailed Quranic Narrative",
+    "theme": "Yusuf's full arc from the well to the throne",
+    "modern_angle": "The longest single Quranic narrative; the modern man caught between ambition and integrity",
+    "quran_chapters": [
+      12
+    ],
+    "context": "Surah Yusuf — the entire surah is a single sustained narrative. The unique story-form Allah uses only here. Engage why the Quran spends an entire surah on one man's life when others are scattered across many."
+  },
+  {
+    "id": "et_14",
+    "title": "The Three Major Sinkings — Earthquakes That Change The Map",
+    "theme": "Geological transformation as sign",
+    "modern_angle": "2004 Indian Ocean tsunami, 2011 Tohoku quake, the 2023 Turkey-Syria event — the increasing frequency of map-altering quakes",
+    "quran_chapters": [
+      99,
+      70
+    ],
+    "context": "Surah Az-Zalzalah — the earth quakes its tremor. Connect to USGS data on increasing major-quake frequency this decade.",
+    "hadith_book": {
+      "collection": "muslim",
+      "book": 54,
+      "limit": 6
+    }
+  },
+  {
+    "id": "tc_14",
+    "title": "Crowdsourcing Evil — Online Mobs And The Herd Behavior The Quran Warns",
+    "theme": "Following the multitude into error",
+    "modern_angle": "Twitter pile-ons, viral cancellation, mob accusations against the innocent",
+    "quran_chapters": [
+      6
+    ],
+    "specific_verses": [
+      116
+    ],
+    "context": "6:116 — 'if you obey most of those on earth, they will mislead you from the way of Allah.' Diagnose the algorithmic mob as the modern fulfillment of this verse."
   },
   {
     "id": "lst_14",
     "title": "The Harem Fantasy — How Your Nafs Builds A Fake Paradise",
     "theme": "The nafs constructing a counterfeit jannah",
     "modern_angle": "The endless-scroll fantasy; only-fans-as-product; the manufactured intimacy industry",
-    "quran_chapters": [4, 47],
-    "specific_verses": [15],
-    "context": "47:15 — the description of the real Paradise. Engage the modern industrial fakery as the inverse of what is promised."
+    "quran_chapters": [
+      4,
+      47
+    ],
+    "specific_verses": [
+      15
+    ],
+    "context": "47:15 — the description of the real Paradise. Engage the modern industrial fakery as the inverse of what is promised.",
+    "hadith_book": {
+      "collection": "bukhari",
+      "book": 67,
+      "limit": 5
+    }
+  },
+  {
+    "id": "ml_15",
+    "title": "Dopamine, Desires, And Deen — What Brain Science Confirms",
+    "theme": "The hawa (desire) that the Quran warned about, mapped onto modern neuroscience",
+    "modern_angle": "Neuroscientists 'discovering' what the Quran said about following desires breaking the heart",
+    "quran_chapters": [
+      45
+    ],
+    "specific_verses": [
+      23
+    ],
+    "context": "45:23 — 'have you seen the one who takes his desire as his god?' Connect to dopamine-loop research, Andrew Huberman's audience, and the 'discovery' of pre-frontal-cortex decision-making.",
+    "hadith_book": {
+      "collection": "bukhari",
+      "book": 81,
+      "limit": 5
+    }
+  },
+  {
+    "id": "ca_15",
+    "title": "Globalism, Tribalism, And The Babel Syndrome — A Quranic Lens",
+    "theme": "The pendulum between tower-builders and tribe-defenders",
+    "modern_angle": "WEF/Davos elite vs. nationalist resurgence — both missing the Source that places them in scale",
+    "quran_chapters": [
+      49,
+      30
+    ],
+    "specific_verses": [
+      13
+    ],
+    "context": "49:13 — 'We made you peoples and tribes that you may know one another, the noblest among you is the most God-conscious.' Cut through both globalism and tribalism using the criterion neither admits."
+  },
+  {
+    "id": "sc_15",
+    "title": "The Iron Sent Down — A Metal From The Stars And A Verse From The Sky",
+    "theme": "Iron's cosmic origin in supernovae, named in the Surah named after it",
+    "modern_angle": "Stellar nucleosynthesis (theory matured in the 1950s); iron forged only in dying massive stars",
+    "quran_chapters": [
+      57
+    ],
+    "specific_verses": [
+      25
+    ],
+    "context": "57:25 — 'and We sent down iron, in which is great might.' Connect to the astrophysical fact that every iron atom on earth was forged in an exploding star millions of years ago."
+  },
+  {
+    "id": "hi_15",
+    "title": "The People Of The Trench — When Faith Was Punished By Fire",
+    "theme": "Believers tortured for refusing to renounce",
+    "modern_angle": "Modern persecution of believers — Uyghurs, Rohingya, Christians in N. Korea, Muslims in India",
+    "quran_chapters": [
+      85
+    ],
+    "specific_verses": [
+      4
+    ],
+    "context": "85:4-8 — 'cursed were the people of the trench... they tortured the believers and were witnesses to what they did.' Connect to modern testimonies of contemporary martyrdom."
+  },
+  {
+    "id": "et_15",
+    "title": "And When The Stars Fall — Could It Be A Meteor Storm Or Satellite Chaos?",
+    "theme": "Stellar/celestial chaos as Quranic sign",
+    "modern_angle": "Kessler syndrome (uncontrolled satellite cascade), increasing meteor-shower visibility, near-earth asteroid tracking",
+    "quran_chapters": [
+      81
+    ],
+    "specific_verses": [
+      2
+    ],
+    "context": "81:2 — 'when the stars fall, dispersing.' 82:2. Engage the imagery without claiming the date.",
+    "hadith_book": {
+      "collection": "muslim",
+      "book": 54,
+      "limit": 6
+    }
+  },
+  {
+    "id": "tc_15",
+    "title": "Your Screen Knows You Better Than Your Parents — And That's A Sign",
+    "theme": "Intimate knowledge that belongs to Allah being claimed by the algorithm",
+    "modern_angle": "Recommendation algorithms predicting purchases, moods, breakups, pregnancies before the user knows",
+    "quran_chapters": [
+      50,
+      6
+    ],
+    "specific_verses": [
+      16
+    ],
+    "context": "50:16 — closer than the jugular vein. Engage the modern algorithmic intimacy as a small mocking-imitation of true divine knowledge."
   },
   {
     "id": "lst_15",
     "title": "Escapism Through Lust — Why Lonely Men Get Pulled In",
     "theme": "Loneliness + isolation + access = trap",
     "modern_angle": "The male loneliness epidemic; the rise of 'incel' communities; the pornification of solitude",
-    "quran_chapters": [50, 13],
-    "specific_verses": [16],
-    "context": "50:16 — closer than the jugular. Engage the difference between filling the loneliness with the Source and filling it with the substitute."
+    "quran_chapters": [
+      50,
+      13
+    ],
+    "specific_verses": [
+      16
+    ],
+    "context": "50:16 — closer than the jugular. Engage the difference between filling the loneliness with the Source and filling it with the substitute.",
+    "hadith_book": {
+      "collection": "bukhari",
+      "book": 67,
+      "limit": 5
+    }
   },
   {
     "id": "lst_16",
     "title": "The Shame-Spiral — Why You Keep Going Back After You Hate It",
     "theme": "The Shaytan-induced cycle of hopelessness",
     "modern_angle": "The relapse psychology research, the shame-and-rebound pattern in addiction recovery literature",
-    "quran_chapters": [12, 39],
-    "specific_verses": [87],
-    "context": "12:87 — 'do not despair of the mercy of Allah.' 39:53. Engage the cycle and the explicit Quranic permission/command to climb out."
+    "quran_chapters": [
+      12,
+      39
+    ],
+    "specific_verses": [
+      87
+    ],
+    "context": "12:87 — 'do not despair of the mercy of Allah.' 39:53. Engage the cycle and the explicit Quranic permission/command to climb out.",
+    "hadith_book": {
+      "collection": "bukhari",
+      "book": 67,
+      "limit": 5
+    }
   },
   {
     "id": "lst_17",
     "title": "Lust And Anxiety — The Link Between Sexual Sin And A Restless Soul",
     "theme": "The internal connection the Quran names",
     "modern_angle": "Emerging mental-health research linking compulsive sexual behavior to general anxiety",
-    "quran_chapters": [13, 89],
-    "specific_verses": [27],
-    "context": "13:28; 89:27-28 — 'O reassured soul, return to your Lord.' Engage the Quranic frame for what 'reassured' means and what produces it."
+    "quran_chapters": [
+      13,
+      89
+    ],
+    "specific_verses": [
+      27
+    ],
+    "context": "13:28; 89:27-28 — 'O reassured soul, return to your Lord.' Engage the Quranic frame for what 'reassured' means and what produces it.",
+    "hadith_book": {
+      "collection": "bukhari",
+      "book": 67,
+      "limit": 5
+    }
   },
   {
     "id": "lst_18",
     "title": "Why You Start Seeing People As Objects — The Dehumanization",
     "theme": "Lust as the destroyer of recognition (ma'rifa) of the human being",
     "modern_angle": "Studies showing pornography use changes how viewers perceive non-pornographic faces — toward objectification",
-    "quran_chapters": [49, 24],
-    "specific_verses": [13],
-    "context": "49:13 — 'We made you peoples and tribes that you may know one another.' Engage what 'know' means and what lust does to the capacity to know another person."
+    "quran_chapters": [
+      49,
+      24
+    ],
+    "specific_verses": [
+      13
+    ],
+    "context": "49:13 — 'We made you peoples and tribes that you may know one another.' Engage what 'know' means and what lust does to the capacity to know another person.",
+    "hadith_book": {
+      "collection": "bukhari",
+      "book": 67,
+      "limit": 5
+    }
   },
   {
     "id": "lst_19",
     "title": "The Just-One-Look Lie — How The Brain Programs Itself",
     "theme": "The neurological tracking the Quran called approaching",
     "modern_angle": "Habit-loop research; the brain's automation of repeated stimuli",
-    "quran_chapters": [17],
-    "specific_verses": [32],
-    "context": "17:32 — 'do not approach.' Engage the specific neuroscience of how 'approaching' programs the brain to keep approaching, automatically."
+    "quran_chapters": [
+      17
+    ],
+    "specific_verses": [
+      32
+    ],
+    "context": "17:32 — 'do not approach.' Engage the specific neuroscience of how 'approaching' programs the brain to keep approaching, automatically.",
+    "hadith_book": {
+      "collection": "bukhari",
+      "book": 67,
+      "limit": 5
+    }
   },
   {
     "id": "lst_20",
     "title": "Why You Can't Quit Alone — The Power Of Brotherhood",
     "theme": "Brotherhood (ukhuwwah) as the Quranic prescription for sin in secret",
     "modern_angle": "Recovery literature confirming community is the strongest predictor of long-term abstinence",
-    "quran_chapters": [3, 49],
-    "specific_verses": [103],
-    "context": "3:103 — 'hold fast to the rope of Allah, all together, and do not divide.' Engage the Quranic frame for collective spiritual maintenance."
+    "quran_chapters": [
+      3,
+      49
+    ],
+    "specific_verses": [
+      103
+    ],
+    "context": "3:103 — 'hold fast to the rope of Allah, all together, and do not divide.' Engage the Quranic frame for collective spiritual maintenance.",
+    "hadith_book": {
+      "collection": "bukhari",
+      "book": 67,
+      "limit": 5
+    }
   },
   {
     "id": "lst_21",
     "title": "Love Vs. Lust — How To Tell If Your Heart Is In Love Or Just Attached",
     "theme": "The Quranic distinction between sacred love and counterfeit attachment",
     "modern_angle": "The 'I'm in love' language used for what is anatomically lust; the modern confusion about love",
-    "quran_chapters": [30, 2],
-    "specific_verses": [21],
-    "context": "30:21 — 'mawaddah and rahmah' between spouses. Engage the precise Quranic vocabulary that distinguishes deep affection from lust-attachment."
+    "quran_chapters": [
+      30,
+      2
+    ],
+    "specific_verses": [
+      21
+    ],
+    "context": "30:21 — 'mawaddah and rahmah' between spouses. Engage the precise Quranic vocabulary that distinguishes deep affection from lust-attachment.",
+    "hadith_book": {
+      "collection": "bukhari",
+      "book": 67,
+      "limit": 5
+    }
   },
   {
     "id": "lst_22",
     "title": "The Ego Boost Of Sexual Attention — Why It Makes You Weak",
     "theme": "The Quranic warning about the prideful man",
     "modern_angle": "DM-game culture, conquest mindset, the male ego built on attention metrics",
-    "quran_chapters": [40, 16],
-    "specific_verses": [35],
-    "context": "40:35 — 'every arrogant tyrant.' Diagnose the conquest-male as the tyrant in miniature."
+    "quran_chapters": [
+      40,
+      16
+    ],
+    "specific_verses": [
+      35
+    ],
+    "context": "40:35 — 'every arrogant tyrant.' Diagnose the conquest-male as the tyrant in miniature.",
+    "hadith_book": {
+      "collection": "bukhari",
+      "book": 67,
+      "limit": 5
+    }
   },
   {
     "id": "lst_23",
     "title": "Sexual Fantasies As A False God — Idolizing An Image",
     "theme": "The mental image becoming an object of worship",
     "modern_angle": "The 'mental harem' the modern man builds from years of watched content",
-    "quran_chapters": [21, 53],
-    "specific_verses": [22],
-    "context": "21:22 — 'if there had been other gods besides Allah, they would have been ruined.' Engage the constructed fantasy as the modern miniature shirk."
+    "quran_chapters": [
+      21,
+      53
+    ],
+    "specific_verses": [
+      22
+    ],
+    "context": "21:22 — 'if there had been other gods besides Allah, they would have been ruined.' Engage the constructed fantasy as the modern miniature shirk.",
+    "hadith_book": {
+      "collection": "bukhari",
+      "book": 67,
+      "limit": 5
+    }
   },
   {
     "id": "lst_24",
     "title": "Why You Lash Out When You're Chaste — The Withdrawal Phase",
     "theme": "The early days of restraint and the irritation that follows",
     "modern_angle": "Recovery literature on early-abstinence irritability; the 'reboot' communities online",
-    "quran_chapters": [29, 47],
-    "specific_verses": [69],
-    "context": "29:69 — 'those who strive for Us, We will guide them to Our paths.' Engage the early phase of difficulty as the Quranic-promised refining."
+    "quran_chapters": [
+      29,
+      47
+    ],
+    "specific_verses": [
+      69
+    ],
+    "context": "29:69 — 'those who strive for Us, We will guide them to Our paths.' Engage the early phase of difficulty as the Quranic-promised refining.",
+    "hadith_book": {
+      "collection": "bukhari",
+      "book": 67,
+      "limit": 5
+    }
   },
   {
     "id": "lst_25",
     "title": "Your Seed Is Not Trash — The Quranic Honor Of Reproductive Fluids",
     "theme": "The Quran's explicit naming of nutfah as honored creation",
     "modern_angle": "The casual modern disposability of male fluid; the 'no big deal' framing in pop culture",
-    "quran_chapters": [76, 86],
-    "specific_verses": [2],
-    "context": "76:2; 86:5-7 — 'let man consider from what he was created. He was created from a fluid, ejected.' Engage the Quranic naming of what is treated as nothing."
+    "quran_chapters": [
+      76,
+      86
+    ],
+    "specific_verses": [
+      2
+    ],
+    "context": "76:2; 86:5-7 — 'let man consider from what he was created. He was created from a fluid, ejected.' Engage the Quranic naming of what is treated as nothing.",
+    "hadith_book": {
+      "collection": "bukhari",
+      "book": 67,
+      "limit": 5
+    }
   },
   {
     "id": "lst_26",
     "title": "The Biology Of The Gaze — What Hormones Do In One Look",
     "theme": "The physical chemistry of the gaze the verse pre-empts",
     "modern_angle": "Cortisol, dopamine, prolactin spikes from visual sexual stimuli; the hormonal hangover that follows",
-    "quran_chapters": [24],
-    "specific_verses": [30],
-    "context": "24:30. Engage the literal hormonal cost of the gaze that the lowering-of-eyes command pre-empted."
+    "quran_chapters": [
+      24
+    ],
+    "specific_verses": [
+      30
+    ],
+    "context": "24:30. Engage the literal hormonal cost of the gaze that the lowering-of-eyes command pre-empted.",
+    "hadith_book": {
+      "collection": "bukhari",
+      "book": 67,
+      "limit": 5
+    }
   },
   {
     "id": "lst_27",
     "title": "Erectile Dysfunction In Young Men — The Porn-Induced Epidemic",
     "theme": "The modern medical phenomenon the verse foresaw in principle",
     "modern_angle": "Urologist data on 20-year-olds with ED; the 'PIED' (porn-induced erectile dysfunction) literature",
-    "quran_chapters": [17, 91],
-    "specific_verses": [9],
-    "context": "91:9-10 — 'he succeeds who purifies it; he fails who corrupts it.' Engage the literal somatic confirmation of corruption-of-the-soul producing physical failure."
+    "quran_chapters": [
+      17,
+      91
+    ],
+    "specific_verses": [
+      9
+    ],
+    "context": "91:9-10 — 'he succeeds who purifies it; he fails who corrupts it.' Engage the literal somatic confirmation of corruption-of-the-soul producing physical failure.",
+    "hadith_book": {
+      "collection": "bukhari",
+      "book": 67,
+      "limit": 5
+    }
   },
   {
     "id": "lst_28",
     "title": "How Frequent Release Affects Your Ambition — Testosterone And Focus",
     "theme": "The biological substrate for chastity producing power",
     "modern_angle": "The 'NoFap' communities, the testosterone-focus research, the productivity differences post-abstinence",
-    "quran_chapters": [70, 23],
-    "specific_verses": [29],
-    "context": "70:29-31; 23:5-7. Engage what biology now confirms about what the Quran legislated."
+    "quran_chapters": [
+      70,
+      23
+    ],
+    "specific_verses": [
+      29
+    ],
+    "context": "70:29-31; 23:5-7. Engage what biology now confirms about what the Quran legislated.",
+    "hadith_book": {
+      "collection": "bukhari",
+      "book": 67,
+      "limit": 5
+    }
   },
   {
     "id": "lst_29",
     "title": "The Physical Exhaustion After Haram Release — Why You Feel Empty",
     "theme": "The post-act void the verse pre-named",
     "modern_angle": "The post-orgasm depression literature; the difference between the satisfaction of sacred release and the emptiness of secret release",
-    "quran_chapters": [30],
-    "specific_verses": [21],
-    "context": "30:21 — 'tranquility' (sakeenah) is what is meant to follow union. Engage the inversion: emptiness instead of tranquility as the body's verdict on the act."
+    "quran_chapters": [
+      30
+    ],
+    "specific_verses": [
+      21
+    ],
+    "context": "30:21 — 'tranquility' (sakeenah) is what is meant to follow union. Engage the inversion: emptiness instead of tranquility as the body's verdict on the act.",
+    "hadith_book": {
+      "collection": "bukhari",
+      "book": 67,
+      "limit": 5
+    }
   },
   {
     "id": "lst_30",
     "title": "Your Future Wife Will Feel It — How Past Indiscretions Linger",
     "theme": "The body and the soul that carry their history",
     "modern_angle": "The emotional research on how past-partner counts affect future bonding (the pair-bonding literature)",
-    "quran_chapters": [25, 24],
-    "specific_verses": [68],
-    "context": "25:68-70 — 'except those who repent and do righteous deeds; for them Allah will replace their evil deeds with good ones.' Engage both the burden and the way out."
+    "quran_chapters": [
+      25,
+      24
+    ],
+    "specific_verses": [
+      68
+    ],
+    "context": "25:68-70 — 'except those who repent and do righteous deeds; for them Allah will replace their evil deeds with good ones.' Engage both the burden and the way out.",
+    "hadith_book": {
+      "collection": "bukhari",
+      "book": 67,
+      "limit": 5
+    }
   },
   {
     "id": "lst_31",
     "title": "The Back, The Loins, And The Water — Quranic Anatomy Of Life",
     "theme": "The Quran's specific anatomical language about reproduction",
     "modern_angle": "Modern reproductive biology confirming the back-and-loins region as the embryological origin of gametes",
-    "quran_chapters": [86],
-    "specific_verses": [6],
-    "context": "86:5-7 — 'a fluid ejected, emerging from between the backbone and the ribs.' Engage the modern embryology that confirms gametal origin in the dorsal mesoderm."
+    "quran_chapters": [
+      86
+    ],
+    "specific_verses": [
+      6
+    ],
+    "context": "86:5-7 — 'a fluid ejected, emerging from between the backbone and the ribs.' Engage the modern embryology that confirms gametal origin in the dorsal mesoderm.",
+    "hadith_book": {
+      "collection": "bukhari",
+      "book": 67,
+      "limit": 5
+    }
   },
   {
     "id": "lst_32",
     "title": "Why Fasting Was Prescribed — The Biological Hack That Kills Lust",
     "theme": "The Quranic prescription whose mechanism modern biology can now describe",
     "modern_angle": "Intermittent fasting research, the appetite-and-libido suppression effect, the spiritual-physical synthesis",
-    "quran_chapters": [2],
-    "specific_verses": [183],
-    "context": "2:183 — 'fasting is prescribed upon you that you may attain taqwa.' Engage the dual mechanism (spiritual training + physical libido reduction)."
+    "quran_chapters": [
+      2
+    ],
+    "specific_verses": [
+      183
+    ],
+    "context": "2:183 — 'fasting is prescribed upon you that you may attain taqwa.' Engage the dual mechanism (spiritual training + physical libido reduction).",
+    "hadith_book": {
+      "collection": "bukhari",
+      "book": 67,
+      "limit": 5
+    }
   },
   {
     "id": "lst_33",
     "title": "How Lust Ages You Faster — The Physiological Toll",
     "theme": "Premature aging from chronic guilt-arousal-shame cycles",
     "modern_angle": "Telomere research on chronic stress; the visible aging in long-term addicts",
-    "quran_chapters": [95],
-    "specific_verses": [4],
-    "context": "95:4-5 — 'We created man in the best stature; then We reduced him to the lowest of the low.' Engage the literal accelerated reduction in the unrepentant."
+    "quran_chapters": [
+      95
+    ],
+    "specific_verses": [
+      4
+    ],
+    "context": "95:4-5 — 'We created man in the best stature; then We reduced him to the lowest of the low.' Engage the literal accelerated reduction in the unrepentant.",
+    "hadith_book": {
+      "collection": "bukhari",
+      "book": 67,
+      "limit": 5
+    }
   },
   {
     "id": "lst_34",
     "title": "The Algorithm Is A Pimp — How Your Phone Feeds You Haram",
     "theme": "The recommendation engine as a manufactured trial",
     "modern_angle": "TikTok/Instagram/X feeds optimized for engagement; the unprompted lust-adjacent content even on innocent searches",
-    "quran_chapters": [7],
-    "specific_verses": [16],
-    "context": "7:16-17 — Iblis: 'I will sit for them on the straight path... I will come to them from before them and behind them and from their right and their left.' Engage the algorithm as the modern fulfillment of the verb 'sit on the path.'"
+    "quran_chapters": [
+      7
+    ],
+    "specific_verses": [
+      16
+    ],
+    "context": "7:16-17 — Iblis: 'I will sit for them on the straight path... I will come to them from before them and behind them and from their right and their left.' Engage the algorithm as the modern fulfillment of the verb 'sit on the path.'",
+    "hadith_book": {
+      "collection": "bukhari",
+      "book": 67,
+      "limit": 5
+    }
   },
   {
     "id": "lst_35",
     "title": "Infinite Scroll, Infinite Gazes — The Anti-Chastity Design",
     "theme": "Architectural enmity to the lowering of the gaze",
     "modern_angle": "UX research showing infinite-scroll bypasses willpower; product designers admitting they exploit it",
-    "quran_chapters": [24, 17],
-    "specific_verses": [30],
-    "context": "24:30. Engage the architectural inversion: a system designed to defeat the very practice the verse commands."
+    "quran_chapters": [
+      24,
+      17
+    ],
+    "specific_verses": [
+      30
+    ],
+    "context": "24:30. Engage the architectural inversion: a system designed to defeat the very practice the verse commands.",
+    "hadith_book": {
+      "collection": "bukhari",
+      "book": 67,
+      "limit": 5
+    }
   },
   {
     "id": "lst_36",
     "title": "The Explore Page — Why You Need To Guard Your Eyes Even On Normal Apps",
     "theme": "The non-pornographic surface that delivers porn-equivalent stimulus",
     "modern_angle": "Instagram Explore, TikTok 'For You,' YouTube Shorts — the lust-coded content embedded in 'general' apps",
-    "quran_chapters": [24],
-    "specific_verses": [30],
-    "context": "24:30. Engage the lie that 'I just use Instagram, not a porn site' — the explore page is a porn site."
+    "quran_chapters": [
+      24
+    ],
+    "specific_verses": [
+      30
+    ],
+    "context": "24:30. Engage the lie that 'I just use Instagram, not a porn site' — the explore page is a porn site.",
+    "hadith_book": {
+      "collection": "bukhari",
+      "book": 67,
+      "limit": 5
+    }
   },
   {
     "id": "lst_37",
     "title": "AI-Generated Companions — Virtual Sexual Partners, Real Spiritual Decay",
     "theme": "The simulation of relationship that erodes the capacity for relationship",
     "modern_angle": "Replika, Character.AI, AI 'girlfriend' apps, the 2024-26 boom in companionship AI",
-    "quran_chapters": [29],
-    "specific_verses": [41],
-    "context": "29:41 — the spider's web. Engage the AI companion as the modern fragile-house that cannot bear emotional weight."
+    "quran_chapters": [
+      29
+    ],
+    "specific_verses": [
+      41
+    ],
+    "context": "29:41 — the spider's web. Engage the AI companion as the modern fragile-house that cannot bear emotional weight.",
+    "hadith_book": {
+      "collection": "bukhari",
+      "book": 67,
+      "limit": 5
+    }
   },
   {
     "id": "lst_38",
     "title": "Why Blockers Fail — The Real Solution Is Fear Of Allah",
     "theme": "External tools without internal change",
     "modern_angle": "Cold Turkey, Covenant Eyes, BlockerX — and why men still find a way through",
-    "quran_chapters": [33, 50],
-    "specific_verses": [16],
-    "context": "50:16 — closer than the jugular. Engage why the only Watcher who matters is the one no blocker can imitate."
+    "quran_chapters": [
+      33,
+      50
+    ],
+    "specific_verses": [
+      16
+    ],
+    "context": "50:16 — closer than the jugular. Engage why the only Watcher who matters is the one no blocker can imitate.",
+    "hadith_book": {
+      "collection": "bukhari",
+      "book": 67,
+      "limit": 5
+    }
   },
   {
     "id": "lst_39",
     "title": "Soft Pornography On LinkedIn — The Normalized Poison",
     "theme": "Lust-coded content in 'professional' contexts",
     "modern_angle": "The thirst-trap LinkedIn post, the cleavage-on-news-feed phenomenon, the gradient nobody admits",
-    "quran_chapters": [33, 24],
-    "specific_verses": [32],
-    "context": "33:32. Engage the modern abolition of the line between public-decent and lust-baiting."
+    "quran_chapters": [
+      33,
+      24
+    ],
+    "specific_verses": [
+      32
+    ],
+    "context": "33:32. Engage the modern abolition of the line between public-decent and lust-baiting.",
+    "hadith_book": {
+      "collection": "bukhari",
+      "book": 67,
+      "limit": 5
+    }
   },
   {
     "id": "lst_40",
     "title": "Lust Marketing — How Brands Use Your Basest Desires",
     "theme": "Capitalism as engineered desire",
     "modern_angle": "Calvin Klein billboards, Carl's Jr. ads, the explicit weaponization of arousal in marketing",
-    "quran_chapters": [7],
-    "specific_verses": [27],
-    "context": "7:27 — 'O children of Adam, let not Shaytan tempt you as he removed your parents from the garden.' Engage the modern industry literally engineering the same expulsion-from-tranquility."
+    "quran_chapters": [
+      7
+    ],
+    "specific_verses": [
+      27
+    ],
+    "context": "7:27 — 'O children of Adam, let not Shaytan tempt you as he removed your parents from the garden.' Engage the modern industry literally engineering the same expulsion-from-tranquility.",
+    "hadith_book": {
+      "collection": "bukhari",
+      "book": 67,
+      "limit": 5
+    }
   },
   {
     "id": "lst_41",
     "title": "The Hidden Danger Of ASMR And Voice Porn — Arousing The Ear",
     "theme": "The auditory channel of the same disease",
     "modern_angle": "The booming audio-erotica industry, ASMR-romantic-roleplay communities",
-    "quran_chapters": [33],
-    "specific_verses": [32],
-    "context": "33:32 — 'do not be soft in speech.' Engage the verse as covering not just the eye but the ear; voice itself can be a vector."
+    "quran_chapters": [
+      33
+    ],
+    "specific_verses": [
+      32
+    ],
+    "context": "33:32 — 'do not be soft in speech.' Engage the verse as covering not just the eye but the ear; voice itself can be a vector.",
+    "hadith_book": {
+      "collection": "bukhari",
+      "book": 67,
+      "limit": 5
+    }
   },
   {
     "id": "lst_42",
     "title": "Gaming, VR, And The Coming Flood Of Immersive Haram",
     "theme": "The next-generation delivery vector",
     "modern_angle": "Apple Vision Pro, Meta Quest, the VR-pornography industry projected to be a multi-billion-dollar market by 2028",
-    "quran_chapters": [25, 17],
-    "specific_verses": [43],
-    "context": "25:43 — 'have you seen the one who takes his desire as his god?' Engage the immersive medium as the most efficient idol-construction tool ever built."
+    "quran_chapters": [
+      25,
+      17
+    ],
+    "specific_verses": [
+      43
+    ],
+    "context": "25:43 — 'have you seen the one who takes his desire as his god?' Engage the immersive medium as the most efficient idol-construction tool ever built.",
+    "hadith_book": {
+      "collection": "bukhari",
+      "book": 67,
+      "limit": 5
+    }
   },
   {
     "id": "lst_43",
     "title": "Online Sexting Is Still Zina Of The Tongue And Fingers",
     "theme": "Written zina as the same act",
     "modern_angle": "WhatsApp/Telegram/Snapchat 'just messages' culture; the false safety of the digital intermediary",
-    "quran_chapters": [17, 50],
-    "specific_verses": [32],
-    "context": "17:32; 50:18 — 'no word is uttered except that there is an observer ready.' Engage the writing as the same act in a different medium."
+    "quran_chapters": [
+      17,
+      50
+    ],
+    "specific_verses": [
+      32
+    ],
+    "context": "17:32; 50:18 — 'no word is uttered except that there is an observer ready.' Engage the writing as the same act in a different medium.",
+    "hadith_book": {
+      "collection": "bukhari",
+      "book": 67,
+      "limit": 5
+    }
   },
   {
     "id": "lst_44",
     "title": "Dream Invasion — When Lust Follows You Into Sleep",
     "theme": "The sleeping mind reflecting the waking diet",
     "modern_angle": "Sleep-research showing dream content tracks daytime stimulus exposure",
-    "quran_chapters": [30],
-    "specific_verses": [21],
-    "context": "30:21 — sleep as a sign. Engage the diagnostic: when the dreams are saturated, the waking diet is the cause."
+    "quran_chapters": [
+      30
+    ],
+    "specific_verses": [
+      21
+    ],
+    "context": "30:21 — sleep as a sign. Engage the diagnostic: when the dreams are saturated, the waking diet is the cause.",
+    "hadith_book": {
+      "collection": "bukhari",
+      "book": 67,
+      "limit": 5
+    }
   },
   {
     "id": "lst_45",
     "title": "The 7-Day Gaze Challenge — Lower Your Eyes For A Week",
     "theme": "The Quranic discipline as a structured challenge",
     "modern_angle": "The reframing of chastity as a habit-formation practice, not a single decision",
-    "quran_chapters": [24],
-    "specific_verses": [30],
-    "context": "24:30. Issue a concrete, week-long gaze-discipline challenge. Show what the believer who completes it actually feels at the end."
+    "quran_chapters": [
+      24
+    ],
+    "specific_verses": [
+      30
+    ],
+    "context": "24:30. Issue a concrete, week-long gaze-discipline challenge. Show what the believer who completes it actually feels at the end.",
+    "hadith_book": {
+      "collection": "bukhari",
+      "book": 67,
+      "limit": 5
+    }
   },
   {
     "id": "lst_46",
     "title": "From Porn Addict To Hafiz — How Men Have Rewired Their Brains",
     "theme": "Real testimony of transformation",
     "modern_angle": "The recovery testimonies of men who memorized the Quran as their addiction-replacement",
-    "quran_chapters": [25],
-    "specific_verses": [70],
-    "context": "25:70 — 'Allah will replace their evil deeds with good ones.' Engage real-pattern recovery via Quran-memorization as the substitute habit."
+    "quran_chapters": [
+      25
+    ],
+    "specific_verses": [
+      70
+    ],
+    "context": "25:70 — 'Allah will replace their evil deeds with good ones.' Engage real-pattern recovery via Quran-memorization as the substitute habit.",
+    "hadith_book": {
+      "collection": "bukhari",
+      "book": 67,
+      "limit": 5
+    }
   },
   {
     "id": "lst_47",
     "title": "The Marriage Solution — A Shield, Not Just A License",
     "theme": "Marriage as protection, not permission",
     "modern_angle": "Modern young Muslims delaying marriage indefinitely; the spiritual cost; the Quranic frame for early marriage",
-    "quran_chapters": [24, 30],
-    "specific_verses": [32],
-    "context": "24:32 — 'marry off the unmarried among you.' 30:21. Engage marriage as a structural solution before it becomes a personal failure."
+    "quran_chapters": [
+      24,
+      30
+    ],
+    "specific_verses": [
+      32
+    ],
+    "context": "24:32 — 'marry off the unmarried among you.' 30:21. Engage marriage as a structural solution before it becomes a personal failure.",
+    "hadith_book": {
+      "collection": "bukhari",
+      "book": 67,
+      "limit": 5
+    }
   },
   {
     "id": "lst_48",
     "title": "What If You Can't Marry — The Quranic Discipline Of Patience",
     "theme": "The Quranic framework for the unmarried",
     "modern_angle": "Economic crisis delaying marriage by 5-10 years vs. previous generations; the Quran's instructions for the in-between period",
-    "quran_chapters": [24],
-    "specific_verses": [33],
-    "context": "24:33 — 'and let those who do not find a means to marry be chaste until Allah enriches them.' Engage the verse as the explicit instruction for the modern condition."
+    "quran_chapters": [
+      24
+    ],
+    "specific_verses": [
+      33
+    ],
+    "context": "24:33 — 'and let those who do not find a means to marry be chaste until Allah enriches them.' Engage the verse as the explicit instruction for the modern condition.",
+    "hadith_book": {
+      "collection": "bukhari",
+      "book": 67,
+      "limit": 5
+    }
   },
   {
     "id": "lst_49",
     "title": "Repentance After Relapse — Why Shaytan Wants Despair",
     "theme": "The Quranic permission to keep climbing",
     "modern_angle": "The recovery literature on relapse-shame as the strongest predictor of further relapse",
-    "quran_chapters": [39, 12],
-    "specific_verses": [53],
-    "context": "39:53 — 'do not despair of the mercy of Allah; indeed He forgives all sins.' Engage the verse as the explicit demolition of the shame-spiral."
+    "quran_chapters": [
+      39,
+      12
+    ],
+    "specific_verses": [
+      53
+    ],
+    "context": "39:53 — 'do not despair of the mercy of Allah; indeed He forgives all sins.' Engage the verse as the explicit demolition of the shame-spiral.",
+    "hadith_book": {
+      "collection": "bukhari",
+      "book": 67,
+      "limit": 5
+    }
   },
   {
     "id": "lst_50",
     "title": "Your Sin Can Lead To Jannah — When Shame Made A Man A Saint",
     "theme": "The transformation arc the Quran allows",
     "modern_angle": "Recovery testimonies; the converted-life that surpasses the never-fallen-life",
-    "quran_chapters": [25, 11],
-    "specific_verses": [70],
-    "context": "25:70. 11:114 — 'good deeds erase bad deeds.' Engage the Quran's repeated insistence that the worst past need not determine the future."
+    "quran_chapters": [
+      25,
+      11
+    ],
+    "specific_verses": [
+      70
+    ],
+    "context": "25:70. 11:114 — 'good deeds erase bad deeds.' Engage the Quran's repeated insistence that the worst past need not determine the future.",
+    "hadith_book": {
+      "collection": "bukhari",
+      "book": 67,
+      "limit": 5
+    }
   },
   {
     "id": "lst_51",
     "title": "The Protective Power Of Wudu And The Night — Spiritual Shields",
     "theme": "The Quranic frame for purification practices",
     "modern_angle": "Modern recovery literature stumbling toward what the Quran prescribed: morning ritual, mid-night focus, water as reset",
-    "quran_chapters": [5, 76],
-    "specific_verses": [6],
-    "context": "5:6 — the verse of wudu. 76:26 — prostrate during the night. Engage the explicit physical practices the Quran prescribes."
+    "quran_chapters": [
+      5,
+      76
+    ],
+    "specific_verses": [
+      6
+    ],
+    "context": "5:6 — the verse of wudu. 76:26 — prostrate during the night. Engage the explicit physical practices the Quran prescribes.",
+    "hadith_book": {
+      "collection": "bukhari",
+      "book": 67,
+      "limit": 5
+    }
   },
   {
     "id": "lst_52",
     "title": "Why You Need A Brother's Keeper — Accountability That Works",
     "theme": "The Quranic frame for collective spiritual maintenance",
     "modern_angle": "Recovery group research; the accountability-partner literature",
-    "quran_chapters": [49, 5],
-    "specific_verses": [10],
-    "context": "49:10 — 'the believers are brothers.' 5:2 — 'help one another in righteousness and taqwa.' Engage the modern science of accountability as a confirmation of the Quranic frame."
+    "quran_chapters": [
+      49,
+      5
+    ],
+    "specific_verses": [
+      10
+    ],
+    "context": "49:10 — 'the believers are brothers.' 5:2 — 'help one another in righteousness and taqwa.' Engage the modern science of accountability as a confirmation of the Quranic frame.",
+    "hadith_book": {
+      "collection": "bukhari",
+      "book": 67,
+      "limit": 5
+    }
   },
   {
     "id": "lst_53",
     "title": "Loving The Hur Al-Ayn Without Despairing In This Life",
     "theme": "Redirecting desire toward its lawful object",
     "modern_angle": "The modern young man told to suppress his desire entirely; the Quranic alternative — redirect, don't extinguish",
-    "quran_chapters": [56, 55],
-    "specific_verses": [22],
-    "context": "55:56-58; 56:22-24. Engage the Quranic permission to desire while disciplining the object of desire."
+    "quran_chapters": [
+      56,
+      55
+    ],
+    "specific_verses": [
+      22
+    ],
+    "context": "55:56-58; 56:22-24. Engage the Quranic permission to desire while disciplining the object of desire.",
+    "hadith_book": {
+      "collection": "bukhari",
+      "book": 67,
+      "limit": 5
+    }
   },
   {
     "id": "lst_54",
     "title": "How To Talk To Your Son About Lust Before The Internet Does",
     "theme": "The parental responsibility the Quran names",
     "modern_angle": "The age of first exposure dropping (now 7-9 in many countries); the conversation no Muslim father is having",
-    "quran_chapters": [66, 31],
-    "specific_verses": [6],
-    "context": "66:6 — 'O you who believe, protect yourselves and your families from a Fire.' Engage the explicit Quranic obligation."
+    "quran_chapters": [
+      66,
+      31
+    ],
+    "specific_verses": [
+      6
+    ],
+    "context": "66:6 — 'O you who believe, protect yourselves and your families from a Fire.' Engage the explicit Quranic obligation.",
+    "hadith_book": {
+      "collection": "bukhari",
+      "book": 67,
+      "limit": 5
+    }
   },
   {
     "id": "lst_55",
     "title": "The Ultimate Freedom — The Chaste Man Is The Strongest Man",
     "theme": "The Quranic inversion of modern masculinity",
     "modern_angle": "The 'alpha male' discourse vs. the Quranic figure of strength as self-restraint",
-    "quran_chapters": [12, 91],
-    "specific_verses": [22],
-    "context": "12:22 — Yusuf given hukm (judgment) and ilm (knowledge) — after, not before, his trial of chastity. Engage strength-through-restraint as the Quranic blueprint."
+    "quran_chapters": [
+      12,
+      91
+    ],
+    "specific_verses": [
+      22
+    ],
+    "context": "12:22 — Yusuf given hukm (judgment) and ilm (knowledge) — after, not before, his trial of chastity. Engage strength-through-restraint as the Quranic blueprint.",
+    "hadith_book": {
+      "collection": "bukhari",
+      "book": 67,
+      "limit": 5
+    }
   },
   {
     "id": "lst_56",
     "title": "This Is Your Brain On La Hawla Wa La Quwwata Illa Billah",
     "theme": "The remembrance that interrupts the loop",
     "modern_angle": "Cognitive interruption as a researched recovery technique; the Quranic phrase as the most-tested of all interrupts",
-    "quran_chapters": [33, 2],
-    "specific_verses": [41],
-    "context": "33:41 — 'remember Allah with much remembrance.' Engage the specific phrase 'la hawla wa la quwwata illa billah' as the documented break in the chain."
+    "quran_chapters": [
+      33,
+      2
+    ],
+    "specific_verses": [
+      41
+    ],
+    "context": "33:41 — 'remember Allah with much remembrance.' Engage the specific phrase 'la hawla wa la quwwata illa billah' as the documented break in the chain.",
+    "hadith_book": {
+      "collection": "bukhari",
+      "book": 67,
+      "limit": 5
+    }
   }
 ]
