@@ -6,6 +6,8 @@
 const fs = require('fs');
 const path = require('path');
 const axios = require('axios');
+const deepseek = require('./deepseek');
+const scriptTemplates = require('./script-templates');
 
 const OLLAMA_HOST = process.env.OLLAMA_HOST || 'http://localhost:11434';
 const MODEL_PRIMARY = process.env.OLLAMA_MODEL || 'gpt-oss:120b-cloud';
@@ -113,11 +115,28 @@ async function generateAndParseJSON(args) {
 
 // Script-tier JSON wrapper. Used by the chunked script generator
 // (skeleton + 5 movements + metadata-extract) for narrative-heavy calls.
-// Identical to generateAndParseJSON today — kept as a separate function
-// so future provider swaps for the script tier (e.g. streaming Cloudflare,
-// Claude/OpenAI API, etc.) only need to touch this one function instead of
-// rewriting every call site.
+// Routes to DeepSeek V3 when DEEPSEEK_API_KEY is set — it follows the dense
+// script-engine prompt (5 movements, 5 templates, topic-fidelity ratios,
+// framing rules) noticeably better than gpt-oss:120b-cloud and the per-script
+// cost stays around $0.012 at V3 pricing. Falls back to Ollama silently when
+// the key is missing, so the workflow works either way.
 async function generateAndParseJSONForScript(args) {
+  if (deepseek.deepseekConfigured()) {
+    try {
+      return await deepseek.generateAndParseJSON({
+        systemInstruction: args.systemInstruction,
+        userPrompt: args.userPrompt,
+        temperature: args.temperature ?? 0.85,
+        jsonMode: args.jsonMode !== false,
+        maxTokens: args.numPredict || 8192,
+      });
+    } catch (err) {
+      // If DeepSeek fails (auth, quota exhausted, network), drop down to
+      // Ollama so the daily run still produces a video. Logged loudly so the
+      // operator sees credit-exhaustion in workflow output.
+      console.warn(`[script-tier] DeepSeek call failed (${(err.message || '').slice(0, 200)}) — falling back to Ollama`);
+    }
+  }
   return generateAndParseJSON(args);
 }
 
@@ -139,8 +158,20 @@ const MOVEMENT_SPECS = [
   { key: 'haunting', minWords: 320, targetWords: 400, description: 'Movement 5 — THE HAUNTING. Close with a reflection that does not resolve. A question he carries for 24 hours. A specific image of the man he becomes if he chooses correctly — and the man he becomes if he doesn\'t. In the final 30-45 seconds: a quiet tease for the next video by name, plus subscribe CTA woven in as part of the haunting (never marketing).' },
 ];
 
+// Build the system instruction by appending the topic's active script template
+// to the base script-engine prompt. Each topic in topics-queue.json declares a
+// `script_template` field (or falls back to category default). The template
+// block carries voice/structure/ratio guidance specific to the topic type —
+// without it, every script collapses to the same modern-life voice regardless
+// of category.
+function buildSystemInstructionForTopic(topic) {
+  const base = loadPrompt('script-engine');
+  const tpl = scriptTemplates.resolveTemplate(topic);
+  return `${base}\n\n---\n\n# ACTIVE SCRIPT TEMPLATE FOR THIS RUN\n\nThe topic declares \`script_template: "${tpl.name}"\`. The template block below OVERRIDES any conflicting guidance earlier in this prompt. Follow it precisely.\n${tpl.block}`;
+}
+
 async function generateMovement({ spec, skeleton, previousMovements, topic, sources, modernContext, nextTopic }) {
-  const systemInstruction = loadPrompt('script-engine');
+  const systemInstruction = buildSystemInstructionForTopic(topic);
   const previousText = Object.entries(previousMovements)
     .map(([k, v]) => `<${k}>\n${v}\n</${k}>`)
     .join('\n\n');
@@ -183,7 +214,7 @@ async function generateMovement({ spec, skeleton, previousMovements, topic, sour
 }
 
 async function generateScriptSkeleton({ topic, sources, modernContext, nextTopic }) {
-  const systemInstruction = loadPrompt('script-engine');
+  const systemInstruction = buildSystemInstructionForTopic(topic);
   const userPrompt = [
     `<topic>\n${JSON.stringify(topic, null, 2)}\n</topic>`,
     `<sources>\n${JSON.stringify(sources, null, 2)}\n</sources>`,

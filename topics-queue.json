@@ -16,7 +16,8 @@
       "collection": "bukhari",
       "book": 81,
       "limit": 5
-    }
+    },
+    "script_template": "modern_diagnosis"
   },
   {
     "id": "ca_1",
@@ -32,7 +33,8 @@
       "collection": "muslim",
       "book": 54,
       "limit": 6
-    }
+    },
+    "script_template": "prophecy_unfolding"
   },
   {
     "id": "sc_1",
@@ -45,7 +47,8 @@
     "specific_verses": [
       47
     ],
-    "context": "51:47 — 'and the heaven We constructed with strength, and indeed, We are its expander.' Connect to Hubble's 1929 confirmation and JWST's 2022+ deep-field results."
+    "context": "51:47 — 'and the heaven We constructed with strength, and indeed, We are its expander.' Connect to Hubble's 1929 confirmation and JWST's 2022+ deep-field results.",
+    "script_template": "wonder_revelation"
   },
   {
     "id": "hi_1",
@@ -64,7 +67,8 @@
       "collection": "bukhari",
       "book": 81,
       "limit": 5
-    }
+    },
+    "script_template": "historical_excavation"
   },
   {
     "id": "et_1",
@@ -82,7 +86,8 @@
       "collection": "muslim",
       "book": 54,
       "limit": 6
-    }
+    },
+    "script_template": "prophecy_unfolding"
   },
   {
     "id": "tc_1",
@@ -96,7 +101,8 @@
     "specific_verses": [
       29
     ],
-    "context": "38:29 — 'a Book We sent down so they may reflect on its verses.' 47:24 — 'do they not reflect upon the Quran?' Connect to the inability to read a single chapter slowly anymore."
+    "context": "38:29 — 'a Book We sent down so they may reflect on its verses.' 47:24 — 'do they not reflect upon the Quran?' Connect to the inability to read a single chapter slowly anymore.",
+    "script_template": "modern_diagnosis"
   },
   {
     "id": "dr_1",
@@ -106,7 +112,8 @@
     "quran_chapters": [
       95
     ],
-    "context": "Surah At-Tin — the oath by the fig, the olive, Mt Sinai, the secure city. Engage the geography this oath traces and what it means in 2026 to walk on those lands."
+    "context": "Surah At-Tin — the oath by the fig, the olive, Mt Sinai, the secure city. Engage the geography this oath traces and what it means in 2026 to walk on those lands.",
+    "script_template": "wonder_revelation"
   },
   {
     "id": "lst_1",
@@ -124,7 +131,8 @@
       "collection": "bukhari",
       "book": 67,
       "limit": 5
-    }
+    },
+    "script_template": "civilizational_diagnosis"
   },
   {
     "id": "ml_2",
@@ -140,7 +148,8 @@
       "collection": "bukhari",
       "book": 34,
       "limit": 5
-    }
+    },
+    "script_template": "modern_diagnosis"
   },
   {
     "id": "ca_2",
@@ -159,7 +168,8 @@
       "collection": "bukhari",
       "book": 34,
       "limit": 5
-    }
+    },
+    "script_template": "civilizational_diagnosis"
   },
   {
     "id": "sc_2",
@@ -172,7 +182,8 @@
     "specific_verses": [
       56
     ],
-    "context": "4:56 — when their skins are roasted We replace them with new skins so they can taste the punishment. Anatomical precision modern science only mapped in the 20th century."
+    "context": "4:56 — when their skins are roasted We replace them with new skins so they can taste the punishment. Anatomical precision modern science only mapped in the 20th century.",
+    "script_template": "wonder_revelation"
   },
   {
     "id": "hi_2",
@@ -186,7 +197,8 @@
     "specific_verses": [
       80
     ],
-    "context": "15:80-84 — Thamud carved homes from mountains. 7:73-79 — the she-camel and their refusal. Connect to Madain Saleh as a Quranic warning visible from satellite."
+    "context": "15:80-84 — Thamud carved homes from mountains. 7:73-79 — the she-camel and their refusal. Connect to Madain Saleh as a Quranic warning visible from satellite.",
+    "script_template": "historical_excavation"
   },
   {
     "id": "et_2",
@@ -204,7 +216,8 @@
       "collection": "muslim",
       "book": 54,
       "limit": 6
-    }
+    },
+    "script_template": "prophecy_unfolding"
   },
   {
     "id": "tc_2",
@@ -218,7 +231,8 @@
     "specific_verses": [
       11
     ],
-    "context": "49:11-12 — do not ridicule, do not backbite. Connect to the cancellation reflex as the inverse of Quranic mercy."
+    "context": "49:11-12 — do not ridicule, do not backbite. Connect to the cancellation reflex as the inverse of Quranic mercy.",
+    "script_template": "modern_diagnosis"
   },
   {
     "id": "dr_2",
@@ -231,7 +245,8 @@
     "specific_verses": [
       18
     ],
-    "context": "27:18 — the ant says 'enter your homes lest Solomon and his soldiers crush you unknowingly.' Engage the specificity (warning a group, naming a threat, including unawareness as a clause) and how myrmecology confirms this kind of communication."
+    "context": "27:18 — the ant says 'enter your homes lest Solomon and his soldiers crush you unknowingly.' Engage the specificity (warning a group, naming a threat, including unawareness as a clause) and how myrmecology confirms this kind of communication.",
+    "script_template": "wonder_revelation"
   },
   {
     "id": "lst_2",
@@ -249,7 +264,8 @@
       "collection": "bukhari",
       "book": 67,
       "limit": 5
-    }
+    },
+    "script_template": "civilizational_diagnosis"
   },
   {
     "id": "ml_3",
@@ -268,7 +284,8 @@
       "collection": "bukhari",
       "book": 81,
       "limit": 5
-    }
+    },
+    "script_template": "modern_diagnosis"
   },
   {
     "id": "ca_3",
@@ -279,7 +296,8 @@
       28,
       79
     ],
-    "context": "28 (Al-Qasas) — Pharaoh dividing people, oppressing one tribe, claiming divinity. 79:24 — 'I am your lord most high.' Map onto modern power: divide, surveil, claim ultimate authority."
+    "context": "28 (Al-Qasas) — Pharaoh dividing people, oppressing one tribe, claiming divinity. 79:24 — 'I am your lord most high.' Map onto modern power: divide, surveil, claim ultimate authority.",
+    "script_template": "civilizational_diagnosis"
   },
   {
     "id": "sc_3",
@@ -293,7 +311,8 @@
     "specific_verses": [
       12
     ],
-    "context": "23:12-14 — drop, leech, lump of flesh, bones, clothing of flesh. 22:5. Connect to 2026 embryology textbooks that match the sequence with eerie precision."
+    "context": "23:12-14 — drop, leech, lump of flesh, bones, clothing of flesh. 22:5. Connect to 2026 embryology textbooks that match the sequence with eerie precision.",
+    "script_template": "wonder_revelation"
   },
   {
     "id": "hi_3",
@@ -306,7 +325,8 @@
     "specific_verses": [
       90
     ],
-    "context": "10:90-92 — 'today We will preserve your body so you may be a sign for those who come after.' Connect to the actual mummy on display in Cairo, Maurice Bucaille's analysis."
+    "context": "10:90-92 — 'today We will preserve your body so you may be a sign for those who come after.' Connect to the actual mummy on display in Cairo, Maurice Bucaille's analysis.",
+    "script_template": "historical_excavation"
   },
   {
     "id": "et_3",
@@ -324,7 +344,8 @@
       "collection": "muslim",
       "book": 54,
       "limit": 6
-    }
+    },
+    "script_template": "prophecy_unfolding"
   },
   {
     "id": "tc_3",
@@ -343,7 +364,8 @@
       "collection": "bukhari",
       "book": 81,
       "limit": 5
-    }
+    },
+    "script_template": "modern_diagnosis"
   },
   {
     "id": "dr_3",
@@ -353,7 +375,8 @@
     "quran_chapters": [
       99
     ],
-    "context": "Surah Az-Zalzalah — when the earth is shaken and brings forth its burdens. Engage the modern industrial-scale emptying as a small partial fulfillment."
+    "context": "Surah Az-Zalzalah — when the earth is shaken and brings forth its burdens. Engage the modern industrial-scale emptying as a small partial fulfillment.",
+    "script_template": "wonder_revelation"
   },
   {
     "id": "lst_3",
@@ -371,7 +394,8 @@
       "collection": "bukhari",
       "book": 67,
       "limit": 5
-    }
+    },
+    "script_template": "civilizational_diagnosis"
   },
   {
     "id": "ml_4",
@@ -390,7 +414,8 @@
       "collection": "bukhari",
       "book": 81,
       "limit": 5
-    }
+    },
+    "script_template": "modern_diagnosis"
   },
   {
     "id": "ca_4",
@@ -404,7 +429,8 @@
     "specific_verses": [
       135
     ],
-    "context": "4:135 — stand firmly for justice even against yourselves. Reframe justice movements that succeed and fail by whether their root is divine standard or shifting consensus."
+    "context": "4:135 — stand firmly for justice even against yourselves. Reframe justice movements that succeed and fail by whether their root is divine standard or shifting consensus.",
+    "script_template": "civilizational_diagnosis"
   },
   {
     "id": "sc_4",
@@ -423,7 +449,8 @@
       "collection": "muslim",
       "book": 53,
       "limit": 5
-    }
+    },
+    "script_template": "wonder_revelation"
   },
   {
     "id": "hi_4",
@@ -437,7 +464,8 @@
     "specific_verses": [
       82
     ],
-    "context": "15:74 — 'We turned them upside down.' 11:82-83 — stones rained from the sky. Connect to the 'Mt Sodom' salt formations and the lowest place on earth."
+    "context": "15:74 — 'We turned them upside down.' 11:82-83 — stones rained from the sky. Connect to the 'Mt Sodom' salt formations and the lowest place on earth.",
+    "script_template": "historical_excavation"
   },
   {
     "id": "et_4",
@@ -455,7 +483,8 @@
       "collection": "muslim",
       "book": 54,
       "limit": 6
-    }
+    },
+    "script_template": "prophecy_unfolding"
   },
   {
     "id": "tc_4",
@@ -474,7 +503,8 @@
       "collection": "bukhari",
       "book": 67,
       "limit": 5
-    }
+    },
+    "script_template": "modern_diagnosis"
   },
   {
     "id": "dr_4",
@@ -488,7 +518,8 @@
     "specific_verses": [
       1
     ],
-    "context": "17:1 — the journey to Al-Aqsa whose surroundings We have blessed. Engage the Quranic frame for sacred land in 2026's geopolitics."
+    "context": "17:1 — the journey to Al-Aqsa whose surroundings We have blessed. Engage the Quranic frame for sacred land in 2026's geopolitics.",
+    "script_template": "wonder_revelation"
   },
   {
     "id": "lst_4",
@@ -507,7 +538,8 @@
       "collection": "bukhari",
       "book": 67,
       "limit": 5
-    }
+    },
+    "script_template": "civilizational_diagnosis"
   },
   {
     "id": "ml_5",
@@ -522,7 +554,8 @@
       "collection": "muslim",
       "book": 54,
       "limit": 6
-    }
+    },
+    "script_template": "modern_diagnosis"
   },
   {
     "id": "ca_5",
@@ -541,7 +574,8 @@
       "collection": "muslim",
       "book": 54,
       "limit": 6
-    }
+    },
+    "script_template": "civilizational_diagnosis"
   },
   {
     "id": "sc_5",
@@ -559,7 +593,8 @@
       "collection": "muslim",
       "book": 53,
       "limit": 5
-    }
+    },
+    "script_template": "wonder_revelation"
   },
   {
     "id": "hi_5",
@@ -578,7 +613,8 @@
       "collection": "muslim",
       "book": 54,
       "limit": 6
-    }
+    },
+    "script_template": "historical_excavation"
   },
   {
     "id": "et_5",
@@ -597,7 +633,8 @@
       "collection": "muslim",
       "book": 54,
       "limit": 6
-    }
+    },
+    "script_template": "prophecy_unfolding"
   },
   {
     "id": "tc_5",
@@ -611,7 +648,8 @@
     "specific_verses": [
       8
     ],
-    "context": "63 (Al-Munafiqun); 2:8-20. Connect to the modern fragmentation of self across digital identities."
+    "context": "63 (Al-Munafiqun); 2:8-20. Connect to the modern fragmentation of self across digital identities.",
+    "script_template": "modern_diagnosis"
   },
   {
     "id": "dr_5",
@@ -624,7 +662,8 @@
     "specific_verses": [
       68
     ],
-    "context": "16:68-69 — 'your Lord inspired the bee.' Engage the recent mathematical proof that hexagonal structure is optimal — and the verse that called it inspiration centuries before."
+    "context": "16:68-69 — 'your Lord inspired the bee.' Engage the recent mathematical proof that hexagonal structure is optimal — and the verse that called it inspiration centuries before.",
+    "script_template": "wonder_revelation"
   },
   {
     "id": "lst_5",
@@ -643,7 +682,8 @@
       "collection": "bukhari",
       "book": 67,
       "limit": 5
-    }
+    },
+    "script_template": "civilizational_diagnosis"
   },
   {
     "id": "ml_6",
@@ -657,7 +697,8 @@
     "specific_verses": [
       165
     ],
-    "context": "2:165 — those who take rivals besides Allah, loving them as they love Allah. Connect to the modern script where romantic obsession replaces spiritual longing."
+    "context": "2:165 — those who take rivals besides Allah, loving them as they love Allah. Connect to the modern script where romantic obsession replaces spiritual longing.",
+    "script_template": "modern_diagnosis"
   },
   {
     "id": "ca_6",
@@ -671,7 +712,8 @@
     "specific_verses": [
       6
     ],
-    "context": "6:6 — 'How many generations We destroyed before them.' 17:16 — when We intend to destroy a city We send the affluent to commit fasiq, and the word befalls them. Connect to 2026's late-empire indicators."
+    "context": "6:6 — 'How many generations We destroyed before them.' 17:16 — when We intend to destroy a city We send the affluent to commit fasiq, and the word befalls them. Connect to 2026's late-empire indicators.",
+    "script_template": "civilizational_diagnosis"
   },
   {
     "id": "sc_6",
@@ -684,7 +726,8 @@
     "specific_verses": [
       15
     ],
-    "context": "81:15-16 — 'I swear by the receding stars, that run their course and hide.' Engage the EHT image and modern astrophysical understanding of supermassive black holes."
+    "context": "81:15-16 — 'I swear by the receding stars, that run their course and hide.' Engage the EHT image and modern astrophysical understanding of supermassive black holes.",
+    "script_template": "wonder_revelation"
   },
   {
     "id": "hi_6",
@@ -698,7 +741,8 @@
     "specific_verses": [
       120
     ],
-    "context": "7:120-126 — Pharaoh's magicians fall prostrate immediately upon seeing the truth, knowing they will be killed. Connect to the modern phenomenon of dramatic, sudden faith reversals."
+    "context": "7:120-126 — Pharaoh's magicians fall prostrate immediately upon seeing the truth, knowing they will be killed. Connect to the modern phenomenon of dramatic, sudden faith reversals.",
+    "script_template": "historical_excavation"
   },
   {
     "id": "et_6",
@@ -717,7 +761,8 @@
       "collection": "muslim",
       "book": 54,
       "limit": 6
-    }
+    },
+    "script_template": "prophecy_unfolding"
   },
   {
     "id": "tc_6",
@@ -736,7 +781,8 @@
       "collection": "muslim",
       "book": 53,
       "limit": 5
-    }
+    },
+    "script_template": "modern_diagnosis"
   },
   {
     "id": "dr_6",
@@ -749,7 +795,8 @@
     "specific_verses": [
       67
     ],
-    "context": "2:67-71 — 'go and slaughter a cow.' 'Which cow?' 'What color?' Engage the modern equivalent: every clear instruction met with 'but what about...?'"
+    "context": "2:67-71 — 'go and slaughter a cow.' 'Which cow?' 'What color?' Engage the modern equivalent: every clear instruction met with 'but what about...?'",
+    "script_template": "wonder_revelation"
   },
   {
     "id": "lst_6",
@@ -768,7 +815,8 @@
       "collection": "bukhari",
       "book": 67,
       "limit": 5
-    }
+    },
+    "script_template": "civilizational_diagnosis"
   },
   {
     "id": "ml_7",
@@ -783,7 +831,8 @@
       "collection": "bukhari",
       "book": 81,
       "limit": 5
-    }
+    },
+    "script_template": "modern_diagnosis"
   },
   {
     "id": "ca_7",
@@ -802,7 +851,8 @@
       "collection": "muslim",
       "book": 32,
       "limit": 5
-    }
+    },
+    "script_template": "civilizational_diagnosis"
   },
   {
     "id": "sc_7",
@@ -815,7 +865,8 @@
     "specific_verses": [
       8
     ],
-    "context": "16:8 — 'and He creates that which you do not know.' Connect to the 2010s microbiome explosion, dark matter (~85% of the universe), and the Quranic frame for unseen creation."
+    "context": "16:8 — 'and He creates that which you do not know.' Connect to the 2010s microbiome explosion, dark matter (~85% of the universe), and the Quranic frame for unseen creation.",
+    "script_template": "wonder_revelation"
   },
   {
     "id": "hi_7",
@@ -828,7 +879,8 @@
     "specific_verses": [
       15
     ],
-    "context": "34:15-19 — Sheba had two gardens, prospered, then turned away. We sent the flood of the dam. Connect to Yemen's actual archaeological record and the cycle this verse names."
+    "context": "34:15-19 — Sheba had two gardens, prospered, then turned away. We sent the flood of the dam. Connect to Yemen's actual archaeological record and the cycle this verse names.",
+    "script_template": "historical_excavation"
   },
   {
     "id": "et_7",
@@ -847,7 +899,8 @@
       "collection": "muslim",
       "book": 54,
       "limit": 6
-    }
+    },
+    "script_template": "prophecy_unfolding"
   },
   {
     "id": "tc_7",
@@ -861,7 +914,8 @@
     "specific_verses": [
       27
     ],
-    "context": "24:27 — do not enter homes other than your own without permission. Apply the Quranic principle of consent/privacy to direct messages, screenshots, and parasocial intrusion."
+    "context": "24:27 — do not enter homes other than your own without permission. Apply the Quranic principle of consent/privacy to direct messages, screenshots, and parasocial intrusion.",
+    "script_template": "modern_diagnosis"
   },
   {
     "id": "dr_7",
@@ -875,7 +929,8 @@
     "specific_verses": [
       42
     ],
-    "context": "50:42 — 'the day they will hear the shout in truth.' Engage the contrast between the audio noise of modern life and the singular voice that will end it all."
+    "context": "50:42 — 'the day they will hear the shout in truth.' Engage the contrast between the audio noise of modern life and the singular voice that will end it all.",
+    "script_template": "wonder_revelation"
   },
   {
     "id": "lst_7",
@@ -893,7 +948,8 @@
       "collection": "bukhari",
       "book": 67,
       "limit": 5
-    }
+    },
+    "script_template": "civilizational_diagnosis"
   },
   {
     "id": "ml_8",
@@ -912,7 +968,8 @@
       "collection": "bukhari",
       "book": 67,
       "limit": 5
-    }
+    },
+    "script_template": "modern_diagnosis"
   },
   {
     "id": "ca_8",
@@ -931,7 +988,8 @@
       "collection": "muslim",
       "book": 32,
       "limit": 5
-    }
+    },
+    "script_template": "civilizational_diagnosis"
   },
   {
     "id": "sc_8",
@@ -945,7 +1003,8 @@
     "specific_verses": [
       7
     ],
-    "context": "78:7 — 'and the mountains as pegs.' 21:31 — 'firm mountains lest the earth shake them.' Connect to the deep geological roots of mountains discovered only after seismology matured."
+    "context": "78:7 — 'and the mountains as pegs.' 21:31 — 'firm mountains lest the earth shake them.' Connect to the deep geological roots of mountains discovered only after seismology matured.",
+    "script_template": "wonder_revelation"
   },
   {
     "id": "hi_8",
@@ -958,7 +1017,8 @@
     "specific_verses": [
       9
     ],
-    "context": "18:9-26 — the youth who fled to the cave; 309 years of sleep. Connect to the modern condition of believing privately in environments that punish public faith."
+    "context": "18:9-26 — the youth who fled to the cave; 309 years of sleep. Connect to the modern condition of believing privately in environments that punish public faith.",
+    "script_template": "historical_excavation"
   },
   {
     "id": "et_8",
@@ -977,7 +1037,8 @@
       "collection": "muslim",
       "book": 54,
       "limit": 6
-    }
+    },
+    "script_template": "prophecy_unfolding"
   },
   {
     "id": "tc_8",
@@ -996,7 +1057,8 @@
       "collection": "bukhari",
       "book": 81,
       "limit": 5
-    }
+    },
+    "script_template": "modern_diagnosis"
   },
   {
     "id": "dr_8",
@@ -1009,7 +1071,8 @@
     "specific_verses": [
       41
     ],
-    "context": "29:41 — 'the example of those who take protectors besides Allah is like the spider that takes a home; the weakest of homes is the spider's home.' Engage the modern array of fragile reliances."
+    "context": "29:41 — 'the example of those who take protectors besides Allah is like the spider that takes a home; the weakest of homes is the spider's home.' Engage the modern array of fragile reliances.",
+    "script_template": "wonder_revelation"
   },
   {
     "id": "lst_8",
@@ -1028,7 +1091,8 @@
       "collection": "bukhari",
       "book": 67,
       "limit": 5
-    }
+    },
+    "script_template": "civilizational_diagnosis"
   },
   {
     "id": "ml_9",
@@ -1047,7 +1111,8 @@
       "collection": "muslim",
       "book": 54,
       "limit": 6
-    }
+    },
+    "script_template": "modern_diagnosis"
   },
   {
     "id": "ca_9",
@@ -1066,7 +1131,8 @@
       "collection": "bukhari",
       "book": 81,
       "limit": 5
-    }
+    },
+    "script_template": "civilizational_diagnosis"
   },
   {
     "id": "sc_9",
@@ -1084,7 +1150,8 @@
       "collection": "muslim",
       "book": 53,
       "limit": 5
-    }
+    },
+    "script_template": "wonder_revelation"
   },
   {
     "id": "hi_9",
@@ -1094,7 +1161,8 @@
     "quran_chapters": [
       105
     ],
-    "context": "Surah Al-Fil — the elephant army, the small birds carrying small stones. Connect to the asymmetric collapses of modern superpowers."
+    "context": "Surah Al-Fil — the elephant army, the small birds carrying small stones. Connect to the asymmetric collapses of modern superpowers.",
+    "script_template": "historical_excavation"
   },
   {
     "id": "et_9",
@@ -1113,7 +1181,8 @@
       "collection": "muslim",
       "book": 54,
       "limit": 6
-    }
+    },
+    "script_template": "prophecy_unfolding"
   },
   {
     "id": "tc_9",
@@ -1127,7 +1196,8 @@
     "specific_verses": [
       64
     ],
-    "context": "29:64 — 'the life of this world is nothing but amusement and play.' Frame the metaverse as the illusion-of-an-illusion."
+    "context": "29:64 — 'the life of this world is nothing but amusement and play.' Frame the metaverse as the illusion-of-an-illusion.",
+    "script_template": "modern_diagnosis"
   },
   {
     "id": "dr_9",
@@ -1140,7 +1210,8 @@
     "specific_verses": [
       30
     ],
-    "context": "74:30-31 — 'over it are nineteen.' Engage with care: what the verse says about its purpose (testing those who deny, increasing the faith of those who believe) — and where that purpose is corrupted into obsession."
+    "context": "74:30-31 — 'over it are nineteen.' Engage with care: what the verse says about its purpose (testing those who deny, increasing the faith of those who believe) — and where that purpose is corrupted into obsession.",
+    "script_template": "wonder_revelation"
   },
   {
     "id": "lst_9",
@@ -1159,7 +1230,8 @@
       "collection": "bukhari",
       "book": 67,
       "limit": 5
-    }
+    },
+    "script_template": "civilizational_diagnosis"
   },
   {
     "id": "ml_10",
@@ -1178,7 +1250,8 @@
       "collection": "bukhari",
       "book": 81,
       "limit": 5
-    }
+    },
+    "script_template": "modern_diagnosis"
   },
   {
     "id": "ca_10",
@@ -1196,7 +1269,8 @@
       "collection": "muslim",
       "book": 54,
       "limit": 6
-    }
+    },
+    "script_template": "prophecy_unfolding"
   },
   {
     "id": "sc_10",
@@ -1210,7 +1284,8 @@
     "specific_verses": [
       47
     ],
-    "context": "22:47 — 'a day with your Lord is like a thousand years.' 70:4 — 'a day whose measure is fifty thousand years.' Connect to Einstein 1905, 1915, and the GPS adjustments running every microsecond."
+    "context": "22:47 — 'a day with your Lord is like a thousand years.' 70:4 — 'a day whose measure is fifty thousand years.' Connect to Einstein 1905, 1915, and the GPS adjustments running every microsecond.",
+    "script_template": "wonder_revelation"
   },
   {
     "id": "hi_10",
@@ -1224,7 +1299,8 @@
     "specific_verses": [
       25
     ],
-    "context": "11:25-49 — Noah's full account in detail. 71 (Surah Nuh). Connect to the geological-archaeological fingerprints of catastrophic flood across multiple ancient sites."
+    "context": "11:25-49 — Noah's full account in detail. 71 (Surah Nuh). Connect to the geological-archaeological fingerprints of catastrophic flood across multiple ancient sites.",
+    "script_template": "historical_excavation"
   },
   {
     "id": "et_10",
@@ -1243,7 +1319,8 @@
       "collection": "muslim",
       "book": 54,
       "limit": 6
-    }
+    },
+    "script_template": "prophecy_unfolding"
   },
   {
     "id": "tc_10",
@@ -1262,7 +1339,8 @@
       "collection": "bukhari",
       "book": 81,
       "limit": 5
-    }
+    },
+    "script_template": "modern_diagnosis"
   },
   {
     "id": "dr_10",
@@ -1275,7 +1353,8 @@
     "specific_verses": [
       3
     ],
-    "context": "5:3 — 'today I have perfected for you your religion and completed My favor upon you.' Engage what it means that this is what was chosen as the final transmission."
+    "context": "5:3 — 'today I have perfected for you your religion and completed My favor upon you.' Engage what it means that this is what was chosen as the final transmission.",
+    "script_template": "wonder_revelation"
   },
   {
     "id": "lst_10",
@@ -1294,7 +1373,8 @@
       "collection": "bukhari",
       "book": 67,
       "limit": 5
-    }
+    },
+    "script_template": "civilizational_diagnosis"
   },
   {
     "id": "ml_11",
@@ -1312,7 +1392,8 @@
       "collection": "bukhari",
       "book": 34,
       "limit": 5
-    }
+    },
+    "script_template": "modern_diagnosis"
   },
   {
     "id": "ca_11",
@@ -1326,7 +1407,8 @@
     "specific_verses": [
       30
     ],
-    "context": "21:30 — from water We made every living thing. 23:18 — We send water from the sky in measured amounts. Connect to a planet running out of the most-named substance in the Quran."
+    "context": "21:30 — from water We made every living thing. 23:18 — We send water from the sky in measured amounts. Connect to a planet running out of the most-named substance in the Quran.",
+    "script_template": "civilizational_diagnosis"
   },
   {
     "id": "sc_11",
@@ -1340,7 +1422,8 @@
     "specific_verses": [
       53
     ],
-    "context": "25:53 — two seas, one sweet one salty, with a barrier between them. 24:40 — darkness of a deep sea covered by waves. Connect to halocline imagery and the 2-mile-deep darkness mapped only post-1960."
+    "context": "25:53 — two seas, one sweet one salty, with a barrier between them. 24:40 — darkness of a deep sea covered by waves. Connect to halocline imagery and the 2-mile-deep darkness mapped only post-1960.",
+    "script_template": "wonder_revelation"
   },
   {
     "id": "hi_11",
@@ -1359,7 +1442,8 @@
       "collection": "bukhari",
       "book": 81,
       "limit": 5
-    }
+    },
+    "script_template": "historical_excavation"
   },
   {
     "id": "et_11",
@@ -1378,7 +1462,8 @@
       "collection": "muslim",
       "book": 54,
       "limit": 6
-    }
+    },
+    "script_template": "prophecy_unfolding"
   },
   {
     "id": "tc_11",
@@ -1397,7 +1482,8 @@
       "collection": "bukhari",
       "book": 34,
       "limit": 5
-    }
+    },
+    "script_template": "modern_diagnosis"
   },
   {
     "id": "lst_11",
@@ -1415,7 +1501,8 @@
       "collection": "bukhari",
       "book": 67,
       "limit": 5
-    }
+    },
+    "script_template": "civilizational_diagnosis"
   },
   {
     "id": "ml_12",
@@ -1425,7 +1512,8 @@
     "quran_chapters": [
       93
     ],
-    "context": "Surah Ad-Duha — addressed to the orphaned Prophet ﷺ. 'Did He not find you orphaned and shelter you?' A verse that names every wounded child without naming them."
+    "context": "Surah Ad-Duha — addressed to the orphaned Prophet ﷺ. 'Did He not find you orphaned and shelter you?' A verse that names every wounded child without naming them.",
+    "script_template": "modern_diagnosis"
   },
   {
     "id": "ca_12",
@@ -1439,7 +1527,8 @@
     "specific_verses": [
       97
     ],
-    "context": "4:97-100 — those who emigrate in the cause of Allah find vast spaces and provision. Reframe the political 'migrant crisis' as the Quranic test of a host society."
+    "context": "4:97-100 — those who emigrate in the cause of Allah find vast spaces and provision. Reframe the political 'migrant crisis' as the Quranic test of a host society.",
+    "script_template": "civilizational_diagnosis"
   },
   {
     "id": "sc_12",
@@ -1453,7 +1542,8 @@
     "specific_verses": [
       19
     ],
-    "context": "67:19 — 'do they not see the birds above them, spreading and folding their wings? None upholds them except the Most Merciful.' Connect to fluid dynamics and the still-incomplete biology of long-distance bird migration."
+    "context": "67:19 — 'do they not see the birds above them, spreading and folding their wings? None upholds them except the Most Merciful.' Connect to fluid dynamics and the still-incomplete biology of long-distance bird migration.",
+    "script_template": "wonder_revelation"
   },
   {
     "id": "hi_12",
@@ -1467,7 +1557,8 @@
     "specific_verses": [
       16
     ],
-    "context": "17:16 — 'when We intend to destroy a city, We send the affluent to commit fasiq.' Connect to the Baghdad library's destruction as a Quranic-pattern event."
+    "context": "17:16 — 'when We intend to destroy a city, We send the affluent to commit fasiq.' Connect to the Baghdad library's destruction as a Quranic-pattern event.",
+    "script_template": "historical_excavation"
   },
   {
     "id": "et_12",
@@ -1486,7 +1577,8 @@
       "collection": "muslim",
       "book": 54,
       "limit": 6
-    }
+    },
+    "script_template": "prophecy_unfolding"
   },
   {
     "id": "tc_12",
@@ -1500,7 +1592,8 @@
     "specific_verses": [
       21
     ],
-    "context": "41:20-22 — 'their hearing, their sight, their skins will testify.' Connect to the literal modern fact that your skin's smartwatch is testifying about you 24/7."
+    "context": "41:20-22 — 'their hearing, their sight, their skins will testify.' Connect to the literal modern fact that your skin's smartwatch is testifying about you 24/7.",
+    "script_template": "modern_diagnosis"
   },
   {
     "id": "lst_12",
@@ -1519,7 +1612,8 @@
       "collection": "bukhari",
       "book": 67,
       "limit": 5
-    }
+    },
+    "script_template": "civilizational_diagnosis"
   },
   {
     "id": "ml_13",
@@ -1537,7 +1631,8 @@
       "collection": "bukhari",
       "book": 81,
       "limit": 5
-    }
+    },
+    "script_template": "modern_diagnosis"
   },
   {
     "id": "ca_13",
@@ -1551,7 +1646,8 @@
     "specific_verses": [
       58
     ],
-    "context": "4:58 — render trusts to whom they are due, judge with justice. Diagnose what fails in any system that claims to be just but consistently delivers the opposite."
+    "context": "4:58 — render trusts to whom they are due, judge with justice. Diagnose what fails in any system that claims to be just but consistently delivers the opposite.",
+    "script_template": "civilizational_diagnosis"
   },
   {
     "id": "sc_13",
@@ -1564,7 +1660,8 @@
     "specific_verses": [
       30
     ],
-    "context": "21:30 — 'the heavens and earth were one piece, then We parted them.' Engage seriously, not as proof-text — as a verse that pre-states a model physicists arrived at by accident."
+    "context": "21:30 — 'the heavens and earth were one piece, then We parted them.' Engage seriously, not as proof-text — as a verse that pre-states a model physicists arrived at by accident.",
+    "script_template": "wonder_revelation"
   },
   {
     "id": "hi_13",
@@ -1582,7 +1679,8 @@
       "collection": "muslim",
       "book": 32,
       "limit": 5
-    }
+    },
+    "script_template": "historical_excavation"
   },
   {
     "id": "et_13",
@@ -1597,7 +1695,8 @@
       "collection": "muslim",
       "book": 54,
       "limit": 6
-    }
+    },
+    "script_template": "prophecy_unfolding"
   },
   {
     "id": "tc_13",
@@ -1611,7 +1710,8 @@
     "specific_verses": [
       67
     ],
-    "context": "9:67 — 'they enjoin evil and forbid good.' 33:67-68. Engage the modern phenomenon of belief formed via image/sound bite rather than reflection."
+    "context": "9:67 — 'they enjoin evil and forbid good.' 33:67-68. Engage the modern phenomenon of belief formed via image/sound bite rather than reflection.",
+    "script_template": "modern_diagnosis"
   },
   {
     "id": "lst_13",
@@ -1630,7 +1730,8 @@
       "collection": "bukhari",
       "book": 67,
       "limit": 5
-    }
+    },
+    "script_template": "civilizational_diagnosis"
   },
   {
     "id": "ml_14",
@@ -1645,7 +1746,8 @@
       "collection": "muslim",
       "book": 53,
       "limit": 5
-    }
+    },
+    "script_template": "modern_diagnosis"
   },
   {
     "id": "ca_14",
@@ -1655,7 +1757,8 @@
     "quran_chapters": [
       7
     ],
-    "context": "Surah Al-A'raf — the people of Pharaoh follow him into the sea. Connect to the followership patterns of every modern political tribe."
+    "context": "Surah Al-A'raf — the people of Pharaoh follow him into the sea. Connect to the followership patterns of every modern political tribe.",
+    "script_template": "civilizational_diagnosis"
   },
   {
     "id": "sc_14",
@@ -1668,7 +1771,8 @@
     "specific_verses": [
       71
     ],
-    "context": "56:71-73 — 'have you considered the fire you ignite? Did you cause its tree to grow?' Engage fire as a sign embedded in the most ordinary act."
+    "context": "56:71-73 — 'have you considered the fire you ignite? Did you cause its tree to grow?' Engage fire as a sign embedded in the most ordinary act.",
+    "script_template": "wonder_revelation"
   },
   {
     "id": "hi_14",
@@ -1678,7 +1782,8 @@
     "quran_chapters": [
       12
     ],
-    "context": "Surah Yusuf — the entire surah is a single sustained narrative. The unique story-form Allah uses only here. Engage why the Quran spends an entire surah on one man's life when others are scattered across many."
+    "context": "Surah Yusuf — the entire surah is a single sustained narrative. The unique story-form Allah uses only here. Engage why the Quran spends an entire surah on one man's life when others are scattered across many.",
+    "script_template": "historical_excavation"
   },
   {
     "id": "et_14",
@@ -1694,7 +1799,8 @@
       "collection": "muslim",
       "book": 54,
       "limit": 6
-    }
+    },
+    "script_template": "prophecy_unfolding"
   },
   {
     "id": "tc_14",
@@ -1707,7 +1813,8 @@
     "specific_verses": [
       116
     ],
-    "context": "6:116 — 'if you obey most of those on earth, they will mislead you from the way of Allah.' Diagnose the algorithmic mob as the modern fulfillment of this verse."
+    "context": "6:116 — 'if you obey most of those on earth, they will mislead you from the way of Allah.' Diagnose the algorithmic mob as the modern fulfillment of this verse.",
+    "script_template": "modern_diagnosis"
   },
   {
     "id": "lst_14",
@@ -1726,7 +1833,8 @@
       "collection": "bukhari",
       "book": 67,
       "limit": 5
-    }
+    },
+    "script_template": "civilizational_diagnosis"
   },
   {
     "id": "ml_15",
@@ -1744,7 +1852,8 @@
       "collection": "bukhari",
       "book": 81,
       "limit": 5
-    }
+    },
+    "script_template": "modern_diagnosis"
   },
   {
     "id": "ca_15",
@@ -1758,7 +1867,8 @@
     "specific_verses": [
       13
     ],
-    "context": "49:13 — 'We made you peoples and tribes that you may know one another, the noblest among you is the most God-conscious.' Cut through both globalism and tribalism using the criterion neither admits."
+    "context": "49:13 — 'We made you peoples and tribes that you may know one another, the noblest among you is the most God-conscious.' Cut through both globalism and tribalism using the criterion neither admits.",
+    "script_template": "civilizational_diagnosis"
   },
   {
     "id": "sc_15",
@@ -1771,7 +1881,8 @@
     "specific_verses": [
       25
     ],
-    "context": "57:25 — 'and We sent down iron, in which is great might.' Connect to the astrophysical fact that every iron atom on earth was forged in an exploding star millions of years ago."
+    "context": "57:25 — 'and We sent down iron, in which is great might.' Connect to the astrophysical fact that every iron atom on earth was forged in an exploding star millions of years ago.",
+    "script_template": "wonder_revelation"
   },
   {
     "id": "hi_15",
@@ -1784,7 +1895,8 @@
     "specific_verses": [
       4
     ],
-    "context": "85:4-8 — 'cursed were the people of the trench... they tortured the believers and were witnesses to what they did.' Connect to modern testimonies of contemporary martyrdom."
+    "context": "85:4-8 — 'cursed were the people of the trench... they tortured the believers and were witnesses to what they did.' Connect to modern testimonies of contemporary martyrdom.",
+    "script_template": "historical_excavation"
   },
   {
     "id": "et_15",
@@ -1802,7 +1914,8 @@
       "collection": "muslim",
       "book": 54,
       "limit": 6
-    }
+    },
+    "script_template": "prophecy_unfolding"
   },
   {
     "id": "tc_15",
@@ -1816,7 +1929,8 @@
     "specific_verses": [
       16
     ],
-    "context": "50:16 — closer than the jugular vein. Engage the modern algorithmic intimacy as a small mocking-imitation of true divine knowledge."
+    "context": "50:16 — closer than the jugular vein. Engage the modern algorithmic intimacy as a small mocking-imitation of true divine knowledge.",
+    "script_template": "modern_diagnosis"
   },
   {
     "id": "lst_15",
@@ -1835,7 +1949,8 @@
       "collection": "bukhari",
       "book": 67,
       "limit": 5
-    }
+    },
+    "script_template": "civilizational_diagnosis"
   },
   {
     "id": "lst_16",
@@ -1854,7 +1969,8 @@
       "collection": "bukhari",
       "book": 67,
       "limit": 5
-    }
+    },
+    "script_template": "civilizational_diagnosis"
   },
   {
     "id": "lst_17",
@@ -1873,7 +1989,8 @@
       "collection": "bukhari",
       "book": 67,
       "limit": 5
-    }
+    },
+    "script_template": "civilizational_diagnosis"
   },
   {
     "id": "lst_18",
@@ -1892,7 +2009,8 @@
       "collection": "bukhari",
       "book": 67,
       "limit": 5
-    }
+    },
+    "script_template": "civilizational_diagnosis"
   },
   {
     "id": "lst_19",
@@ -1910,7 +2028,8 @@
       "collection": "bukhari",
       "book": 67,
       "limit": 5
-    }
+    },
+    "script_template": "civilizational_diagnosis"
   },
   {
     "id": "lst_20",
@@ -1929,7 +2048,8 @@
       "collection": "bukhari",
       "book": 67,
       "limit": 5
-    }
+    },
+    "script_template": "civilizational_diagnosis"
   },
   {
     "id": "lst_21",
@@ -1948,7 +2068,8 @@
       "collection": "bukhari",
       "book": 67,
       "limit": 5
-    }
+    },
+    "script_template": "civilizational_diagnosis"
   },
   {
     "id": "lst_22",
@@ -1967,7 +2088,8 @@
       "collection": "bukhari",
       "book": 67,
       "limit": 5
-    }
+    },
+    "script_template": "civilizational_diagnosis"
   },
   {
     "id": "lst_23",
@@ -1986,7 +2108,8 @@
       "collection": "bukhari",
       "book": 67,
       "limit": 5
-    }
+    },
+    "script_template": "civilizational_diagnosis"
   },
   {
     "id": "lst_24",
@@ -2005,7 +2128,8 @@
       "collection": "bukhari",
       "book": 67,
       "limit": 5
-    }
+    },
+    "script_template": "civilizational_diagnosis"
   },
   {
     "id": "lst_25",
@@ -2024,7 +2148,8 @@
       "collection": "bukhari",
       "book": 67,
       "limit": 5
-    }
+    },
+    "script_template": "civilizational_diagnosis"
   },
   {
     "id": "lst_26",
@@ -2042,7 +2167,8 @@
       "collection": "bukhari",
       "book": 67,
       "limit": 5
-    }
+    },
+    "script_template": "civilizational_diagnosis"
   },
   {
     "id": "lst_27",
@@ -2061,7 +2187,8 @@
       "collection": "bukhari",
       "book": 67,
       "limit": 5
-    }
+    },
+    "script_template": "civilizational_diagnosis"
   },
   {
     "id": "lst_28",
@@ -2080,7 +2207,8 @@
       "collection": "bukhari",
       "book": 67,
       "limit": 5
-    }
+    },
+    "script_template": "civilizational_diagnosis"
   },
   {
     "id": "lst_29",
@@ -2098,7 +2226,8 @@
       "collection": "bukhari",
       "book": 67,
       "limit": 5
-    }
+    },
+    "script_template": "civilizational_diagnosis"
   },
   {
     "id": "lst_30",
@@ -2117,7 +2246,8 @@
       "collection": "bukhari",
       "book": 67,
       "limit": 5
-    }
+    },
+    "script_template": "civilizational_diagnosis"
   },
   {
     "id": "lst_31",
@@ -2135,7 +2265,8 @@
       "collection": "bukhari",
       "book": 67,
       "limit": 5
-    }
+    },
+    "script_template": "civilizational_diagnosis"
   },
   {
     "id": "lst_32",
@@ -2153,7 +2284,8 @@
       "collection": "bukhari",
       "book": 67,
       "limit": 5
-    }
+    },
+    "script_template": "civilizational_diagnosis"
   },
   {
     "id": "lst_33",
@@ -2171,7 +2303,8 @@
       "collection": "bukhari",
       "book": 67,
       "limit": 5
-    }
+    },
+    "script_template": "civilizational_diagnosis"
   },
   {
     "id": "lst_34",
@@ -2189,7 +2322,8 @@
       "collection": "bukhari",
       "book": 67,
       "limit": 5
-    }
+    },
+    "script_template": "civilizational_diagnosis"
   },
   {
     "id": "lst_35",
@@ -2208,7 +2342,8 @@
       "collection": "bukhari",
       "book": 67,
       "limit": 5
-    }
+    },
+    "script_template": "civilizational_diagnosis"
   },
   {
     "id": "lst_36",
@@ -2226,7 +2361,8 @@
       "collection": "bukhari",
       "book": 67,
       "limit": 5
-    }
+    },
+    "script_template": "civilizational_diagnosis"
   },
   {
     "id": "lst_37",
@@ -2244,7 +2380,8 @@
       "collection": "bukhari",
       "book": 67,
       "limit": 5
-    }
+    },
+    "script_template": "civilizational_diagnosis"
   },
   {
     "id": "lst_38",
@@ -2263,7 +2400,8 @@
       "collection": "bukhari",
       "book": 67,
       "limit": 5
-    }
+    },
+    "script_template": "civilizational_diagnosis"
   },
   {
     "id": "lst_39",
@@ -2282,7 +2420,8 @@
       "collection": "bukhari",
       "book": 67,
       "limit": 5
-    }
+    },
+    "script_template": "civilizational_diagnosis"
   },
   {
     "id": "lst_40",
@@ -2300,7 +2439,8 @@
       "collection": "bukhari",
       "book": 67,
       "limit": 5
-    }
+    },
+    "script_template": "civilizational_diagnosis"
   },
   {
     "id": "lst_41",
@@ -2318,7 +2458,8 @@
       "collection": "bukhari",
       "book": 67,
       "limit": 5
-    }
+    },
+    "script_template": "civilizational_diagnosis"
   },
   {
     "id": "lst_42",
@@ -2337,7 +2478,8 @@
       "collection": "bukhari",
       "book": 67,
       "limit": 5
-    }
+    },
+    "script_template": "civilizational_diagnosis"
   },
   {
     "id": "lst_43",
@@ -2356,7 +2498,8 @@
       "collection": "bukhari",
       "book": 67,
       "limit": 5
-    }
+    },
+    "script_template": "civilizational_diagnosis"
   },
   {
     "id": "lst_44",
@@ -2374,7 +2517,8 @@
       "collection": "bukhari",
       "book": 67,
       "limit": 5
-    }
+    },
+    "script_template": "civilizational_diagnosis"
   },
   {
     "id": "lst_45",
@@ -2392,7 +2536,8 @@
       "collection": "bukhari",
       "book": 67,
       "limit": 5
-    }
+    },
+    "script_template": "civilizational_diagnosis"
   },
   {
     "id": "lst_46",
@@ -2410,7 +2555,8 @@
       "collection": "bukhari",
       "book": 67,
       "limit": 5
-    }
+    },
+    "script_template": "civilizational_diagnosis"
   },
   {
     "id": "lst_47",
@@ -2429,7 +2575,8 @@
       "collection": "bukhari",
       "book": 67,
       "limit": 5
-    }
+    },
+    "script_template": "civilizational_diagnosis"
   },
   {
     "id": "lst_48",
@@ -2447,7 +2594,8 @@
       "collection": "bukhari",
       "book": 67,
       "limit": 5
-    }
+    },
+    "script_template": "civilizational_diagnosis"
   },
   {
     "id": "lst_49",
@@ -2466,7 +2614,8 @@
       "collection": "bukhari",
       "book": 67,
       "limit": 5
-    }
+    },
+    "script_template": "civilizational_diagnosis"
   },
   {
     "id": "lst_50",
@@ -2485,7 +2634,8 @@
       "collection": "bukhari",
       "book": 67,
       "limit": 5
-    }
+    },
+    "script_template": "civilizational_diagnosis"
   },
   {
     "id": "lst_51",
@@ -2504,7 +2654,8 @@
       "collection": "bukhari",
       "book": 67,
       "limit": 5
-    }
+    },
+    "script_template": "civilizational_diagnosis"
   },
   {
     "id": "lst_52",
@@ -2523,7 +2674,8 @@
       "collection": "bukhari",
       "book": 67,
       "limit": 5
-    }
+    },
+    "script_template": "civilizational_diagnosis"
   },
   {
     "id": "lst_53",
@@ -2542,7 +2694,8 @@
       "collection": "bukhari",
       "book": 67,
       "limit": 5
-    }
+    },
+    "script_template": "civilizational_diagnosis"
   },
   {
     "id": "lst_54",
@@ -2561,7 +2714,8 @@
       "collection": "bukhari",
       "book": 67,
       "limit": 5
-    }
+    },
+    "script_template": "civilizational_diagnosis"
   },
   {
     "id": "lst_55",
@@ -2580,7 +2734,8 @@
       "collection": "bukhari",
       "book": 67,
       "limit": 5
-    }
+    },
+    "script_template": "civilizational_diagnosis"
   },
   {
     "id": "lst_56",
@@ -2599,6 +2754,7 @@
       "collection": "bukhari",
       "book": 67,
       "limit": 5
-    }
+    },
+    "script_template": "civilizational_diagnosis"
   }
 ]
