@@ -2,11 +2,15 @@ name: Akhir Zamaan Video Pipeline
 
 on:
   schedule:
-    # Tuesday + Friday at 04:00 UTC = 8:00 AM Dubai
-    # Friday for Jumu'ah engagement; Tuesday for even mid-week spacing.
+    # Sunday + Tuesday + Friday at 04:00 UTC = 8:00 AM Dubai
+    # Sunday for the strongest YouTube watch-time slot (weekend long-form);
+    # Friday for Jumu'ah engagement; Tuesday for mid-week spacing.
+    # Cron day-of-week: 0=Sun, 2=Tue, 5=Fri. Gaps land at 2-3 days each,
+    # which is the cleanest spacing for a 3x/week schedule and avoids
+    # back-to-back uploads that would underuse each video.
     # The ~25-30 min run finishes by ~8:30 AM Dubai, leaving the morning to
-    # download the bashupload link and upload to YouTube manually.
-    - cron: '0 4 * * 2,5'
+    # download the R2 link and upload to YouTube manually.
+    - cron: '0 4 * * 0,2,5'
   workflow_dispatch:       # manual trigger
 
 permissions:
