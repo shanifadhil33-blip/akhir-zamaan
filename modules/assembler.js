@@ -158,10 +158,14 @@ async function assembleVideo({ beats, audioPath, captionsAss, recitations = [], 
     } else {
       filters.push(`[voice_a]anull[voice]`);
     }
-    // Music base at ~-14dB, looped forever
-    filters.push(`[${musicInputIdx}:a]volume=0.20,aloop=loop=-1:size=2e9[music_raw]`);
-    // Sidechain compress: trigger=voice_b, target=music. When voice is loud, music ducks hard.
-    filters.push(`[music_raw][voice_b]sidechaincompress=threshold=0.03:ratio=8:attack=15:release=800:makeup=1[music]`);
+    // Music base at ~-10dB (was -14dB — operator reported music was inaudible).
+    // Looped forever so any short ambient track covers the full video.
+    filters.push(`[${musicInputIdx}:a]volume=0.32,aloop=loop=-1:size=2e9[music_raw]`);
+    // Sidechain compress: trigger=voice_b, target=music. Ratio relaxed from
+    // 8:1 to 4:1 and threshold raised from 0.03 to 0.05 — was ducking the
+    // music to inaudibility under speech. New settings let the bed stay
+    // present at ~-18dB under voice instead of dropping to ~-30dB.
+    filters.push(`[music_raw][voice_b]sidechaincompress=threshold=0.05:ratio=4:attack=15:release=800:makeup=1[music]`);
   } else {
     if (recitationOverlays.length > 0) {
       const enableExpr = recitationOverlays
@@ -183,11 +187,20 @@ async function assembleVideo({ beats, audioPath, captionsAss, recitations = [], 
     recLabels.push(`[rec${i}]`);
   }
 
-  // Final mix
+  // Final mix → loudness normalization
   const mixInputs = ['[voice]'];
   if (musicTrack) mixInputs.push('[music]');
   mixInputs.push(...recLabels);
-  filters.push(`${mixInputs.join('')}amix=inputs=${mixInputs.length}:duration=first:dropout_transition=0:normalize=0[aout]`);
+  filters.push(`${mixInputs.join('')}amix=inputs=${mixInputs.length}:duration=first:dropout_transition=0:normalize=0[premix]`);
+
+  // Normalize to YouTube's loudness target (-14 LUFS integrated, -1.5 dB true
+  // peak, LRA 11). Without this, raw TTS output sits around -22 LUFS, so the
+  // final video plays MUCH quieter than every other YouTube video and viewers
+  // have to crank their volume to hear the narrator (and even then the music
+  // bed is buried). Single-pass loudnorm produces a small artifact at the
+  // very start (<200ms); the two-pass version is overkill for short-form
+  // narration with no dynamic mix.
+  filters.push(`[premix]loudnorm=I=-14:LRA=11:TP=-1.5[aout]`);
 
   run('ffmpeg', [
     '-y',
