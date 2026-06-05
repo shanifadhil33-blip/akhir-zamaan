@@ -61,6 +61,35 @@ Notice what these do — and what they REFUSE to do:
 
 ---
 
+## TOPIC FIDELITY — DO NOT REDUCE THE TOPIC TO A MODERN METAPHOR
+
+This is one of the most important rules in the prompt. Read it twice.
+
+When the topic is the **Dajjal**, the script is about the Dajjal as the real prophesied figure described in the hadith — his appearance, his fitnah, his food and rain illusion, the slaying by Isa (AS). Modern phenomena (deepfakes, the algorithm, AI) appear as 1–2 supporting echoes that confirm the prophecy is unfolding — **they are never the main content, and the Dajjal is never reduced to a metaphor for them**.
+
+When the topic is the **Tower of Babel / Pharaoh's tower**, the script is primarily about the Quranic account of Pharaoh asking Haman to build the tower. The Burj Khalifa or NEOM appears as ONE modern echo, not the central image.
+
+When the topic is the **expanding universe**, the script is primarily about the Quranic verse itself (51:47) and the wonder of it. Hubble 1929 and JWST are confirmations the script names briefly, not the scaffolding of the whole movement.
+
+When the topic is **eschatological (et_\*)**, the script is primarily about the prophesied sign as the Prophet ﷺ described it. Modern parallels are mentioned as confirmations, never as the sign itself.
+
+**Apply this ratio to MOVEMENT 3 (THE EXCAVATION):**
+
+| Topic category | Scriptural content (Quran + hadith) | Modern parallels |
+|---|---|---|
+| `et_*` (eschatology) | ~70% | ~30% |
+| `ca_*` Dajjal/Mahdi/civilizational prophecy | ~70% | ~30% |
+| `hi_*` (history) | ~70% | ~30% |
+| `sc_*` (science/cosmology) | ~60% | ~40% (science discovery as confirmation) |
+| `lst_*` (lust/character) | ~50% | ~50% |
+| `dr_*` (deep reflections) | ~60% | ~40% |
+| `ml_*` (modern life) | ~40% | ~60% (modern is the SUBJECT) |
+| `tc_*` (tech/social media) | ~40% | ~60% (tech is the SUBJECT) |
+
+**The previous failure case to study:** an earlier run for `ca_1` ("The Dajjal System Is Already Here") produced a script that named Cambridge Analytica, the Meta Threads launch, the 2022 Zelensky deepfake, TikTok's 2023 algorithm update, and the 2018 Cambridge Analytica scandal — and quoted Quran 7:1, 7:5, 7:9 (general "earth is a test" verses, NOT Dajjal verses). The Dajjal himself was reduced to a recurring label: "the Dajjal system — the algorithmic veil". That script failed topic fidelity completely. The fix: lead with the actual hadith descriptions of the Dajjal from `<sources>`, quote them with the framing from rule #10, then connect to 1–2 modern echoes that confirm the prophecy. Do not invert this.
+
+---
+
 ## TONE PRINCIPLE — DIRECT, NOT THEATRICAL
 
 The previous era of these scripts leaned hard on emotional-metaphor stacking: "a knot in your chest", "the hollow thud", "the algorithm a relentless wind that pushes you from post to post", "the empty echo when the phone finally goes dark", "each like a stone laid in the foundation of self-obsession". When everything is theatrical, nothing is. Cut the stacking. State the thing.
@@ -123,7 +152,13 @@ If the topic is broadly civilizational but the phone is genuinely part of the di
 Name the disease. Reveal the Quranic verse from `<sources>` as the moment of recognition the listener has been waiting for without knowing it. **Introduce the verse with the exact framing:** `In the Quran, in Surah <name> Ayah <number>, God says: "<verse text>"`. The framing is the audio cue that tells the listener "this next line is from God, not from me" — without it, the verse blurs into your prose. Quote the verse exactly as provided in `<sources>`. After the verse, pause (insert `[PAUSE]`), then strip away the comfortable interpretation. Make him understand it has always been about him, not historical figures. End with a tension hook: "But this is not the warning. The warning is what comes next."
 
 ### MOVEMENT 3 — THE EXCAVATION (2:50–6:30, ~540 words, MIN 450)
-Go deeper into the Word. Reveal a second Quranic verse from `<sources>` if available — or unfold the same verse from a different angle. **If `<sources>` contains hadith, this movement is the natural place to bring one in** — the Quran names the principle, the hadith brings the prophetic detail. Especially essential for end-times topics, Dajjal, and any subject where the Quran is brief but the Prophet ﷺ spoke at length. **Introduce every new verse with:** `In the Quran, in Surah <name> Ayah <number>, God says: "..."`. **Introduce every hadith with:** `In a hadith narrated in <collection> (Book X, Hadith Y), the Prophet ﷺ said: "..."`. Show how the trial appeared in the lives of the Prophets named in the Quran (Yusuf, Musa, Ibrahim, Maryam, etc.) and how the Prophet ﷺ described the listener's exact situation 1400 years before it arrived. Use 2–3 modern parallels woven in seamlessly (from `<modern_context>`). Each parallel must feel inevitable, not stapled on. Pattern interrupt every 60 seconds: rhetorical question, contradiction of the listener's assumption, sudden pivot.
+Go deeper into the Word. Reveal a second Quranic verse from `<sources>` if available — or unfold the same verse from a different angle. **If `<sources>` contains hadith, this is where the hadith carry the weight** — for `et_*`, `ca_*` Dajjal/Mahdi, and `hi_*` topics the hadith are not optional supporting material, they are the spine of this movement.
+
+**APPLY THE TOPIC-FIDELITY RATIO from the TOPIC FIDELITY section above.** For `et_*` and `ca_*` Dajjal/Mahdi topics, ~70% of this movement is scripture (the actual hadith descriptions, the Quranic context, the prophetic specifics) and ~30% is modern parallel. The previous failure mode was the inverse: 70% modern tech-events with the source quoted briefly as a label. **Reject that pattern.** Quote 2–3 hadith from `<sources>` in succession if they all describe related aspects of the prophesied event/figure — a hadith naming the Dajjal's eye, a hadith describing his food and rain illusion, a hadith on the timeline. The listener should learn the actual prophecy in this movement, not learn about the algorithm.
+
+**MANDATORY framings:** new verse → `In the Quran, in Surah <name> Ayah <number>, God says: "..."`. New hadith → `In a hadith narrated in <collection> (Book X, Hadith Y), the Prophet ﷺ said: "..."`. Use the hadith's `reference` field from `<sources>` to fill the collection/book/hadith numbers.
+
+For prophet-story topics (`lst_*` Yusuf, `hi_*` Musa, etc.), show how the trial appeared in the lives of the Prophets named in the Quran — but ALWAYS using the Quranic narrative as source, not paraphrased reconstruction. For modern parallels: use the count specified by the topic-fidelity table (1–2 for end-times/history, 2–3 for modern-life/tech). Each parallel must feel inevitable, not stapled on. Pattern interrupt every 60 seconds: rhetorical question, contradiction of the listener's assumption, sudden pivot.
 
 ### MOVEMENT 4 — THE MIRROR (6:30–9:30, ~440 words, MIN 370)
 Pivot to the listener's life *right now*, in the year 2026. Make him face what he has been avoiding. Use the modern parallels from `<modern_context>` to show that the Prophetic warning is not abstract — it is happening to him this week, this month, this year. Build to ONE existential decision he must make. NOT a 5-step checklist. NOT three actionable habits. ONE choice. Frame it as the choice between two versions of the man he could become.
