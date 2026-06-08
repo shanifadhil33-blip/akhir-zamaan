@@ -158,13 +158,15 @@ async function assembleVideo({ beats, audioPath, captionsAss, recitations = [], 
     } else {
       filters.push(`[voice_a]anull[voice]`);
     }
-    // Music base at ~-10dB (was -14dB — operator reported music was inaudible).
-    // Looped forever so any short ambient track covers the full video.
-    filters.push(`[${musicInputIdx}:a]volume=0.32,aloop=loop=-1:size=2e9[music_raw]`);
-    // Sidechain compress: trigger=voice_b, target=music. Ratio relaxed from
-    // 8:1 to 4:1 and threshold raised from 0.03 to 0.05 — was ducking the
-    // music to inaudibility under speech. New settings let the bed stay
-    // present at ~-18dB under voice instead of dropping to ~-30dB.
+    // Music base at ~-15dB. Previous iteration had this at 0.32 (~-10dB) to
+    // recover from the "music inaudible" feedback before loudnorm was added.
+    // With loudnorm now bringing the whole mix to -14 LUFS, 0.32 made the
+    // bed dominate and ruin the feel. 0.18 keeps the bed clearly present in
+    // quiet moments while staying well under the narrator at all times.
+    filters.push(`[${musicInputIdx}:a]volume=0.18,aloop=loop=-1:size=2e9[music_raw]`);
+    // Sidechain compress: trigger=voice_b, target=music. Ratio kept at 4:1
+    // (gentle) and threshold at 0.05 — voiceover is fine, only the music
+    // base needs trimming.
     filters.push(`[music_raw][voice_b]sidechaincompress=threshold=0.05:ratio=4:attack=15:release=800:makeup=1[music]`);
   } else {
     if (recitationOverlays.length > 0) {
