@@ -158,12 +158,11 @@ async function assembleVideo({ beats, audioPath, captionsAss, recitations = [], 
     } else {
       filters.push(`[voice_a]anull[voice]`);
     }
-    // Music base at ~-15dB. Previous iteration had this at 0.32 (~-10dB) to
-    // recover from the "music inaudible" feedback before loudnorm was added.
-    // With loudnorm now bringing the whole mix to -14 LUFS, 0.32 made the
-    // bed dominate and ruin the feel. 0.18 keeps the bed clearly present in
-    // quiet moments while staying well under the narrator at all times.
-    filters.push(`[${musicInputIdx}:a]volume=0.18,aloop=loop=-1:size=2e9[music_raw]`);
+    // Music base at ~-18dB. Operator dialed in: 0.20 inaudible (pre-loudnorm),
+    // 0.32 too loud, 0.18 still too loud, 0.12 felt right. The bed is meant
+    // to be felt more than heard — present enough to color the silence,
+    // never competing with the narrator.
+    filters.push(`[${musicInputIdx}:a]volume=0.12,aloop=loop=-1:size=2e9[music_raw]`);
     // Sidechain compress: trigger=voice_b, target=music. Ratio kept at 4:1
     // (gentle) and threshold at 0.05 — voiceover is fine, only the music
     // base needs trimming.
