@@ -34,6 +34,12 @@ function ffprobeDuration(filePath) {
 }
 
 function pickRandomMusic() {
+  // Music disabled — operator decision after a YouTube comment flagged the
+  // humming/ambient tracks as not Islamic and distracting from the narration.
+  // The audio mix is now voiceover-only. Tracks remain in assets/music/ in
+  // case the channel ever re-enables a vetted halal-nasheed source; setting
+  // ENABLE_MUSIC=true overrides this for a single run.
+  if (process.env.ENABLE_MUSIC !== 'true') return null;
   if (!fs.existsSync(MUSIC_DIR)) return null;
   const files = fs.readdirSync(MUSIC_DIR).filter((f) => /\.(mp3|m4a|wav|ogg)$/i.test(f));
   if (!files.length) return null;
