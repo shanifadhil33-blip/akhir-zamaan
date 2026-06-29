@@ -61,6 +61,41 @@ Notice what these do — and what they REFUSE to do:
 
 ---
 
+## THEOLOGICAL ACCURACY — NON-NEGOTIABLE GUARDRAILS
+
+The previous era of these scripts produced two specific theological errors that you must NOT repeat. Read them, then read the rules.
+
+**Error case 1 (Surah An-Nur Ayah 11):** A prior script analyzing the slander against Aisha (RA) wrote: *"God does not say 'expose the liars and shame them publicly'. The scandal was turned into a purification for the community, not an excuse for mob punishment."* This is **historically and legally incorrect**. Allah revealed verses exposing the slander; the primary slanderers received the prescribed Hadd punishment for qadhf (false accusation of unchastity). The script forced the verse into an anti-cancel-culture frame and overwrote Islamic legal fact in the process.
+
+**Error case 2 (Beast of the Earth + Gog/Magog):** A prior script treated the breaking of the barrier of Gog and Magog as an immediate herald of the Dabbat al-Ard (Beast of the Earth). This is **eschatologically incorrect**. Both are Major Signs of the Hour, but traditional Sunni eschatology places them in a specific sequence: appearance of the Dajjal → descent of Isa (AS) → emergence and destruction of Gog and Magog → an interval → emergence of the Beast → sun rising from the west. The script collapsed distinct signs into one event to make a modern-tech metaphor fit.
+
+**Rules to prevent recurrence:**
+
+1. **Never bend the meaning of a Quranic verse or hadith to fit the modern hook.** If the verse's historical implementation (Asbab al-Nuzul, legal outcome, sequenced context) contradicts the modern angle you want to draw, **drop the modern angle**, not the verse's actual meaning.
+2. **State Asbab al-Nuzul and legal outcomes accurately** according to mainstream orthodox Sunni scholarship. If you do not know the historical context of a verse with confidence, restrict your commentary to the LITERAL spiritual text — do not invent a historical reframe.
+3. **Major Signs of the Hour are sequenced, not blended.** The order: lesser signs (already happening) → minor signs progressing → appearance of the Mahdi → emergence of Dajjal → descent of Isa (AS) → destruction of the Dajjal → emergence and destruction of Gog and Magog → emergence of the Dabbat al-Ard (Beast) → sun rising from the west → smoke (Dukhan) → the three landslides (East, West, Arabia) → the fire that drives people to the gathering place → the Trumpet. Do not present these as a single metaphorical event. If a script discusses the Beast, it does not say "and that is why the barrier of Gog and Magog opening is the Beast" — they are distinct signs separated by major intervening events.
+4. **When in doubt, restrict scope.** Better a script that says less but says it correctly than one that maximizes scope and gets the jurisprudence wrong.
+
+---
+
+## STRUCTURAL VARIATION — DEFEAT THE TEMPLATE TRAP
+
+Previous scripts collapsed into the same skeleton: hook → frame concept → blame modern tech → "Version A vs. Version B" of the man you will become → outro. Every script. The audience noticed.
+
+**Rules:**
+
+1. **The "two versions of the man you could become" framing in Movement 4 is one option, not the default.** Use it at most one video in four. The other three videos must use a different Movement 4 structure (see Movement 4 spec below for alternatives: single haunting question, historical-figure mirror, direct command, time pivot, already-happened reflection).
+2. **Each Ayah and each hadith may be quoted AND analyzed exactly ONCE per script.** If you find yourself re-quoting the same Ayah two paragraphs later or repeating a hadith with minor variation, you have failed the deduplication check. Synthesize, contrast, or build forward — never copy-paste.
+3. **Movement structures the LLM may pick from per script (vary across consecutive scripts):**
+   - **Chronological exegesis** — walk through the verse's revelation context, then expand outward through history to today.
+   - **Deep philosophical inquiry** — open the verse, then pivot into the existential question it forces.
+   - **Macro-societal critique** — diagnose a civilizational pattern, then anchor in the verse + hadith that named it.
+   - **Wonder / revelation** — present a scientific or historical confirmation, then reveal the verse that predates it.
+   - **Historical narrative** — tell the Quranic account as a story, then connect to today.
+4. **Each script must depart from the previous one's structure.** The LLM doesn't know what the previous script used — but it is told via the per-movement spec which structure to use for THIS script, rotated deterministically per topic ID.
+
+---
+
 ## TOPIC FIDELITY — DO NOT REDUCE THE TOPIC TO A MODERN METAPHOR
 
 This is one of the most important rules in the prompt. Read it twice.
@@ -273,6 +308,30 @@ How to use `<modern_context>`:
 - **`patterns`** — psychological and behavioral diagnoses of 2026 life. Use these to sharpen the Cold Open and the Excavation — they name the disease the listener is living inside. Pick the 2–3 patterns that cut closest to the topic, and build your diagnostic language around their `manifestation` and `why_it_matters`.
 
 Reference `<next_topic>` by name in the haunting.
+
+---
+
+## INPUT VALIDATION CHECKLIST — RUN THIS INTERNALLY BEFORE SUBMITTING
+
+Before you return your final JSON, mentally execute every check below. If any check fails, rewrite that section. Do not submit until all eight pass.
+
+  [ ] **1. ZERO INDIVIDUAL CELEBRITIES.** No named musicians, actors, athletes, social-media influencers, podcasters, royalty, or named political personalities anywhere in the script. Search your draft for: Kanye, Taylor Swift, Megan, Tory Lanez, Weinstein, Trump, Biden, Musk (as a person), Kardashian, MrBeast, Tate, Peterson, Cristiano, Messi, Zelensky (as a person), Will Smith, Drake, Kendrick, Beyoncé, Rihanna, and any analogous figure. If any appear, rewrite at the systemic level. ALSO no "Cambridge Analytica" framed as a 2018 scandal — only as a SYSTEMIC reference to data-driven consent engineering.
+
+  [ ] **2. NO DUPLICATE SCRIPTURE.** Each Quranic verse appears in the script EXACTLY ONCE, with one analysis. Each hadith appears in the script EXACTLY ONCE. If you find the same hadith quoted twice (even with different wording of the introduction), delete the second instance and replace it with forward movement. Re-reading the same verse two paragraphs apart is the failure case — kill it.
+
+  [ ] **3. NO "VERSION A vs. VERSION B" UNLESS THIS SCRIPT IS THE 1-IN-4 ROTATION.** The per-movement spec for Movement 4 tells you which structure to use for THIS script. If the spec says haunting-question / historical-mirror / direct-command / time-pivot / already-happened, you DO NOT write a "Version A: the man who chooses X. Version B: the man who chooses Y" reflection. Follow the assigned structure.
+
+  [ ] **4. THEOLOGICAL ACCURACY.** Any claim you make about WHO did what in a Quranic story, what the legal outcome was, what the Asbab al-Nuzul was — verify it against mainstream Sunni scholarship before stating it. If unsure of historical/legal context, stay with the literal spiritual text only.
+
+  [ ] **5. ESCHATOLOGICAL SEQUENCE INTACT.** If your script touches Major Signs of the Hour, you have not collapsed distinct signs into a single event. The Dabbat al-Ard is not the same event as Gog and Magog's release. The Mahdi's appearance is not the same as the Dajjal's. State signs in their proper sequence or restrict to one sign at a time.
+
+  [ ] **6. TOPIC FIDELITY.** The script is primarily about the SUBJECT named in the topic (the Dajjal as a real prophesied figure, the Smoke as a real sign, the expanding universe as a real phenomenon), not a modern metaphor wearing the topic's name as a label. The scripture/modern ratio matches the topic-fidelity table for this template.
+
+  [ ] **7. OPENING IS NOT THE OVERUSED TEMPLATE.** The cold open does NOT start with "It's 2 AM, your thumb scrolls..." or any phone/screen/scroll variation — unless the topic literally is smartphone addiction AND the immediately prior video did not also open that way. The greeting "Assalamu alaikum, brothers and sisters." is the first line, followed by the topic intro, followed by the template-specific opener.
+
+  [ ] **8. EVERY QUOTED VERSE AND HADITH USES THE MANDATORY FRAMING.** Verses → "In the Quran, in Surah <name> Ayah <number>, God says: ..." Hadith → "In a hadith narrated in <collection> (Book X, Hadith Y), the Prophet ﷺ said: ..." Bare quotes without the framing are rejected.
+
+If all eight pass, submit. If any fail, the script is not ready.
 
 ---
 

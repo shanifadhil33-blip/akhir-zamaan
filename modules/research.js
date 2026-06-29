@@ -14,6 +14,7 @@
 
 const axios = require('axios');
 const ollama = require('./ollama');
+const policy = require('./content-policy');
 
 const TAVILY_URL = 'https://api.tavily.com/search';
 const TAVILY_TIMEOUT_MS = 30000;
@@ -50,27 +51,46 @@ async function tavilySearch(query) {
 
 async function generateSearchQueries(topic) {
   // One small LLM call to plan smart queries from the topic.
-  const systemInstruction = 'You generate web search queries for a documentary research pipeline. Output strict JSON only.';
+  const systemInstruction = `You generate web search queries for a documentary research pipeline. Output strict JSON only.\n\n${policy.POLICY_PROMPT_BLOCK}`;
   const userPrompt = `Topic: ${topic.title}
 Theme: ${topic.theme || ''}
 Modern angle: ${topic.context || ''}
 
-Generate ${PARALLEL_SEARCHES} specific Google-style search queries that will surface concrete 2024-2026 real-world content related to this Islamic topic — news events, statistics, viral moments, scientific findings, geopolitical incidents, technology shifts, cultural trends. Each query should target a DIFFERENT angle so the searches don't return overlapping results.
+Generate up to ${PARALLEL_SEARCHES} specific Google-style search queries that surface SYSTEMIC modern content related to this Islamic topic — technological shifts at scale, behavioral patterns at the platform level, cognitive findings, geopolitical macro-events, scientific discoveries. Each query targets a DIFFERENT angle.
 
-Mix of query styles:
-- Recent news: "deepfake election interference 2025"
-- Statistics: "social media addiction rates 2025"
-- Specific events: "AI generated content viral incidents"
-- Cultural: "young muslim mental health study"
-- Quotes/research: "loneliness epidemic gen z research"
+Approved query styles (mix of these):
+- Systemic tech: "biometric mass surveillance rollout 2025"
+- Cognitive research: "attention span decline studies 2024 2025"
+- Statistics: "global loneliness epidemic research"
+- Macro events: "central bank digital currency timeline"
+- Algorithmic patterns: "recommendation system echo chamber research"
+- Scientific: "cosmic background radiation latest findings"
+
+FORBIDDEN query styles (the LLM has produced these before; reject):
+- Named celebrity controversies (e.g. "Kanye West antisemitism", "Megan Thee Stallion Tory Lanez")
+- Hollywood / pop-culture incidents (e.g. "Will Smith Oscar slap", "Kim Kardashian divorce")
+- Named political-personality scandals (e.g. "Trump trial", "Biden gaffes")
+- Sports / royalty / streamer drama
+If a query is about a NAMED INDIVIDUAL'S controversy, rewrite it at the SYSTEMIC level. ("Twitter mob attacks on Kanye" → "platform-scale public shaming campaigns 2024-2025".)
+
+IF the topic is purely spiritual / historical / jurisprudential (e.g. the Quran's specific verses on Yusuf, the rulings of Surah An-Nur, the Quranic account of Pharaoh's tower) AND no modern technological / systemic angle naturally fits, return an EMPTY queries array. Forced modern parallels on sacred-text topics break the channel's gravity. The script-engine can run on scripture alone — that is the correct outcome, not a gap.
 
 Return JSON only:
-{ "queries": ["query 1", "query 2", "query 3", "query 4", "query 5", "query 6"] }`;
+{ "queries": ["query 1", "query 2", ... ] }  // can be 0 to ${PARALLEL_SEARCHES} queries — empty is acceptable`;
 
   const data = await ollama.extractJSON(
     await callRaw({ systemInstruction, userPrompt, temperature: 0.6 })
   );
-  return Array.isArray(data.queries) ? data.queries.slice(0, PARALLEL_SEARCHES) : [];
+  const raw = Array.isArray(data.queries) ? data.queries : [];
+  // Post-filter: drop any query that leaked a banned celebrity / personality name
+  // despite the prompt warning.
+  return raw.filter((q) => {
+    if (policy.containsBannedName(q)) {
+      console.warn(`[research] dropping query (banned name): ${q}`);
+      return false;
+    }
+    return true;
+  }).slice(0, PARALLEL_SEARCHES);
 }
 
 // Light wrapper because the export shape of ollama.js doesn't expose callOllama
@@ -93,13 +113,17 @@ async function callRaw({ systemInstruction, userPrompt, temperature }) {
 
 async function synthesizeContext({ topic, searches }) {
   // Trim down the search results so the synthesis prompt isn't massive.
+  // Also strip individual search-result entries that leak banned celebrity
+  // names before the LLM ever sees them — defense in depth.
   const trimmedSearches = searches.map((s) => ({
     query: s.query,
     answer: (s.answer || '').slice(0, 400),
-    snippets: s.results.map((r) => `${r.title}: ${r.content}`.slice(0, 400)),
-  }));
+    snippets: s.results
+      .filter((r) => !policy.containsBannedName(`${r.title} ${r.content}`))
+      .map((r) => `${r.title}: ${r.content}`.slice(0, 400)),
+  })).filter((s) => s.snippets.length > 0 || s.answer);
 
-  const systemInstruction = `You are a research synthesizer for a documentary channel. You read raw web search results and distill them into concrete, verifiable real-world events and behavioral patterns. NEVER invent events, dates, or statistics not in the search results. If you can't verify a claim from the snippets, omit it. Output strict JSON only.`;
+  const systemInstruction = `You are a research synthesizer for a documentary channel. You read raw web search results and distill them into concrete, verifiable SYSTEMIC events and behavioral patterns. NEVER invent events, dates, or statistics not in the search results. If you can't verify a claim from the snippets, omit it. Output strict JSON only.\n\n${policy.POLICY_PROMPT_BLOCK}`;
 
   const userPrompt = `Topic: ${topic.title}
 Theme: ${topic.theme || ''}
@@ -128,10 +152,18 @@ Pure JSON. No markdown.`;
   const data = await ollama.extractJSON(
     await callRaw({ systemInstruction, userPrompt, temperature: 0.4 })
   );
-  return {
-    events: Array.isArray(data.events) ? data.events : [],
-    patterns: Array.isArray(data.patterns) ? data.patterns : [],
-  };
+  // Final guardrail: post-filter the synthesized output. If the LLM ignored
+  // the policy block and still produced "Kanye West antisemitism" or similar,
+  // drop that entry before it reaches the script-engine. Log loudly so we
+  // know the prompt-level filter is leaking.
+  const events = policy.filterSynthesizedEvents(data.events);
+  const patterns = policy.filterSynthesizedPatterns(data.patterns);
+  const droppedEvents = (Array.isArray(data.events) ? data.events.length : 0) - events.length;
+  const droppedPatterns = (Array.isArray(data.patterns) ? data.patterns.length : 0) - patterns.length;
+  if (droppedEvents || droppedPatterns) {
+    console.warn(`[research] post-filter dropped ${droppedEvents} event(s) and ${droppedPatterns} pattern(s) that leaked banned names`);
+  }
+  return { events, patterns };
 }
 
 async function researchTopic(topic) {

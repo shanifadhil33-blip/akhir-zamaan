@@ -153,8 +153,8 @@ const MAX_MOVEMENT_ATTEMPTS = 3;
 const MOVEMENT_SPECS = [
   { key: 'cold_open', minWords: 100, targetWords: 130, description: 'Movement 1 — THE COLD OPEN. MANDATORY OPENING STRUCTURE — exactly in this order: (1) GREETING: start with the exact line "Assalamu alaikum, brothers and sisters." Nothing before it, no variation. (2) TOPIC INTRO (1-2 sentences): state what today\'s reflection is about using the <topic>.title and a sentence-long preview of what the video will cover. Example: "Today\'s reflection is on the Dajjal — the great deceiver the Prophet (PBUH) warned us about fourteen hundred years ago. We will look at exactly how he is described in the hadith, and at how those descriptions are unfolding in our world right now." (3) TEMPLATE-SPECIFIC OPENER: then continue with the opening style from the ACTIVE TEMPLATE block — civilizational observation for ca_*/et_*/lst_*/hi_*, wonder/datum-vs-verse for sc_*/dr_*, varied personal scene for ml_*/tc_*. FORBIDDEN in the opener after the greeting: phone/screen/thumb/scroll/notification (except when topic itself is about smartphone addiction); no "It\'s 2 AM, your thumb scrolls" template. (4) PROMISE + DIAGNOSIS: a narrative promise of what\'s coming, then begin framing the topic. End with one line that hints scripture already named what was just described, without revealing what.' },
   { key: 'naming', minWords: 220, targetWords: 270, description: 'Movement 2 — THE NAMING. Name the topic. Reveal the Quranic verse from <sources> that DIRECTLY ADDRESSES THE TOPIC — not a generic "earth is a test" verse pulled from the same surah. For Dajjal topics, pick the verse from <sources> that names Dajjal-related content (Surah Al-Kahf, Ya juj/Ma juj 18:94-99). For end-times sign topics, pick the verse that names that specific sign. Refuse to substitute a tangentially-related verse just because it sits in the same chapter. MANDATORY framing before every quoted verse: `In the Quran, in Surah <surah_name> Ayah <verse_number>, God says: "<verse text>"`. Use the surah_name field from <sources> verbatim (e.g. "Ar-Ra\'d", "Al-Kahf"). The framing is non-negotiable — without it the verse blurs into your prose when the narrator reads it aloud. After the verse, insert [PAUSE], then unpack what the verse ACTUALLY says — do not pivot immediately to a modern symptom. End with: "But this is not the warning. The warning is what comes next."' },
-  { key: 'excavation', minWords: 450, targetWords: 540, description: 'Movement 3 — THE EXCAVATION. APPLY THE TOPIC-FIDELITY RATIO from the prompt. For et_* and ca_* Dajjal/Mahdi/end-times topics: ~70% scripture (the actual hadith descriptions of the prophesied event/figure + Quranic context) and ~30% modern parallel. Quote 2-3 hadith from <sources> in succession when they describe related aspects of the same prophesied event/figure — a hadith on the Dajjal\'s eye, a hadith on his fitnah, a hadith on the timeline. The listener LEARNS THE ACTUAL PROPHECY in this movement, they do not learn about the algorithm. For hi_* historical topics: ~70% Quranic narrative, ~30% modern echo. For sc_*/lst_*/dr_*: ~60% scripture, ~40% modern context. ONLY for ml_*/tc_* (modern-life and tech as the actual subject) does modern parallel dominate. FORBIDDEN: reducing the Dajjal to a metaphor for AI/the algorithm; reducing Babel to a metaphor for skyscrapers; reducing the Smoke to a metaphor for wildfires. The source IS the subject; modern echoes confirm it. MANDATORY framings: new verse → `In the Quran, in Surah <surah_name> Ayah <verse_number>, God says: "..."`. New hadith → `In a hadith narrated in <collection> (Book X, Hadith Y), the Prophet ﷺ said: "..."`. Pattern interrupt every 45 seconds: rhetorical question, contradiction, sudden pivot.' },
-  { key: 'mirror', minWords: 370, targetWords: 440, description: 'Movement 4 — THE MIRROR. Pivot to the listener\'s life right now in 2026. Make him face what he\'s been avoiding. Use modern parallels from <modern_context> to show the Quranic warning is happening to him this week. Build to ONE existential decision he must make — NOT a 5-step checklist, NOT three habits. ONE choice. Frame as the choice between two versions of the man he could become.' },
+  { key: 'excavation', minWords: 450, targetWords: 540, description: 'Movement 3 — THE EXCAVATION. APPLY THE TOPIC-FIDELITY RATIO from the prompt. For et_* and ca_* Dajjal/Mahdi/end-times topics: ~70% scripture (the actual hadith descriptions of the prophesied event/figure + Quranic context) and ~30% modern parallel. For hi_* historical topics: ~70% Quranic narrative. For sc_*/lst_*/dr_*: ~60% scripture. ONLY for ml_*/tc_* does modern parallel dominate. **DEDUPLICATION RULE (ABSOLUTE):** every Quranic verse you quote may appear in the script ONCE, with ONE analysis. Every hadith may appear ONCE. If you find yourself re-quoting the same hadith with minor rewording two paragraphs later — DELETE that repetition and replace with forward movement. The previous failure case quoted Sahih Muslim 7235 / 7237 / 7239 (all the same Gog/Magog narration with minor textual variants) three times back-to-back. Pick ONE narration and move on. **MODERN-GROUNDING POLICY:** modern parallels MUST be at the SYSTEMIC level — biometric surveillance rollouts, algorithmic echo chambers, cognitive-decline studies. ABSOLUTELY NO individual celebrities (no Kanye, no Megan Thee Stallion, no Tory Lanez, no Weinstein, no Trump, no Musk-as-person, no Kardashian, no Taylor Swift, no royalty, no athletes, no streamers). If a previous draft mentioned them, rewrite at the systemic level. FORBIDDEN: reducing the Dajjal to a metaphor for AI/the algorithm; reducing Babel to a metaphor for skyscrapers. **ESCHATOLOGICAL SEQUENCE:** if you discuss Major Signs (Dajjal, Mahdi, Isa AS, Gog/Magog, Beast/Dabbat al-Ard, sun from west, Dukhan), keep them in their distinct prophetic order; do not collapse them. The Beast is not Gog and Magog; the Mahdi is not the Dajjal. MANDATORY framings: new verse → `In the Quran, in Surah <surah_name> Ayah <verse_number>, God says: "..."`. New hadith → `In a hadith narrated in <collection> (Book X, Hadith Y), the Prophet ﷺ said: "..."`. Pattern interrupt every 45 seconds.' },
+  { key: 'mirror', minWords: 370, targetWords: 440, description: 'Movement 4 — THE MIRROR. [STRUCTURE_PLACEHOLDER] Modern parallels woven in MUST be at the SYSTEMIC level (algorithms, biometrics, surveillance infrastructure, attention economy, cognitive impacts) — never named celebrities, athletes, politicians, royalty, streamers. If your draft mentions a specific person by name (Kanye, Trump, Musk-as-person, etc.) rewrite at the systemic level.' },
   { key: 'haunting', minWords: 320, targetWords: 400, description: 'Movement 5 — THE HAUNTING. Close with a reflection that does not resolve. A question he carries for 24 hours. A specific image of the man he becomes if he chooses correctly — and the man he becomes if he doesn\'t. In the final 30-45 seconds: a quiet tease for the next video by name, plus subscribe CTA woven in as part of the haunting (never marketing).' },
 ];
 
@@ -170,7 +170,48 @@ function buildSystemInstructionForTopic(topic) {
   return `${base}\n\n---\n\n# ACTIVE SCRIPT TEMPLATE FOR THIS RUN\n\nThe topic declares \`script_template: "${tpl.name}"\`. The template block below OVERRIDES any conflicting guidance earlier in this prompt. Follow it precisely.\n${tpl.block}`;
 }
 
+// Five Movement 4 (THE MIRROR) structures. Operator caught the "Version A vs.
+// Version B of the man you could become" framing being used in EVERY video.
+// The deterministic hash below rotates per topic ID so consecutive videos
+// land on different structures. The "two-versions" option is still in the
+// rotation but is now 1-in-5 instead of 5-in-5.
+const MIRROR_STRUCTURES = {
+  'two-versions': 'Pivot to the listener\'s life right now. Make him face what he has been avoiding. Build to ONE existential decision he must make. Frame the choice as the contrast between two specific versions of the man he could become — one who chooses one path, one who chooses the other. Make each version concrete: what does each man\'s next week, his next Fajr, his next conversation actually look like? ONE choice, not a checklist of habits.',
+  'haunting-question': 'Pivot to the listener\'s life right now. Do NOT frame the movement as a choice between two versions of himself — instead, build to ONE rhetorical question the listener cannot dodge, and leave it unanswered. The question must be specific to this script\'s topic (not generic). Surround the question with the modern context that makes it inescapable, then leave it sitting in silence. End the movement WITHOUT resolving it. The unresolved question IS the mirror.',
+  'historical-mirror': 'Pivot to the listener\'s life — but the structure of this movement is a STRICT PARALLEL between a specific moment in a Prophet\'s life from the Quranic narrative and the listener\'s exact 2026 situation. Walk the listener through what that Prophet (named in the Quran — Yusuf, Musa, Ibrahim, Maryam, etc.) faced at that moment: the temptation, the doubt, the test. Then show the listener that he is standing in the same kind of moment right now, with different tools but the same test. The Prophet\'s response IS the mirror. End with the listener understanding which side of that exact moment he is standing on right now.',
+  'direct-command': 'Pivot to the listener\'s life — and unlike the other Movement 4 structures, this one does not offer a choice. It issues ONE clear command for the listener to act on TONIGHT, before he sleeps. Not three habits. Not a 7-day plan. ONE specific action that is doable in the next four hours: pray two rakats of tahajjud, open Surah Al-Kahf, sit in silence for ten minutes without a screen. Tie the command to the topic\'s verse — explain why scripture demands exactly this action in response to what was just diagnosed. The command is the mirror — the listener\'s response to it (do or refuse) reveals where he stands.',
+  'time-pivot': 'Pivot to the listener\'s life — but stage the movement in the FUTURE, not the present. Walk him through the next 72 hours of his life as they will unfold IF he changes nothing after watching this video. Specific scenes: Friday night, the next time he picks up his phone, the next Jumu\'ah he attends without intention, the next missed Fajr. Then, in the final third of the movement, pivot to the future as it COULD unfold if a single thing about him changes tonight. No "Version A / Version B" labels — just the temporal contrast. The future IS the mirror.',
+};
+
+function pickMirrorStructure(topic) {
+  // Deterministic rotation: hash the topic ID into one of the 5 structures.
+  // Same topic always gets the same structure (reproducible). Consecutive
+  // queue picks land on different structures because the prefixes and
+  // numbers differ. The "two-versions" structure is in the rotation but no
+  // longer the default for every script.
+  const id = (topic && topic.id) || '';
+  let hash = 0;
+  for (let i = 0; i < id.length; i++) hash = (hash * 31 + id.charCodeAt(i)) & 0xffffffff;
+  const keys = Object.keys(MIRROR_STRUCTURES);
+  const chosen = keys[Math.abs(hash) % keys.length];
+  return { name: chosen, instruction: MIRROR_STRUCTURES[chosen] };
+}
+
+function injectMirrorStructure(spec, topic) {
+  if (spec.key !== 'mirror') return spec;
+  const m = pickMirrorStructure(topic);
+  return {
+    ...spec,
+    description: spec.description.replace('[STRUCTURE_PLACEHOLDER]', `STRUCTURE FOR THIS SCRIPT: ${m.name}. ${m.instruction}`),
+  };
+}
+
 async function generateMovement({ spec, skeleton, previousMovements, topic, sources, modernContext, nextTopic }) {
+  // For Movement 4 (mirror), swap the [STRUCTURE_PLACEHOLDER] with one of
+  // five rotating Movement 4 structures, chosen deterministically per topic
+  // ID. This breaks the "Version A vs. Version B" template the previous
+  // Movement 4 spec hardcoded.
+  spec = injectMirrorStructure(spec, topic);
   const systemInstruction = buildSystemInstructionForTopic(topic);
   const previousText = Object.entries(previousMovements)
     .map(([k, v]) => `<${k}>\n${v}\n</${k}>`)
@@ -678,11 +719,14 @@ async function generateNewTopics({ existingCount, recentTopicsSample, highestIds
 // and tech/cultural shifts from its training knowledge plus general reasoning
 // about the topic.
 async function findModernContext({ topicTheme, modernAngle }) {
+  const contentPolicy = require('./content-policy');
   const systemInstruction = `You are a research assistant for a documentary channel that diagnoses modern life through the lens of Islamic end-times prophecy.
 
-Your job is to surface the psychological, behavioral, and cultural patterns in modern life that the given Islamic topic illuminates. You may also reference real-world technologies, cultural shifts, or events from your training knowledge — but ONLY ones you are confident actually exist (TikTok, deepfakes, OnlyFans, crypto, ChatGPT, Ozempic, Gaza war, Ukraine war, etc.). Never fabricate dates or events. If unsure of a date, omit the year field.
+Your job is to surface the SYSTEMIC psychological, behavioral, and cultural patterns in modern life that the given Islamic topic illuminates. You may reference real-world technologies, cultural shifts, or macro-events from your training knowledge — but ONLY ones you are confident actually exist (TikTok as a platform, deepfake technology, the smartphone economy, ChatGPT, biometric ID systems, central bank digital currencies, the Gaza war, the Ukraine war, the COVID lockdowns, etc.). Never fabricate dates or events. If unsure of a date, omit the year field.
 
-The OUTPUT must be a single JSON object — no prose around it.`;
+The OUTPUT must be a single JSON object — no prose around it.
+
+${contentPolicy.POLICY_PROMPT_BLOCK}`;
   const userPrompt = `Topic theme: ${topicTheme}
 Modern angle: ${modernAngle || '(none)'}
 
