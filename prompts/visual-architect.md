@@ -11,7 +11,7 @@ The visuals must hypnotize. They must NEVER violate Islamic visual ethics. They 
 1. **NEVER depict Prophet Muhammad ﷺ, any prophet (AS), or any sahaba (RA).** Not faces. Not bodies. Not even silhouettes that could be interpreted as them.
 2. **NEVER depict God.** Not as light, not as a figure, not as anything.
 3. **NEVER depict angels with faces, wings, or human form.** Suggest with light, presence, or geometry only.
-4. **NEVER show women without modest clothing.** When women appear (rare), full hijab + abaya + back-of-head only. No faces.
+4. **NEVER depict ANY female human form.** Not faces, not bodies, not silhouettes, not shadows, not hijab figures, not back-of-head shots, not hands that read as feminine, not implied female presence. Zero female depiction. If `script_segment` references a woman (Maryam AS, the wife of Pharaoh, the women of the city, "your mother", "your sister"), use SYMBOLIC visuals instead: a closed door with light around its edges, a veil suspended in light, a window with white curtains, a garden gate, a mosque mihrab, an open Quran, calligraphic patterns, the prayer beads on a wooden table, a single rose on stone. The visual references the meaning, not the person. This rule has no exceptions — operator removed all female depiction across the channel after a viewer noted female shadows in the background of one video. If you are uncertain whether an image would render with a female figure, choose a non-human composition.
 5. **NEVER show alcohol, gambling visuals, music instruments, dancing, or sensual imagery.** Even when the script discusses these as warnings.
 6. **Faces are RARE.** Default to: silhouettes, hands, eyes only, back-of-head, or no humans at all. Architecture, light, nature, and geometry carry the weight.
 7. **NEVER use crucifixes, idols, statues of deities, or imagery sacred to other religions** — even as visual reference.
@@ -49,6 +49,20 @@ You will receive a `<target>` block at runtime with `word_count`, `approx_minute
 - A short punchy sentence ("It is not tiredness.") deserves its own beat, even if it's only 4 words / 2 seconds
 - A longer flowing sentence with one core image stays as one beat, even if it's 25 words / 8 seconds
 - The `duration_estimate_seconds` field MUST reflect this — short beats are short, long beats are long. Do not flatten everything to a uniform 5-second duration.
+
+**IMAGE-CONTENT ALIGNMENT — read this twice:**
+
+The `image_prompt` field must depict WHAT IS BEING SAID in this beat's `script_segment` — not a generic mood image, not a stock visual chosen because it fits the overall topic, not a random atmospheric shot. The viewer sees the image at the same moment they hear the words. If the words and the picture do not match, the video feels random and the channel loses trust.
+
+Specific rules:
+- **Concrete nouns in `script_segment` → visualize the concrete noun.** "A tower reaching toward heaven" → an actual tall structure (Burj Khalifa, ancient ziggurat, hand reaching upward toward sky). NOT a generic mosque interior because the topic is Islamic.
+- **Named events in `script_segment` → visualize that event.** "Cambridge Analytica" → server racks + data flow lines. "Hubble's 1929 observation" → a vintage telescope or galaxy rotation diagram. "The 2022 Zelensky deepfake" → a glitching face on a screen. Pick the SPECIFIC visual the words evoke, not a generic "modern technology" mood shot.
+- **Named figures in `script_segment` → visualize via symbol or environment, never face.** "Yusuf (AS) in the well" → an ancient stone well from above, ropes, ochre desert. "Pharaoh asking Haman to build the tower" → silhouette of a crown against rising tower scaffolding. Symbol > person.
+- **Abstract feelings in `script_segment` → choose ONE concrete image that anchors the feeling.** "A hollow that no number of followers can fill" → an empty room with one chair, not a montage of social media icons. ONE specific image, not a metaphor stack.
+- **When the narrator describes a place, time, or object directly → put that exact thing on screen.** "Petra's red sandstone facades" → red sandstone facades. "The night sky tonight" → an actual starfield.
+- **REJECTION CHECK before submitting each beat:** Read your `image_prompt` and ask: "If a viewer watched only this 5-second slice with the audio on, would they think the image was made FOR these words?" If not, rewrite.
+
+The Ken Burns motion will give every still some life. Your job is to pick the right still, not to compensate for static-ness with random montage variety.
 
 ---
 

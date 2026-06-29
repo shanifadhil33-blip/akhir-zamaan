@@ -67,12 +67,12 @@ function buildASS(words) {
   // Styling philosophy: clean documentary look, NOT YouTube-meme look.
   //  - Font: Roboto Condensed Bold (sharp, modern, slightly compressed)
   //          installed via fonts-roboto in the workflow
-  //  - Size: 60pt at 1080p — operator bumped from 52pt for better mobile
-  //          readability (most viewers watch on phones; 52pt was readable
-  //          but tight on small screens). 60pt still fits 5 words per chunk
-  //          on one line within the 1680px text area, no wrapping.
+  //  - Size: 72pt at 1080p — operator bumped progressively from 44 → 52 →
+  //          60 → 72 for phone readability. At 72pt 5 words per chunk
+  //          still fits one line in the 1680px text area (avg ~36px per
+  //          char × ~30 chars per chunk = ~1080px, well within margin).
   //  - Color: pure white #FFFFFF
-  //  - Outline: 2.5px black to stay crisp at the larger size
+  //  - Outline: 3px black to stay crisp at the larger size
   //  - Shadow: subtle 1px drop for depth
   //  - Spacing: +1 px between letters (looks tighter, more editorial)
   //  - 5 words per chunk
@@ -88,7 +88,7 @@ YCbCr Matrix: TV.709
 
 [V4+ Styles]
 Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding
-Style: Default,Roboto Condensed,60,&H00FFFFFF,&H000000FF,&H00000000,&H80000000,1,0,0,0,100,100,1,0,1,2.5,1,2,120,120,90,1
+Style: Default,Roboto Condensed,72,&H00FFFFFF,&H000000FF,&H00000000,&H80000000,1,0,0,0,100,100,1,0,1,3,1,2,120,120,90,1
 
 [Events]
 Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text

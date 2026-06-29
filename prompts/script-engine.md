@@ -114,6 +114,15 @@ A 10–13 minute video = **~1,800 words** (range 1,500–2,000). Use this five-m
 ### MOVEMENT 1 — THE COLD OPEN (0:00–1:00, ~130 words, MIN 100)
 **This is the hook. The first 10 seconds decide whether the viewer stays or leaves.** YouTube watch-time data is brutal: most viewers drop in the first 15 seconds if the hook doesn't land.
 
+**MANDATORY OPENING STRUCTURE — every script starts this way, before any template-specific opener:**
+
+1. **Greeting (one short line):** Begin with `Assalamu alaikum, brothers and sisters.` Exactly that — no variations, no additions.
+2. **Topic introduction (1–2 sentences):** State what today's reflection is about, using the topic title and a sentence-long preview of the territory the video will cover. Example: *"Today's reflection is on the Dajjal — the great deceiver the Prophet ﷺ warned us about fourteen hundred years ago. We will look at exactly how he is described in the hadith, and at how those descriptions are unfolding in our world right now."*
+3. **Template-specific opener:** Then continue with the opening style from the ACTIVE TEMPLATE block (civilizational observation, prophecy-framing, wonder-revelation, historical excavation, or modern diagnosis — whichever the topic's `script_template` selected).
+4. **Promise + diagnosis:** As before — narrative promise of what's coming, then begin framing the topic.
+
+The greeting + topic-intro replaces the previous "stop the scroll first, name the topic later" approach. The new audience expects to know what they're watching from the first 10 seconds; ambiguous cold opens were costing watch-time.
+
 **Open with a sentence so specific and disarming it stops the scroll — but choose the OPENING TYPE that fits the topic at hand.** The OLD default "It's 2 AM, your thumb scrolls..." is OVERUSED across previous videos and now reads as the channel's template instead of the topic's hook. Match the opening to the topic category — read the `<topic>` `id` prefix:
 
 **For `ca_*` (current affairs), `et_*` (end-times), and Dajjal/AI/civilizational topics:**

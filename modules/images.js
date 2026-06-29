@@ -20,7 +20,7 @@ const IMAGE_CONCURRENCY = parseBoundedInt(process.env.IMAGE_CONCURRENCY, 3, 1, 3
 const CF_MAX_ATTEMPTS = parseBoundedInt(process.env.CLOUDFLARE_IMAGE_ATTEMPTS, 2, 1, 5);
 const HF_MAX_ATTEMPTS = parseBoundedInt(process.env.HF_IMAGE_ATTEMPTS, 3, 1, 5);
 
-const NEGATIVE_PROMPT = 'deformed, disfigured, bad anatomy, extra fingers, extra limbs, missing fingers, mutated hands, low quality, blurry, out of focus, jpeg artifacts, watermark, text, logo, signature, caption, ugly, pixelated, distorted faces, cartoon, anime, 3d render, plastic skin, overexposed, underexposed, oversaturated, typography, lettering, writing, words, characters, alphabet, calligraphy, sign, label, subtitle, banner, billboard, speech bubble, thought bubble, dialogue, comic, chat bubble, phone screen text, readable display, headline, newspaper, magazine cover, book page, manuscript writing';
+const NEGATIVE_PROMPT = 'woman, women, female, feminine, girl, lady, hijab figure, female silhouette, female shadow, female body, female form, female face, female outline, dress, gown, long hair, breasts, skirt, deformed, disfigured, bad anatomy, extra fingers, extra limbs, missing fingers, mutated hands, low quality, blurry, out of focus, jpeg artifacts, watermark, text, logo, signature, caption, ugly, pixelated, distorted faces, cartoon, anime, 3d render, plastic skin, overexposed, underexposed, oversaturated, typography, lettering, writing, words, characters, alphabet, calligraphy, sign, label, subtitle, banner, billboard, speech bubble, thought bubble, dialogue, comic, chat bubble, phone screen text, readable display, headline, newspaper, magazine cover, book page, manuscript writing';
 
 // Strong positive directive appended to every Cloudflare/Pollinations prompt.
 // Flux Schnell tends to insert garbled pseudo-Arabic/English text into images
@@ -65,6 +65,21 @@ const PROMPT_SANITIZERS = [
   [/\bwith\s+(?:the\s+words?|the\s+text|writing|letters?)\s+["'][^"']+["']/gi, ''],
   // Catch-all: bare nouns "text" / "words" / "writing" when used as visible subject
   [/\b(?:the\s+)?(?:text|words?|writing|letters?|captions?|subtitles?)\s+(?:on|across|in|filling)\b/gi, 'abstract pattern on'],
+  // FEMALE-FIGURE STRIPPING — operator decision, total removal of female forms
+  // including silhouettes/shadows/implied presence. Even when the visual plan
+  // requests a "veiled woman" or "hijabi figure", Flux can render an obvious
+  // female silhouette that still reads as a person on screen. Replace with
+  // non-human compositions. ORDER MATTERS — compound phrases (silhouette-of,
+  // veiled-woman, feminine-X) MUST run before the bare-noun catch-all so the
+  // full surrounding phrase is consumed in one substitution and we don't get
+  // awkward double-replacements like "silhouette of a closed door".
+  [/\b(?:silhouette|shadow|figure|outline|form)\s+of\s+(?:a\s+|the\s+|young\s+|old\s+|veiled\s+|hijabi?\s+)?(?:woman|women|girl|lady|female|hijabi?|mother|sister|daughter|wife)\b/gi, 'an empty mihrab in mosque light'],
+  [/\b(?:veiled|hijabi?|abaya|hijab|niqab|burqa)\s+(?:woman|women|girl|figure|silhouette|shadow|form)\b/gi, 'a veil suspended in light'],
+  [/\bfeminine\s+(?:silhouette|figure|shadow|form|hand|hands|outline)\b/gi, 'a single white rose on stone'],
+  [/\b(?:long|flowing|loose)\s+hair\b/gi, 'flowing fabric'],
+  // Catch-all bare-noun LAST: any remaining female noun after the compounds
+  // are exhausted gets swapped for a neutral closed-door image.
+  [/\b(?:a\s+|an\s+|the\s+|young\s+|old\s+)?(?:woman|women|girl|girls|lady|ladies|female|females|hijabi?|mother|sister|daughter|wife|wives|widow|widows|aunt|grandmother|fiancee?|bride)\b/gi, 'a closed door with light around its edges'],
 ];
 
 function sanitizePrompt(rawPrompt) {
