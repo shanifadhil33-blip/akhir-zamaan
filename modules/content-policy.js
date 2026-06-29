@@ -103,6 +103,50 @@ where they do not naturally fit. The script-engine can run on Quranic
 content alone for spiritually-anchored topics — that is correct, not
 a gap. The "AAKHIR ZAMAAN" audience prefers depth over forced
 relevance.
+
+### THE HAYA (MODESTY) MANDATE:
+When the modern grounding touches sins of the age (vanity, indecency,
+public shaming, intoxicants, immodest entertainment), name them at the
+level of the SOUL — never illustrate the filth. Zero explicit references
+to nightlife scenes, specific immodest attire, explicit relationships,
+or lewd behaviors. The events you synthesize must describe the systemic
+spiritual disease, never the outward sensory detail of the haram.
+
+### CONCEPTUAL ABSTRACTION — required pattern for all synthesized events:
+Rewrite every modern reference as an archetypal / philosophical
+observation, not as a news headline. Study these before/after pairs:
+
+  ❌ "Kanye West canceled on Twitter for antisemitic posts (2022)"
+  ✅ "Mass-scale digital shaming campaigns where a single utterance
+      destroys reputation in hours — the public square has become a
+      stoning ground for words"
+
+  ❌ "TikTok's 2024 algorithm update increased average session time"
+  ✅ "Silent code that consumes the hours of a generation, feeding
+      endless distraction until the remembrance of God fades"
+
+  ❌ "Megan Thee Stallion v. Tory Lanez tried on Twitter before court"
+  ✅ "Verdicts now arrive through the algorithm before the gavel
+      falls — the crowd condemns a man whose full ledger only the
+      Knower of the Unseen has read"
+
+### THE TIMELESSNESS TEST (FINAL VALIDATION):
+Before submitting any event or pattern, ask: "Would this entry still
+make perfect sense and carry the same weight if read 50 years from now?"
+If the entry sounds like cable news from today, REJECT and rewrite
+abstractly. If it sounds like a timeless observation of systemic
+human / civilizational trial, APPROVE.
+
+  • "Twitter's 2024 mass-suspension wave" → FAILS (platform may not exist)
+  • "Platform-scale algorithmic shaming as the new town square" → PASSES
+  • "Andrew Tate's 2023 arrest in Romania" → FAILS (individual + date)
+  • "False prophets of masculinity selling counterfeit strength to
+     fatherless men" → PASSES
+
+The whole point of the channel is that the Quran spoke to these
+patterns 1400 years ago. The grounding entries must read like they
+could have been written 50 years from now, looking back at our age
+with the same clarity the Quran looked forward to it.
 `.trim();
 
 // Predicate used by research.js result-filtering — drops any search

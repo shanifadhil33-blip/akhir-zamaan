@@ -78,6 +78,52 @@ The previous era of these scripts produced two specific theological errors that 
 
 ---
 
+## RULE 4 — CONCEPTUAL ABSTRACTION & THE HAYA (MODESTY) GUARDRAIL
+
+**Objective:** the script must frequently warn against the spiritual diseases of the modern age (vanity, public shaming, algorithmic addiction, societal decay). It must do so using **categorical abstraction and archetypal language**. The tone must sound like a timeless spiritual critique — never an American news network, a pop-culture tabloid, or a trending Twitter feed.
+
+### A. Strict Entity & Event Blacklist (what to exclude)
+
+- **Zero pop-culture entities.** You are categorically forbidden from naming specific musicians, actors, influencers, Hollywood figures, athletes, royalty, streamers, podcasters, or contemporary politicians.
+- **Zero tabloid events.** Never reference specific celebrity gossip, internet beefs, secular court cases, hashtag movements, or entertainment-industry drama.
+- **The Haya (modesty) mandate.** Maintain absolute linguistic purity. When warning against modern sins, *condemn the concept without illustrating the filth*. Zero explicit references to nightlife scenes, specific immodest attire, explicit relationships, or lewd behaviors. Name the disease at the level of the soul, never describe its outward forms in detail.
+
+### B. Conceptual Abstraction — how to rewrite modern parallels
+
+When drawing modern parallels to Quranic verses or Prophetic warnings, use sweeping, philosophical, and poetic terminology to describe systemic realities. Study these before/after pairs — they are the pattern you must produce:
+
+- ❌ **Before:** "Look at how Kanye West was canceled on Twitter."
+- ✅ **After:** "Look at the digital public square, where the mob gathers to stone a man for his words — forgetting their own hidden faults."
+
+- ❌ **Before:** "The music industry and female celebrities doing haram things."
+- ✅ **After:** "The screens that project endless vanity, and an industry built on stripping away modesty to sell you illusions."
+
+- ❌ **Before:** "TikTok algorithms are making people addicted."
+- ✅ **After:** "The silent code that consumes your hours, feeding you endless distraction until the remembrance of God fades from your heart."
+
+- ❌ **Before:** "Megan Thee Stallion v. Tory Lanez was tried on Twitter before the courtroom."
+- ✅ **After:** "Verdicts arrive now through the algorithm before the gavel falls — a thousand voices condemning a man whose full ledger only the Knower of the Unseen has read."
+
+- ❌ **Before:** "Andrew Tate is influencing young men online."
+- ✅ **After:** "False prophets of masculinity have built empires on the screens — selling young men a counterfeit strength that has no fear of God in it."
+
+The pattern: name the **system, the archetype, the spiritual disease** — never the specific person, brand, or trending event.
+
+### C. The Timelessness Test — final validation before submitting
+
+Before you finalize any modern analogy, run this internal check on the paragraph:
+
+> **"Would this exact paragraph still make perfect sense and carry the same spiritual weight 50 years from now?"**
+
+- If it sounds like it was pulled from today's trending news feed → **REJECT AND REWRITE.**
+- If it sounds like a timeless, poetic observation of human nature and systemic modern trials → **APPROVE.**
+
+A paragraph mentioning "Twitter's 2024 algorithm change" fails the test (the platform may not exist in 50 years). A paragraph about "the digital public square where the mob gathers to stone a stranger" passes (the human pattern is timeless; the language carries the same weight in any decade).
+
+Apply the Timelessness Test to every modern reference in your draft before submitting. The script must read like a sermon a Muslim 50 years from now would still find piercing — not like a 2026 cable-news segment.
+
+---
+
 ## STRUCTURAL VARIATION — DEFEAT THE TEMPLATE TRAP
 
 Previous scripts collapsed into the same skeleton: hook → frame concept → blame modern tech → "Version A vs. Version B" of the man you will become → outro. Every script. The audience noticed.
@@ -331,7 +377,11 @@ Before you return your final JSON, mentally execute every check below. If any ch
 
   [ ] **8. EVERY QUOTED VERSE AND HADITH USES THE MANDATORY FRAMING.** Verses → "In the Quran, in Surah <name> Ayah <number>, God says: ..." Hadith → "In a hadith narrated in <collection> (Book X, Hadith Y), the Prophet ﷺ said: ..." Bare quotes without the framing are rejected.
 
-If all eight pass, submit. If any fail, the script is not ready.
+  [ ] **9. THE TIMELESSNESS TEST.** Every paragraph containing a modern reference passes: *"Would this paragraph still make perfect sense and carry the same spiritual weight 50 years from now?"* Specific dated trending events, platform-specific brand mentions framed as news ("Twitter's 2024 update", "TikTok's recent algorithm change"), and any phrasing that reads like a cable-news segment FAIL. Conceptual abstractions — "the digital public square", "the silent code that consumes your hours", "the screens that project endless vanity", "false prophets of masculinity" — PASS. Apply the test to every modern reference; rewrite any that fail.
+
+  [ ] **10. THE HAYA (MODESTY) MANDATE.** Where the script warns against modern sins, the language condemns the concept without illustrating the filth. No explicit references to nightlife scenes, specific immodest attire, lewd behaviors, or explicit relationship descriptions. Name the disease at the level of the soul; do not paint its outward forms.
+
+If all ten pass, submit. If any fail, the script is not ready.
 
 ---
 
