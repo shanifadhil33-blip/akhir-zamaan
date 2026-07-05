@@ -8,6 +8,7 @@ const path = require('path');
 const axios = require('axios');
 const deepseek = require('./deepseek');
 const scriptTemplates = require('./script-templates');
+const scriptCritic = require('./script-critic');
 
 const OLLAMA_HOST = process.env.OLLAMA_HOST || 'http://localhost:11434';
 const MODEL_PRIMARY = process.env.OLLAMA_MODEL || 'gpt-oss:120b-cloud';
@@ -307,6 +308,8 @@ async function extractScriptMetadata({ topic, skeleton, movements, sources, next
   return generateAndParseJSONForScript({ model: MODEL_PRIMARY, systemInstruction, userPrompt, temperature: 0.4 });
 }
 
+const MAX_CRITIC_RETRIES = 2;
+
 async function generateScript({ topic, sources, modernContext, nextTopic }) {
   console.log(`[script-gen] chunked mode, provider: ollama (${MODEL_PRIMARY})`);
 
@@ -328,7 +331,73 @@ async function generateScript({ topic, sources, modernContext, nextTopic }) {
     });
   }
 
-  // Step 3 — extract metadata from finished movements
+  // Step 2.5 — CRITIC LOOP.
+  // The critic reads the combined 5 movements and audits for hallucinated
+  // studies, fabricated startups, invented statistics, miracle-reduction to
+  // natural phenomena, unfounded fatwa-level rulings, celebrity leakage,
+  // and duplicate scripture. If any of those trip, we regenerate the
+  // flagged movement (or all movements, if the critic can't localize the
+  // failure) with the critic's reason appended as a correction hint. Up
+  // to 2 retries. A third failure raises a fatal SCRIPT_CRITIC_ABORT
+  // error, which pipeline.js catches and notify.js formats as a Telegram
+  // alert so the operator can inspect the topic manually.
+  let criticVerdict = null;
+  for (let retryIdx = 0; retryIdx <= MAX_CRITIC_RETRIES; retryIdx++) {
+    const draftText = scriptCritic.assembleDraftFromMovements(movements);
+    console.log(`[script-critic] audit pass ${retryIdx + 1}/${MAX_CRITIC_RETRIES + 1}...`);
+    criticVerdict = await scriptCritic.verifyScriptFactualIntegrity(draftText);
+    if (criticVerdict.pass) {
+      if (retryIdx > 0) console.log(`[script-critic] script passed after ${retryIdx} correction pass(es)`);
+      else console.log(`[script-critic] script passed on first audit`);
+      break;
+    }
+    console.warn(`[script-critic] pass ${retryIdx + 1} FAILED: ${criticVerdict.reason} (movement: ${criticVerdict.failed_movement || 'unspecified'})`);
+    if (retryIdx === MAX_CRITIC_RETRIES) {
+      const err = new Error(`${scriptCritic.SCRIPT_CRITIC_ABORT_SENTINEL} — topic ${topic.id} "${topic.title}". Last critic verdict: ${criticVerdict.reason}. Movement flagged: ${criticVerdict.failed_movement || 'unspecified'}. Retries exhausted (${MAX_CRITIC_RETRIES + 1} total attempts). Manual review of the topic entry recommended.`);
+      err.code = 'SCRIPT_CRITIC_ABORT';
+      err.criticVerdict = criticVerdict;
+      throw err;
+    }
+    // Regenerate — either the flagged movement, or all 5 if the critic
+    // couldn't localize which movement was at fault.
+    const correction = `\n\nCRITIC CORRECTION REQUIRED — the previous draft of this movement was rejected for the following reason: "${criticVerdict.reason}". Rewrite this movement with that specific issue eliminated. Preserve the topic-fidelity ratio, framing rules, greeting, and template voice; only fix what the critic flagged.`;
+    const targetKey = criticVerdict.failed_movement;
+    if (targetKey && MOVEMENT_SPECS.some((s) => s.key === targetKey)) {
+      console.log(`[script-critic] regenerating "${targetKey}" with correction hint`);
+      const originalSpec = MOVEMENT_SPECS.find((s) => s.key === targetKey);
+      const correctedSpec = { ...originalSpec, description: `${originalSpec.description}${correction}` };
+      // Rebuild previousMovements excluding the target one, so downstream
+      // reflection stays consistent when the corrected version replaces it.
+      const previousMovements = { ...movements };
+      delete previousMovements[targetKey];
+      movements[targetKey] = await generateMovement({
+        spec: correctedSpec,
+        skeleton,
+        previousMovements,
+        topic,
+        sources,
+        modernContext,
+        nextTopic,
+      });
+    } else {
+      console.log(`[script-critic] critic could not localize failure — regenerating all 5 movements with correction hint`);
+      for (const spec of MOVEMENT_SPECS) delete movements[spec.key];
+      for (const spec of MOVEMENT_SPECS) {
+        const correctedSpec = { ...spec, description: `${spec.description}${correction}` };
+        movements[spec.key] = await generateMovement({
+          spec: correctedSpec,
+          skeleton,
+          previousMovements: movements,
+          topic,
+          sources,
+          modernContext,
+          nextTopic,
+        });
+      }
+    }
+  }
+
+  // Step 3 — extract metadata from finished (critic-approved) movements
   const meta = await extractScriptMetadata({ topic, skeleton, movements, sources, nextTopic });
 
   const script = {
@@ -345,6 +414,7 @@ async function generateScript({ topic, sources, modernContext, nextTopic }) {
     modern_parallels_used: meta.modern_parallels_used || [],
     sources_quoted: meta.sources_quoted || [],
     verses_for_recitation: meta.verses_for_recitation || [],
+    _critic: criticVerdict,     // { pass:true, reason:"", failed_movement:"" } after acceptance
   };
 
   const totalWords = countScriptWords(script);
