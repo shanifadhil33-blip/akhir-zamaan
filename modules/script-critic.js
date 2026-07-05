@@ -121,16 +121,27 @@ function normalizeVerdict(raw) {
 async function verifyScriptFactualIntegrity(draftText) {
   const userPrompt = `Audit the following Akhir Zamaan script. Return only the JSON verdict.\n\n<script>\n${draftText}\n</script>`;
 
-  // Prefer DeepSeek for the critic — it's cheap (<$0.002 per audit) and
-  // its instruction-following is stricter than Ollama on the "output only
-  // the JSON" constraint. Silent fallback to Ollama if DeepSeek isn't
-  // configured or fails.
+  // Ollama first — Ollama Cloud is free/unlimited on this account, so the
+  // critic pass costs $0 in the normal case. DeepSeek only used as a
+  // reliability fallback if Ollama is transiently unreachable, and only
+  // when DEEPSEEK_API_KEY is set. Set CRITIC_PROVIDER=deepseek to force
+  // the paid path if you ever want stricter JSON adherence at the cost.
+  const preferDeepseek = (process.env.CRITIC_PROVIDER || '').toLowerCase() === 'deepseek';
   let raw;
-  try {
-    raw = await callCriticDeepseek(userPrompt);
-  } catch (err) {
-    console.warn(`[script-critic] DeepSeek unavailable (${(err.message || '').slice(0, 120)}) — falling back to Ollama`);
-    raw = await callCriticOllama(userPrompt);
+  if (preferDeepseek) {
+    try {
+      raw = await callCriticDeepseek(userPrompt);
+    } catch (err) {
+      console.warn(`[script-critic] DeepSeek unavailable (${(err.message || '').slice(0, 120)}) — falling back to Ollama`);
+      raw = await callCriticOllama(userPrompt);
+    }
+  } else {
+    try {
+      raw = await callCriticOllama(userPrompt);
+    } catch (err) {
+      console.warn(`[script-critic] Ollama unavailable (${(err.message || '').slice(0, 120)}) — falling back to DeepSeek`);
+      raw = await callCriticDeepseek(userPrompt);
+    }
   }
   let verdict;
   try {
