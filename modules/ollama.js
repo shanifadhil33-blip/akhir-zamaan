@@ -341,11 +341,25 @@ async function generateScript({ topic, sources, modernContext, nextTopic }) {
   // to 2 retries. A third failure raises a fatal SCRIPT_CRITIC_ABORT
   // error, which pipeline.js catches and notify.js formats as a Telegram
   // alert so the operator can inspect the topic manually.
+  //
+  // GROUNDING ANCHOR: modules/research.js preserves the raw Tavily
+  // snippets on modernContext._raw_snippets. The critic uses those as a
+  // factual anchor — every specific study / date / metric / company /
+  // event named in the script must appear (in substance) in the snippets.
+  // Claims that don't fail the audit as hallucinations. When Tavily
+  // isn't configured, the snippets array is empty and the critic falls
+  // back to plausibility judgment alone.
+  const groundingSnippets = (modernContext && modernContext._raw_snippets) || [];
+  if (groundingSnippets.length) {
+    console.log(`[script-critic] grounding anchor active — ${groundingSnippets.length} raw snippet(s) available for cross-reference`);
+  } else {
+    console.log(`[script-critic] no grounding snippets available — plausibility-only audit mode`);
+  }
   let criticVerdict = null;
   for (let retryIdx = 0; retryIdx <= MAX_CRITIC_RETRIES; retryIdx++) {
     const draftText = scriptCritic.assembleDraftFromMovements(movements);
     console.log(`[script-critic] audit pass ${retryIdx + 1}/${MAX_CRITIC_RETRIES + 1}...`);
-    criticVerdict = await scriptCritic.verifyScriptFactualIntegrity(draftText);
+    criticVerdict = await scriptCritic.verifyScriptFactualIntegrity(draftText, groundingSnippets);
     if (criticVerdict.pass) {
       if (retryIdx > 0) console.log(`[script-critic] script passed after ${retryIdx} correction pass(es)`);
       else console.log(`[script-critic] script passed on first audit`);

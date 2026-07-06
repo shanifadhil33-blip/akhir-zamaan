@@ -29,7 +29,7 @@ const SCRIPT_CRITIC_ABORT_SENTINEL = 'Unresolved Hallucinations in Script Genera
 
 const MOVEMENT_KEYS = ['cold_open', 'naming', 'excavation', 'mirror', 'haunting'];
 
-const CRITIC_SYSTEM_INSTRUCTION = `You are a STRICT factual and theological auditor for Islamic documentary scripts. Read the script provided and return ONLY a single JSON object with three keys:
+const CRITIC_SYSTEM_INSTRUCTION_BASE = `You are a STRICT factual and theological auditor for Islamic documentary scripts. Read the script provided and return ONLY a single JSON object with three keys:
 
 {
   "pass": true | false,
@@ -39,25 +39,49 @@ const CRITIC_SYSTEM_INSTRUCTION = `You are a STRICT factual and theological audi
 
 Set "pass" to FALSE if the script contains ANY of the following:
 
-  1. HIGHLY SPECIFIC INVENTED SCIENTIFIC STUDIES — a named Lancet / NEJM / Stanford / MIT / peer-reviewed paper cited with year and finding that appears to be fabricated to match the religious point. Real citations of well-known landmark studies are fine; invented ones are not. If a specific study is cited with high confidence but you cannot verify it as commonly-known, treat it as suspect and fail the script.
+  1. UNGROUNDED SPECIFIC CLAIMS — if <grounding_snippets> are provided below, cross-reference EVERY specific modern claim in the script against them: named studies (Lancet 2024, NEJM 2023, Stanford, MIT), specific dates, precise percentages, user counts, dollar amounts, startup names, product names, event descriptions. If the script names a specific study / date / metric / company / event that does NOT appear (in substance) within the grounding snippets, fail the audit — the LLM fabricated it. When grounding snippets are NOT provided (LLM-only fallback context), fall back to plausibility: a suspiciously specific citation the LLM cannot corroborate should still fail.
 
-  2. FABRICATED STARTUPS / COMPANIES — a specific-sounding company name (like "SwarmX", "NeuroLens", "OblivionLabs") introduced as though real, without corroboration in the modern-context data. Well-known companies (Meta, ByteDance, OpenAI, DeepMind, Anthropic, Google, Microsoft) are fine when described at a systemic level. Small/obscure named startups presented as real are not.
+  2. HIGHLY SPECIFIC INVENTED SCIENTIFIC STUDIES — a named peer-reviewed paper cited with year and finding that appears fabricated to match the religious point. Real landmark studies (Milgram 1963, Zimbardo, well-known Cochrane reviews) may be referenced without grounding snippets; obscure specific studies without grounding coverage must fail.
 
-  3. EXACT INVENTED STATISTICS — precise percentages, user counts, dollar amounts, timelines that appear specific but are actually fabricated (e.g. "78.3% of Gen Z checks their phone within 3 minutes of waking, according to a 2024 Stanford study"). Real, commonly-cited statistics are fine; specific-looking invented ones are not.
+  3. FABRICATED STARTUPS / COMPANIES — a specific-sounding company name (like "SwarmX", "NeuroLens", "OblivionLabs") introduced as though real, without appearance in the grounding snippets. Well-known companies (Meta, ByteDance, OpenAI, DeepMind, Anthropic, Google, Microsoft) at a systemic level are fine.
 
-  4. MIRACLES REDUCED TO NATURAL PHENOMENA — the script attempts to explain the parting of the sea, the moon-splitting, the she-camel of Salih (AS), Ibrahim (AS) in the fire, the Isra' & Mi'raj, or any other Prophetic miracle using biology, physics, chemistry, tidal patterns, atmospheric optics, epigenetics, or lucid dreaming. Miracles must remain miracles in the script.
+  4. EXACT INVENTED STATISTICS — precise percentages, user counts, dollar amounts, timelines that appear specific (e.g. "78.3% of Gen Z checks their phone within 3 minutes of waking, according to a 2024 Stanford study") but cannot be found in the grounding snippets. Conceptual ranges ("hundreds of millions", "the last decade") are fine.
 
-  5. UNFOUNDED FATWA-LEVEL RULINGS — the script categorically declares a modern secular practice to be riba, zina, shirk, kufr, khiyana, or maysir without the Quran/hadith source provided actually supporting the ruling. Concerns and warnings framed spiritually are fine; specific rulings the source does not support are not.
+  5. MIRACLES REDUCED TO NATURAL PHENOMENA — the script attempts to explain the parting of the sea, the moon-splitting, the she-camel of Salih (AS), Ibrahim (AS) in the fire, the Isra' & Mi'raj, or any other Prophetic miracle using biology, physics, chemistry, tidal patterns, atmospheric optics, epigenetics, or lucid dreaming. Miracles must remain miracles.
 
-  6. INDIVIDUAL CELEBRITY / POLITICIAN / STREAMER NAMES — Kanye, Trump, Musk-as-person, Andrew Tate, Megan Thee Stallion, Kardashians, MrBeast, Taylor Swift, royalty, athletes. Systemic-level references are fine; named-individual references are not.
+  6. UNFOUNDED FATWA-LEVEL RULINGS — the script categorically declares a modern secular practice to be riba, zina, shirk, kufr, khiyana, or maysir without the Quran/hadith source provided actually supporting the ruling.
 
-  7. DUPLICATE SCRIPTURE — the same Quranic verse or the same hadith quoted more than once with only minor rewording. Each verse and each hadith may appear once.
+  7. INDIVIDUAL CELEBRITY / POLITICIAN / STREAMER NAMES — Kanye, Trump, Musk-as-person, Andrew Tate, Megan Thee Stallion, Kardashians, MrBeast, Taylor Swift, royalty, athletes. Systemic-level references are fine.
+
+  8. DUPLICATE SCRIPTURE — the same Quranic verse or the same hadith quoted more than once with only minor rewording.
 
 If the script passes every check, set pass=true, reason="", failed_movement="".
-
 If it fails on multiple items, cite the MOST SEVERE issue in reason and identify the movement most affected in failed_movement.
-
 Output ONLY the JSON object. No prose, no markdown fences, no explanation.`;
+
+// Kept as an export named after the old constant so any external caller
+// continues to work. Now points at the base instruction; the runtime
+// prompt is assembled per-call to include grounding snippets when present.
+const CRITIC_SYSTEM_INSTRUCTION = CRITIC_SYSTEM_INSTRUCTION_BASE;
+
+// Compact snippet array into a token-frugal block the critic can search
+// against. Each snippet keeps just title + content (URLs are omitted
+// since the critic doesn't need to fetch, only cross-reference text).
+// Overall payload capped at ~2500 chars to keep the critic call well
+// under the DeepSeek/Ollama input budget.
+function formatGroundingSnippets(snippets) {
+  if (!Array.isArray(snippets) || snippets.length === 0) return '';
+  const lines = [];
+  let charBudget = 2500;
+  for (let i = 0; i < snippets.length; i++) {
+    const s = snippets[i];
+    const line = `[snippet ${i + 1}] ${(s.title || '').slice(0, 120)} — ${(s.content || '').slice(0, 300)}`;
+    if (charBudget - line.length < 0) break;
+    lines.push(line);
+    charBudget -= line.length;
+  }
+  return lines.join('\n');
+}
 
 function sleep(ms) { return new Promise((r) => setTimeout(r, ms)); }
 
@@ -118,8 +142,18 @@ function normalizeVerdict(raw) {
   return { pass, reason, failed_movement: failed };
 }
 
-async function verifyScriptFactualIntegrity(draftText) {
-  const userPrompt = `Audit the following Akhir Zamaan script. Return only the JSON verdict.\n\n<script>\n${draftText}\n</script>`;
+async function verifyScriptFactualIntegrity(draftText, groundingSnippets) {
+  // Optional second argument — array of { title, content, url, query }
+  // preserved by modules/research.js from the Tavily search results. When
+  // present the critic cross-references specific claims against these
+  // snippets; when absent (Tavily not configured, or LLM-only fallback),
+  // the critic still runs but on plausibility judgment alone.
+  const groundingBlock = formatGroundingSnippets(groundingSnippets);
+  const groundingHeader = groundingBlock
+    ? `\n\n<grounding_snippets>\nThe following raw excerpts were pulled from real web sources during research for this script. Cross-reference every specific modern claim (studies, dates, statistics, company names, event descriptions) in the script against them. Claims that name specifics NOT supported by these snippets are hallucinations — fail the audit.\n\n${groundingBlock}\n</grounding_snippets>`
+    : `\n\n<grounding_snippets>\n(No web-search grounding available for this run — evaluate on plausibility judgment. A specific-looking citation the LLM cannot corroborate should still fail.)\n</grounding_snippets>`;
+
+  const userPrompt = `Audit the following Akhir Zamaan script. Return only the JSON verdict.${groundingHeader}\n\n<script>\n${draftText}\n</script>`;
 
   // Ollama first — Ollama Cloud is free/unlimited on this account, so the
   // critic pass costs $0 in the normal case. DeepSeek only used as a

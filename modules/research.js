@@ -201,7 +201,39 @@ async function researchTopic(topic) {
   try {
     const context = await synthesizeContext({ topic, searches });
     console.log(`[research] synthesized: ${context.events.length} events, ${context.patterns.length} patterns`);
-    return { ...context, _source: 'tavily', _queries: queries };
+
+    // Preserve the RAW Tavily snippets alongside the synthesized summary.
+    // The script critic (modules/script-critic.js) cross-references any
+    // specific study / date / metric mentioned in the draft against these
+    // raw snippets — if a claim can't be located in the source material,
+    // the critic fails the audit. Without this passthrough the critic
+    // was guessing whether a "2024 Stanford study" was real; now it can
+    // actually check.
+    // Also strip any snippet whose title/content triggers the celebrity
+    // banlist before the critic sees it — defense in depth so a leaked
+    // celebrity name in a source snippet can't slip into the audit
+    // context and confuse the pass/fail logic.
+    const rawSnippets = [];
+    for (const s of searches) {
+      for (const r of (s.results || [])) {
+        const text = `${r.title || ''} ${r.content || ''}`;
+        if (policy.containsBannedName(text)) continue;
+        rawSnippets.push({
+          query: s.query,
+          title: (r.title || '').slice(0, 200),
+          url: r.url || '',
+          content: (r.content || '').slice(0, 600),   // cap so the critic prompt stays within its 2K input budget
+        });
+      }
+    }
+    console.log(`[research] preserved ${rawSnippets.length} raw snippets for critic grounding`);
+
+    return {
+      ...context,
+      _source: 'tavily',
+      _queries: queries,
+      _raw_snippets: rawSnippets,
+    };
   } catch (err) {
     console.warn(`[research] synthesis failed: ${err.message}`);
     return null;
