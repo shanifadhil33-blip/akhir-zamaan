@@ -1,14 +1,19 @@
 name: Akhir Zamaan Video Pipeline
 
 on:
-  schedule:
-    # Tuesday + Saturday at 04:00 UTC = 8:00 AM Dubai
-    # Cron day-of-week: 2=Tue, 6=Sat. Tue → Sat (4-day gap), Sat → Tue
-    # (3-day gap). Operator preferred this 2x/week cadence over the
-    # earlier 3x/week — gives more time per video upload and a Saturday
-    # slot for weekend watch-time.
-    - cron: '0 4 * * 2,6'
-  workflow_dispatch:       # manual trigger
+  # ─── SCHEDULE DISABLED — repo is now a preserved portfolio artifact ───
+  # The Tuesday + Saturday cron below is intentionally commented out. The
+  # workflow no longer fires on its own. Only manual triggers via the
+  # Actions tab ("Run workflow" button) will start a run — useful for
+  # live demos to clients / recruiters without producing autonomous
+  # daily uploads. To reactivate the schedule, uncomment the four
+  # `schedule:` lines below and push.
+  #
+  # schedule:
+  #   # Tuesday + Saturday at 04:00 UTC = 8:00 AM Dubai
+  #   # Cron day-of-week: 2=Tue, 6=Sat.
+  #   - cron: '0 4 * * 2,6'
+  workflow_dispatch:       # manual trigger — the only way this workflow now runs
 
 permissions:
   contents: write          # so we can commit published.json back
